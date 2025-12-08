@@ -306,7 +306,7 @@ const ReviewStep = ({ formData, onSubmit, onChange, isSubmitting }: ReviewStepPr
 
       <Button
         onClick={onSubmit}
-        disabled={isSubmitting || formData.acceptTerms !== true}
+        disabled={isSubmitting || formData.acceptTerms !== true || formData.acceptAmbassador !== true}
         className="w-full h-14 text-lg font-semibold"
       >
         {isSubmitting ? (

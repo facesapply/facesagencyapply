@@ -154,16 +154,7 @@ const RegistrationForm = () => {
           return false;
         }
         break;
-      case 6:
-        if (!formData.talents || formData.talents.length === 0) {
-          toast({
-            title: "Required Fields",
-            description: "Please select at least one talent.",
-            variant: "destructive",
-          });
-          return false;
-        }
-        break;
+      // Step 6 (Talents) is not mandatory
       // Step 7 (Availability) and Step 8 (Photos) are not mandatory
     }
     return true;
