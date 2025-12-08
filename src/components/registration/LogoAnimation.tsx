@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 interface LogoAnimationProps {
   onComplete: () => void;
@@ -8,6 +8,7 @@ const LogoAnimation = ({ onComplete }: LogoAnimationProps) => {
   const [visibleLetters, setVisibleLetters] = useState(0);
   const [showFlash, setShowFlash] = useState(false);
   const [flashPhase, setFlashPhase] = useState<"off" | "in" | "hold" | "out">("off");
+  const audioContextRef = useRef<AudioContext | null>(null);
   
   // "faces" in lowercase with last 's' in red
   const letters = [
@@ -17,6 +18,32 @@ const LogoAnimation = ({ onComplete }: LogoAnimationProps) => {
     { char: "e", isRed: false },
     { char: "s", isRed: true },
   ];
+
+  // Camera shutter sound effect using Web Audio API
+  const playCameraSound = () => {
+    try {
+      const audioContext = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
+      audioContextRef.current = audioContext;
+      
+      // Create a quick "click" sound
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      oscillator.frequency.setValueAtTime(1200, audioContext.currentTime);
+      oscillator.frequency.exponentialRampToValueAtTime(200, audioContext.currentTime + 0.05);
+      
+      gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+      
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + 0.1);
+    } catch (e) {
+      console.log("Audio not supported");
+    }
+  };
 
   useEffect(() => {
     // Type in letters one by one (slower - 300ms per letter)
@@ -32,6 +59,7 @@ const LogoAnimation = ({ onComplete }: LogoAnimationProps) => {
     // After all letters, start flash sequence
     const flashInTimeout = setTimeout(() => {
       clearInterval(letterInterval);
+      playCameraSound();
       setShowFlash(true);
       setFlashPhase("in");
     }, letters.length * 300 + 800);
@@ -51,6 +79,9 @@ const LogoAnimation = ({ onComplete }: LogoAnimationProps) => {
       clearTimeout(flashInTimeout);
       clearTimeout(flashHoldTimeout);
       clearTimeout(completeTimeout);
+      if (audioContextRef.current) {
+        audioContextRef.current.close();
+      }
     };
   }, [onComplete, letters.length]);
 
