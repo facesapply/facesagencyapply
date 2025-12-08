@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { talents } from "@/data/lebanese-locations";
 
@@ -28,6 +27,10 @@ const TalentsStep = ({ data, onChange }: TalentsStepProps) => {
   const handleCustomTalentChange = (value: string) => {
     setCustomTalent(value);
     onChange("customTalent", value);
+  };
+
+  const handleExperienceSelect = (hasExperience: string) => {
+    onChange("experience", hasExperience);
   };
 
   return (
@@ -89,17 +92,40 @@ const TalentsStep = ({ data, onChange }: TalentsStepProps) => {
           </div>
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="experience">Previous Experience</Label>
-          <Textarea
-            id="experience"
-            placeholder="Tell us about your previous modeling or acting experience, projects you've worked on, brands you've collaborated with, etc."
-            value={data.experience}
-            onChange={(e) => onChange("experience", e.target.value)}
-            className="min-h-[120px] resize-none"
-          />
-          <p className="text-xs text-muted-foreground">
-            If you're new to modeling, that's okay! Just tell us about any relevant experience.
+        <div className="space-y-3">
+          <Label>Do you have previous modeling or acting experience?</Label>
+          <div className="grid grid-cols-2 gap-4 mt-4">
+            <div
+              onClick={() => handleExperienceSelect("yes")}
+              className={`flex items-center justify-center p-6 rounded-xl border-2 cursor-pointer transition-all ${
+                data.experience === "yes"
+                  ? "border-primary bg-primary/10 shadow-md"
+                  : "border-border hover:border-primary/50 hover:bg-muted/50"
+              }`}
+            >
+              <span className={`text-lg font-semibold ${
+                data.experience === "yes" ? "text-primary" : "text-foreground"
+              }`}>
+                Yes
+              </span>
+            </div>
+            <div
+              onClick={() => handleExperienceSelect("no")}
+              className={`flex items-center justify-center p-6 rounded-xl border-2 cursor-pointer transition-all ${
+                data.experience === "no"
+                  ? "border-primary bg-primary/10 shadow-md"
+                  : "border-border hover:border-primary/50 hover:bg-muted/50"
+              }`}
+            >
+              <span className={`text-lg font-semibold ${
+                data.experience === "no" ? "text-primary" : "text-foreground"
+              }`}>
+                No
+              </span>
+            </div>
+          </div>
+          <p className="text-xs text-muted-foreground text-center mt-2">
+            No experience? No problem! We welcome fresh faces.
           </p>
         </div>
       </div>
