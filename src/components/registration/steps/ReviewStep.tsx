@@ -32,6 +32,7 @@ interface ReviewStepProps {
     headshot: File | null;
     fullBody: File | null;
     acceptTerms?: boolean;
+    acceptAmbassador?: boolean;
   };
   onSubmit: () => void;
   onChange: (field: string, value: boolean) => void;
@@ -149,42 +150,82 @@ const ReviewStep = ({ formData, onSubmit, onChange, isSubmitting }: ReviewStepPr
       </div>
 
       {/* Terms and Conditions */}
-      <div className="space-y-4 border-t border-border pt-6">
+      <div className="space-y-6 border-t border-border pt-6">
         <h3 className="text-primary font-semibold text-sm uppercase tracking-wider">
-          Terms & Conditions
+          Terms & Consent
         </h3>
-        <p className="text-sm text-muted-foreground leading-relaxed">
-          I agree and give consent to Faces Agency to use my photos to show clients when selecting for projects and to use my photos to get them promoted and seen.
-        </p>
-        <p className="text-sm font-medium text-foreground">Do you accept?</p>
-        <div className="grid grid-cols-2 gap-4">
-          <div
-            onClick={() => onChange("acceptTerms", true)}
-            className={`flex items-center justify-center p-5 rounded-xl border-2 cursor-pointer transition-all ${
-              formData.acceptTerms === true
-                ? "border-primary bg-primary/10 shadow-md"
-                : "border-border hover:border-primary/50 hover:bg-muted/50"
-            }`}
-          >
-            <span className={`text-lg font-semibold ${
-              formData.acceptTerms === true ? "text-primary" : "text-foreground"
-            }`}>
-              Yes
-            </span>
+        
+        {/* Consent 1: Photo Usage */}
+        <div className="space-y-3">
+          <p className="text-sm text-foreground font-medium">
+            Do you give Faces Casting Agency consent to show your photos to clients when selecting talent for projects?
+          </p>
+          <div className="grid grid-cols-2 gap-4">
+            <div
+              onClick={() => onChange("acceptTerms", true)}
+              className={`flex items-center justify-center p-4 rounded-xl border-2 cursor-pointer transition-all ${
+                formData.acceptTerms === true
+                  ? "border-primary bg-primary/10 shadow-md"
+                  : "border-border hover:border-primary/50 hover:bg-muted/50"
+              }`}
+            >
+              <span className={`text-lg font-semibold ${
+                formData.acceptTerms === true ? "text-primary" : "text-foreground"
+              }`}>
+                Yes
+              </span>
+            </div>
+            <div
+              onClick={() => onChange("acceptTerms", false)}
+              className={`flex items-center justify-center p-4 rounded-xl border-2 cursor-pointer transition-all ${
+                formData.acceptTerms === false
+                  ? "border-primary bg-primary/10 shadow-md"
+                  : "border-border hover:border-primary/50 hover:bg-muted/50"
+              }`}
+            >
+              <span className={`text-lg font-semibold ${
+                formData.acceptTerms === false ? "text-primary" : "text-foreground"
+              }`}>
+                No
+              </span>
+            </div>
           </div>
-          <div
-            onClick={() => onChange("acceptTerms", false)}
-            className={`flex items-center justify-center p-5 rounded-xl border-2 cursor-pointer transition-all ${
-              formData.acceptTerms === false
-                ? "border-primary bg-primary/10 shadow-md"
-                : "border-border hover:border-primary/50 hover:bg-muted/50"
-            }`}
-          >
-            <span className={`text-lg font-semibold ${
-              formData.acceptTerms === false ? "text-primary" : "text-foreground"
-            }`}>
-              No
-            </span>
+        </div>
+
+        {/* Consent 2: Brand Ambassador */}
+        <div className="space-y-3">
+          <p className="text-sm text-foreground font-medium">
+            If selected, do you give consent to allow Faces to use you as a brand ambassador?
+          </p>
+          <div className="grid grid-cols-2 gap-4">
+            <div
+              onClick={() => onChange("acceptAmbassador", true)}
+              className={`flex items-center justify-center p-4 rounded-xl border-2 cursor-pointer transition-all ${
+                formData.acceptAmbassador === true
+                  ? "border-primary bg-primary/10 shadow-md"
+                  : "border-border hover:border-primary/50 hover:bg-muted/50"
+              }`}
+            >
+              <span className={`text-lg font-semibold ${
+                formData.acceptAmbassador === true ? "text-primary" : "text-foreground"
+              }`}>
+                Yes
+              </span>
+            </div>
+            <div
+              onClick={() => onChange("acceptAmbassador", false)}
+              className={`flex items-center justify-center p-4 rounded-xl border-2 cursor-pointer transition-all ${
+                formData.acceptAmbassador === false
+                  ? "border-primary bg-primary/10 shadow-md"
+                  : "border-border hover:border-primary/50 hover:bg-muted/50"
+              }`}
+            >
+              <span className={`text-lg font-semibold ${
+                formData.acceptAmbassador === false ? "text-primary" : "text-foreground"
+              }`}>
+                No
+              </span>
+            </div>
           </div>
         </div>
       </div>
