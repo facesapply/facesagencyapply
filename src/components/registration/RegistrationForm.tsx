@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Calendar } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import FormProgress from "./FormProgress";
 import WelcomeStep from "./steps/WelcomeStep";
@@ -21,10 +21,11 @@ interface FormData {
   nationality: string;
   mobile: string;
   whatsapp: string;
-  email: string;
   governorate: string;
   area: string;
   languages: string[];
+  languageLevels: Record<string, number>;
+  customLanguage: string;
   height: string;
   weight: string;
   bust: string;
@@ -35,13 +36,15 @@ interface FormData {
   skinTone: string;
   hasTattoos: boolean;
   hasPiercings: boolean;
+  customEyeColor: string;
+  customHairColor: string;
   talents: string[];
+  customTalent: string;
   experience: string;
   hasCar: boolean;
   hasLicense: boolean;
   hasPassport: boolean;
   canTravel: boolean;
-  availability: string;
   headshot: File | null;
   fullBody: File | null;
 }
@@ -53,10 +56,11 @@ const initialFormData: FormData = {
   nationality: "",
   mobile: "",
   whatsapp: "",
-  email: "",
   governorate: "",
   area: "",
   languages: [],
+  languageLevels: {},
+  customLanguage: "",
   height: "",
   weight: "",
   bust: "",
@@ -67,13 +71,15 @@ const initialFormData: FormData = {
   skinTone: "",
   hasTattoos: false,
   hasPiercings: false,
+  customEyeColor: "",
+  customHairColor: "",
   talents: [],
+  customTalent: "",
   experience: "",
   hasCar: false,
   hasLicense: false,
   hasPassport: false,
   canTravel: false,
-  availability: "",
   headshot: null,
   fullBody: null,
 };
@@ -87,7 +93,7 @@ const RegistrationForm = () => {
 
   const totalSteps = 10;
 
-  const updateFormData = (field: string, value: string | string[] | boolean | File | null) => {
+  const updateFormData = (field: string, value: string | string[] | boolean | File | null | Record<string, number>) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
@@ -109,10 +115,10 @@ const RegistrationForm = () => {
         }
         break;
       case 2:
-        if (!formData.mobile || !formData.email) {
+        if (!formData.mobile) {
           toast({
             title: "Required Fields",
-            description: "Please provide your mobile number and email.",
+            description: "Please provide your mobile number.",
             variant: "destructive",
           });
           return false;
@@ -158,16 +164,7 @@ const RegistrationForm = () => {
           return false;
         }
         break;
-      case 8:
-        if (!formData.headshot || !formData.fullBody) {
-          toast({
-            title: "Required Fields",
-            description: "Please upload both headshot and full body photos.",
-            variant: "destructive",
-          });
-          return false;
-        }
-        break;
+      // Step 7 (Availability) and Step 8 (Photos) are not mandatory
     }
     return true;
   };
@@ -221,12 +218,29 @@ const RegistrationForm = () => {
         >
           THANK YOU!
         </h1>
-        <p className="text-lg text-foreground mb-2">
+        <p className="text-lg text-foreground mb-6">
           Your application has been submitted successfully.
         </p>
-        <p className="text-muted-foreground max-w-md">
-          Our team will review your profile and get in touch with you soon. Keep an eye on your email!
+        <p className="text-muted-foreground max-w-md mb-8">
+          Keep an eye on your WhatsApp — our team will reach out to you soon!
         </p>
+        
+        <div className="w-full max-w-md border-t border-border pt-8">
+          <Button
+            size="lg"
+            className="w-full h-14 text-lg font-semibold"
+            onClick={() => {
+              // This will be replaced with actual booking functionality later
+              toast({
+                title: "Coming Soon",
+                description: "Professional photo shoot booking will be available soon!",
+              });
+            }}
+          >
+            <Calendar className="w-5 h-5 mr-2" />
+            Book Date for Professional Photo Shoot
+          </Button>
+        </div>
       </div>
     );
   }

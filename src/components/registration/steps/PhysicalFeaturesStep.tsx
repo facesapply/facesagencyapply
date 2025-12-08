@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -16,12 +17,33 @@ interface PhysicalFeaturesStepProps {
     skinTone: string;
     hasTattoos: boolean;
     hasPiercings: boolean;
+    customEyeColor?: string;
+    customHairColor?: string;
   };
   gender: "male" | "female";
   onChange: (field: string, value: string | boolean) => void;
 }
 
 const PhysicalFeaturesStep = ({ data, gender, onChange }: PhysicalFeaturesStepProps) => {
+  const [showCustomEyeColor, setShowCustomEyeColor] = useState(data.eyeColor === "Other");
+  const [showCustomHairColor, setShowCustomHairColor] = useState(data.hairColor === "Other");
+
+  const handleEyeColorChange = (value: string) => {
+    onChange("eyeColor", value);
+    setShowCustomEyeColor(value === "Other");
+    if (value !== "Other") {
+      onChange("customEyeColor", "");
+    }
+  };
+
+  const handleHairColorChange = (value: string) => {
+    onChange("hairColor", value);
+    setShowCustomHairColor(value === "Other");
+    if (value !== "Other") {
+      onChange("customHairColor", "");
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="text-center mb-8">
@@ -93,12 +115,12 @@ const PhysicalFeaturesStep = ({ data, gender, onChange }: PhysicalFeaturesStepPr
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="space-y-4">
           <div className="space-y-2">
             <Label>Eye Color *</Label>
             <Select
               value={data.eyeColor}
-              onValueChange={(value) => onChange("eyeColor", value)}
+              onValueChange={handleEyeColorChange}
             >
               <SelectTrigger className="h-12">
                 <SelectValue placeholder="Select" />
@@ -111,13 +133,21 @@ const PhysicalFeaturesStep = ({ data, gender, onChange }: PhysicalFeaturesStepPr
                 ))}
               </SelectContent>
             </Select>
+            {showCustomEyeColor && (
+              <Input
+                placeholder="Specify eye color..."
+                value={data.customEyeColor || ""}
+                onChange={(e) => onChange("customEyeColor", e.target.value)}
+                className="h-12 mt-2"
+              />
+            )}
           </div>
 
           <div className="space-y-2">
             <Label>Hair Color *</Label>
             <Select
               value={data.hairColor}
-              onValueChange={(value) => onChange("hairColor", value)}
+              onValueChange={handleHairColorChange}
             >
               <SelectTrigger className="h-12">
                 <SelectValue placeholder="Select" />
@@ -130,6 +160,14 @@ const PhysicalFeaturesStep = ({ data, gender, onChange }: PhysicalFeaturesStepPr
                 ))}
               </SelectContent>
             </Select>
+            {showCustomHairColor && (
+              <Input
+                placeholder="Specify hair color..."
+                value={data.customHairColor || ""}
+                onChange={(e) => onChange("customHairColor", e.target.value)}
+                className="h-12 mt-2"
+              />
+            )}
           </div>
 
           <div className="space-y-2">

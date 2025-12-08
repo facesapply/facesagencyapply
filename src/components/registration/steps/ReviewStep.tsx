@@ -9,10 +9,10 @@ interface ReviewStepProps {
     nationality: string;
     mobile: string;
     whatsapp: string;
-    email: string;
     governorate: string;
     area: string;
     languages: string[];
+    languageLevels?: Record<string, number>;
     height: string;
     weight: string;
     bust: string;
@@ -29,7 +29,6 @@ interface ReviewStepProps {
     hasLicense: boolean;
     hasPassport: boolean;
     canTravel: boolean;
-    availability: string;
     headshot: File | null;
     fullBody: File | null;
   };
@@ -38,6 +37,17 @@ interface ReviewStepProps {
 }
 
 const ReviewStep = ({ formData, onSubmit, isSubmitting }: ReviewStepProps) => {
+  const getLevelText = (level: number) => {
+    switch (level) {
+      case 1: return "Basic";
+      case 2: return "Elementary";
+      case 3: return "Intermediate";
+      case 4: return "Advanced";
+      case 5: return "Fluent";
+      default: return "";
+    }
+  };
+
   const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
     <div className="space-y-2">
       <h3 className="text-primary font-semibold text-sm uppercase tracking-wider">
@@ -57,6 +67,14 @@ const ReviewStep = ({ formData, onSubmit, isSubmitting }: ReviewStepProps) => {
       </span>
     </div>
   );
+
+  const formatLanguagesWithLevels = () => {
+    if (!formData.languages || formData.languages.length === 0) return "-";
+    return formData.languages.map(lang => {
+      const level = formData.languageLevels?.[lang];
+      return level ? `${lang} (${getLevelText(level)})` : lang;
+    }).join(", ");
+  };
 
   return (
     <div className="space-y-6">
@@ -80,7 +98,6 @@ const ReviewStep = ({ formData, onSubmit, isSubmitting }: ReviewStepProps) => {
         <Section title="Contact">
           <Field label="Mobile" value={`+961 ${formData.mobile}`} />
           <Field label="WhatsApp" value={formData.whatsapp ? `+961 ${formData.whatsapp}` : "Same as mobile"} />
-          <Field label="Email" value={formData.email} />
         </Section>
 
         <Section title="Location">
@@ -89,7 +106,10 @@ const ReviewStep = ({ formData, onSubmit, isSubmitting }: ReviewStepProps) => {
         </Section>
 
         <Section title="Languages">
-          <Field label="Languages" value={formData.languages?.join(", ") || "-"} />
+          <div className="text-sm">
+            <span className="text-muted-foreground">Languages:</span>
+            <p className="text-foreground mt-1">{formatLanguagesWithLevels()}</p>
+          </div>
         </Section>
 
         <Section title="Physical Features">
@@ -118,12 +138,6 @@ const ReviewStep = ({ formData, onSubmit, isSubmitting }: ReviewStepProps) => {
           <Field label="Driving License" value={formData.hasLicense} />
           <Field label="Valid Passport" value={formData.hasPassport} />
           <Field label="Can Travel" value={formData.canTravel} />
-          {formData.availability && (
-            <div className="text-sm">
-              <span className="text-muted-foreground">Notes:</span>
-              <p className="text-foreground mt-1">{formData.availability}</p>
-            </div>
-          )}
         </Section>
 
         <Section title="Photos">

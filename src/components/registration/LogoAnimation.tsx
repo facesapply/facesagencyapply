@@ -7,7 +7,15 @@ interface LogoAnimationProps {
 const LogoAnimation = ({ onComplete }: LogoAnimationProps) => {
   const [visibleLetters, setVisibleLetters] = useState(0);
   const [showFlash, setShowFlash] = useState(false);
-  const letters = ["F", "A", "C", "E", "S"];
+  
+  // "faces" in lowercase with last 's' in red
+  const letters = [
+    { char: "f", isRed: false },
+    { char: "a", isRed: false },
+    { char: "c", isRed: false },
+    { char: "e", isRed: false },
+    { char: "s", isRed: true },
+  ];
 
   useEffect(() => {
     // Type in letters one by one
@@ -39,26 +47,26 @@ const LogoAnimation = ({ onComplete }: LogoAnimationProps) => {
   }, [onComplete, letters.length]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground">
       {/* Camera Flash Effect */}
       {showFlash && (
-        <div className="absolute inset-0 bg-white animate-flash pointer-events-none" />
+        <div className="absolute inset-0 bg-background animate-flash pointer-events-none" />
       )}
 
       {/* Logo Letters */}
-      <div className="flex items-center justify-center gap-1">
+      <div className="flex items-center justify-center gap-0">
         {letters.map((letter, index) => (
           <span
             key={index}
-            className={`text-7xl md:text-9xl font-bold text-primary tracking-wider ${
+            className={`text-7xl md:text-9xl font-bold tracking-wider ${
               index < visibleLetters ? "animate-type-in" : "opacity-0"
-            }`}
+            } ${letter.isRed ? "text-primary" : "text-background"}`}
             style={{
               animationDelay: `${index * 0.12}s`,
               fontFamily: "'Bebas Neue', sans-serif",
             }}
           >
-            {letter}
+            {letter.char}
           </span>
         ))}
       </div>

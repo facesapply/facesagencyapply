@@ -67,7 +67,7 @@ const PhotoUploadStep = ({ data, onChange }: PhotoUploadStepProps) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Headshot Upload */}
         <div className="space-y-2">
-          <Label>Headshot Photo *</Label>
+          <Label>Take a Selfie or upload a headshot if you can</Label>
           <div
             className={`relative border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors ${
               headshotPreview
@@ -111,6 +111,7 @@ const PhotoUploadStep = ({ data, onChange }: PhotoUploadStepProps) => {
               id="headshot-input"
               type="file"
               accept="image/*"
+              capture="user"
               className="hidden"
               onChange={(e) =>
                 handleFileChange("headshot", e.target.files?.[0] || null)
@@ -121,7 +122,7 @@ const PhotoUploadStep = ({ data, onChange }: PhotoUploadStepProps) => {
 
         {/* Full Body Upload */}
         <div className="space-y-2">
-          <Label>Full Body Photo *</Label>
+          <Label>Full Body Photo</Label>
           <div
             className={`relative border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors ${
               fullBodyPreview

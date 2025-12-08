@@ -5,7 +5,6 @@ interface ContactInfoStepProps {
   data: {
     mobile: string;
     whatsapp: string;
-    email: string;
   };
   onChange: (field: string, value: string) => void;
 }
@@ -54,18 +53,6 @@ const ContactInfoStep = ({ data, onChange }: ContactInfoStepProps) => {
             />
           </div>
           <p className="text-xs text-muted-foreground">Leave blank if same as mobile</p>
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="email">Email Address *</Label>
-          <Input
-            id="email"
-            type="email"
-            placeholder="your@email.com"
-            value={data.email}
-            onChange={(e) => onChange("email", e.target.value)}
-            className="h-12"
-          />
         </div>
       </div>
     </div>

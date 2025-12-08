@@ -1,6 +1,5 @@
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Textarea } from "@/components/ui/textarea";
 
 interface AvailabilityStepProps {
   data: {
@@ -8,9 +7,8 @@ interface AvailabilityStepProps {
     hasLicense: boolean;
     hasPassport: boolean;
     canTravel: boolean;
-    availability: string;
   };
-  onChange: (field: string, value: string | boolean) => void;
+  onChange: (field: string, value: boolean) => void;
 }
 
 const AvailabilityStep = ({ data, onChange }: AvailabilityStepProps) => {
@@ -57,17 +55,6 @@ const AvailabilityStep = ({ data, onChange }: AvailabilityStepProps) => {
             id="canTravel"
             checked={data.canTravel}
             onCheckedChange={(checked) => onChange("canTravel", checked)}
-          />
-        </div>
-
-        <div className="space-y-2 pt-4">
-          <Label htmlFor="availability">General Availability</Label>
-          <Textarea
-            id="availability"
-            placeholder="Describe your general availability for work (e.g., weekdays only, weekends preferred, full-time availability, etc.)"
-            value={data.availability}
-            onChange={(e) => onChange("availability", e.target.value)}
-            className="min-h-[100px] resize-none"
           />
         </div>
       </div>
