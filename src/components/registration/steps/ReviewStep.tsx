@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Check } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import { Check, Clock } from "lucide-react";
 
 interface ReviewStepProps {
   formData: {
@@ -39,7 +41,22 @@ interface ReviewStepProps {
   isSubmitting: boolean;
 }
 
+const timeSlots = [
+  { time: "10:00 AM", available: true },
+  { time: "11:00 AM", available: false },
+  { time: "12:00 PM", available: true },
+  { time: "1:00 PM", available: false },
+  { time: "2:00 PM", available: true },
+  { time: "3:00 PM", available: true },
+  { time: "4:00 PM", available: false },
+  { time: "5:00 PM", available: true },
+  { time: "6:00 PM", available: true },
+];
+
 const ReviewStep = ({ formData, onSubmit, onChange, isSubmitting }: ReviewStepProps) => {
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  const [selectedTime, setSelectedTime] = useState<string | null>(null);
+
   const getLevelText = (level: number) => {
     switch (level) {
       case 1: return "Basic";
@@ -228,6 +245,63 @@ const ReviewStep = ({ formData, onSubmit, onChange, isSubmitting }: ReviewStepPr
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Photo Shoot Booking */}
+      <div className="space-y-4 border-t border-border pt-6">
+        <h3 className="text-primary font-semibold text-sm uppercase tracking-wider">
+          Book Your Photo Shoot Now
+        </h3>
+        <p className="text-sm text-muted-foreground">
+          Select a date and time for your professional photo shoot
+        </p>
+        
+        <div className="flex flex-col items-center">
+          <Calendar
+            mode="single"
+            selected={selectedDate}
+            onSelect={(date) => {
+              setSelectedDate(date);
+              setSelectedTime(null);
+            }}
+            disabled={(date) => date < new Date() || date.getDay() === 0}
+            className="rounded-lg border border-border pointer-events-auto"
+          />
+        </div>
+
+        {selectedDate && (
+          <div className="space-y-3 mt-4">
+            <p className="text-sm font-medium text-foreground flex items-center gap-2">
+              <Clock className="w-4 h-4 text-primary" />
+              Available times for {selectedDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+            </p>
+            <div className="grid grid-cols-3 gap-2">
+              {timeSlots.map((slot) => (
+                <div
+                  key={slot.time}
+                  onClick={() => slot.available && setSelectedTime(slot.time)}
+                  className={`flex items-center justify-center p-3 rounded-lg border-2 text-sm transition-all ${
+                    !slot.available
+                      ? "border-border bg-muted/50 text-muted-foreground cursor-not-allowed opacity-50"
+                      : selectedTime === slot.time
+                      ? "border-primary bg-primary/10 text-primary font-semibold cursor-pointer"
+                      : "border-border hover:border-primary/50 hover:bg-muted/50 cursor-pointer"
+                  }`}
+                >
+                  {slot.available ? slot.time : "Booked"}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {selectedDate && selectedTime && (
+          <div className="bg-primary/10 rounded-lg p-4 text-center">
+            <p className="text-sm text-foreground">
+              Your appointment: <span className="font-semibold text-primary">{selectedDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })} at {selectedTime}</span>
+            </p>
+          </div>
+        )}
       </div>
 
       <Button
