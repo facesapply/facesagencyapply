@@ -216,22 +216,6 @@ const RegistrationForm = () => {
           Keep an eye on your WhatsApp — our team will reach out to you soon!
         </p>
         
-        <div className="w-full max-w-md border-t border-border pt-8">
-          <Button
-            size="lg"
-            className="w-full h-14 text-lg font-semibold"
-            onClick={() => {
-              // This will be replaced with actual booking functionality later
-              toast({
-                title: "Coming Soon",
-                description: "Professional photo shoot booking will be available soon!",
-              });
-            }}
-          >
-            <Calendar className="w-5 h-5 mr-2" />
-            Book Date for Professional Photo Shoot
-          </Button>
-        </div>
       </div>
     );
   }
