@@ -31,12 +31,14 @@ interface ReviewStepProps {
     canTravel: boolean;
     headshot: File | null;
     fullBody: File | null;
+    acceptTerms?: boolean;
   };
   onSubmit: () => void;
+  onChange: (field: string, value: boolean) => void;
   isSubmitting: boolean;
 }
 
-const ReviewStep = ({ formData, onSubmit, isSubmitting }: ReviewStepProps) => {
+const ReviewStep = ({ formData, onSubmit, onChange, isSubmitting }: ReviewStepProps) => {
   const getLevelText = (level: number) => {
     switch (level) {
       case 1: return "Basic";
@@ -146,9 +148,50 @@ const ReviewStep = ({ formData, onSubmit, isSubmitting }: ReviewStepProps) => {
         </Section>
       </div>
 
+      {/* Terms and Conditions */}
+      <div className="space-y-4 border-t border-border pt-6">
+        <h3 className="text-primary font-semibold text-sm uppercase tracking-wider">
+          Terms & Conditions
+        </h3>
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          I agree and give consent to Faces Agency to use my photos to show clients when selecting for projects and to use my photos to get them promoted and seen.
+        </p>
+        <p className="text-sm font-medium text-foreground">Do you accept?</p>
+        <div className="grid grid-cols-2 gap-4">
+          <div
+            onClick={() => onChange("acceptTerms", true)}
+            className={`flex items-center justify-center p-5 rounded-xl border-2 cursor-pointer transition-all ${
+              formData.acceptTerms === true
+                ? "border-primary bg-primary/10 shadow-md"
+                : "border-border hover:border-primary/50 hover:bg-muted/50"
+            }`}
+          >
+            <span className={`text-lg font-semibold ${
+              formData.acceptTerms === true ? "text-primary" : "text-foreground"
+            }`}>
+              Yes
+            </span>
+          </div>
+          <div
+            onClick={() => onChange("acceptTerms", false)}
+            className={`flex items-center justify-center p-5 rounded-xl border-2 cursor-pointer transition-all ${
+              formData.acceptTerms === false
+                ? "border-primary bg-primary/10 shadow-md"
+                : "border-border hover:border-primary/50 hover:bg-muted/50"
+            }`}
+          >
+            <span className={`text-lg font-semibold ${
+              formData.acceptTerms === false ? "text-primary" : "text-foreground"
+            }`}>
+              No
+            </span>
+          </div>
+        </div>
+      </div>
+
       <Button
         onClick={onSubmit}
-        disabled={isSubmitting}
+        disabled={isSubmitting || formData.acceptTerms !== true}
         className="w-full h-14 text-lg font-semibold"
       >
         {isSubmitting ? (
