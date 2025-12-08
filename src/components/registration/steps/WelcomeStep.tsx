@@ -1,10 +1,13 @@
+import partnersRow1 from "@/assets/partners-row-1.png";
+import partnersRow2 from "@/assets/partners-row-2.png";
+
 interface WelcomeStepProps {
   onGenderSelect: (gender: "male" | "female") => void;
 }
 
 const WelcomeStep = ({ onGenderSelect }: WelcomeStepProps) => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4 relative">
+    <div className="flex flex-col items-center justify-center min-h-[80vh] text-center px-4 pb-32">
       <h1 
         className="text-5xl md:text-7xl font-bold mb-4 tracking-wider"
         style={{ fontFamily: "'Bebas Neue', sans-serif" }}
@@ -39,10 +42,24 @@ const WelcomeStep = ({ onGenderSelect }: WelcomeStepProps) => {
         </div>
       </div>
 
-      {/* Disclaimer - bottom right, smaller */}
-      <div className="absolute bottom-4 right-4 max-w-xs text-right">
-        <p className="text-xs text-muted-foreground/80">
-          <span className="font-medium">Note:</span> Due to high demand, not everyone will be selected — but go ahead and apply!
+      {/* Partner logos - smooth scrolling banner at bottom */}
+      <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t border-border py-4 overflow-hidden">
+        <p className="text-xs text-muted-foreground text-center mb-3">Trusted by leading brands</p>
+        <div className="flex flex-col gap-3">
+          {/* Row 1 - scrolling left */}
+          <div className="flex animate-scroll-left">
+            <img src={partnersRow1} alt="Partners" className="h-8 md:h-10 object-contain opacity-70 mx-4" />
+            <img src={partnersRow1} alt="Partners" className="h-8 md:h-10 object-contain opacity-70 mx-4" />
+          </div>
+          {/* Row 2 - scrolling right */}
+          <div className="flex animate-scroll-right">
+            <img src={partnersRow2} alt="Partners" className="h-8 md:h-10 object-contain opacity-70 mx-4" />
+            <img src={partnersRow2} alt="Partners" className="h-8 md:h-10 object-contain opacity-70 mx-4" />
+          </div>
+        </div>
+        {/* Disclaimer - bottom right, smaller */}
+        <p className="text-[10px] text-muted-foreground/60 text-right pr-4 mt-2">
+          Note: Due to high demand, not everyone will be selected.
         </p>
       </div>
     </div>
