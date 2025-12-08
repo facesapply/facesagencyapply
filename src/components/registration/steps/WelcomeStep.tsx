@@ -1,5 +1,4 @@
-import partnersRow1 from "@/assets/partners-row-1.png";
-import partnersRow2 from "@/assets/partners-row-2.png";
+import partnersFull from "@/assets/partners-full.png";
 
 interface WelcomeStepProps {
   onGenderSelect: (gender: "male" | "female") => void;
@@ -29,28 +28,26 @@ const WelcomeStep = ({ onGenderSelect }: WelcomeStepProps) => {
             onClick={() => onGenderSelect("female")}
             className="flex-1 py-6 px-4 rounded-xl border-2 border-border bg-card hover:border-primary hover:bg-primary/5 transition-all duration-200 group"
           >
-            <span className="text-2xl mb-2 block">👩</span>
             <span className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">Female</span>
           </button>
           <button
             onClick={() => onGenderSelect("male")}
             className="flex-1 py-6 px-4 rounded-xl border-2 border-border bg-card hover:border-primary hover:bg-primary/5 transition-all duration-200 group"
           >
-            <span className="text-2xl mb-2 block">👨</span>
             <span className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">Male</span>
           </button>
         </div>
       </div>
 
       {/* Partner logos - smooth scrolling banner at bottom */}
-      <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t border-border py-4 overflow-hidden">
-        <p className="text-xs text-muted-foreground text-center mb-3">Trusted by leading brands</p>
+      <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t border-border py-3 overflow-hidden">
+        <p className="text-xs text-muted-foreground text-center mb-2">Trusted by leading brands</p>
         <div className="flex animate-scroll-slow whitespace-nowrap">
-          <img src={partnersRow1} alt="Partners" className="h-8 md:h-10 object-contain opacity-70 mx-2 inline-block" />
-          <img src={partnersRow2} alt="Partners" className="h-8 md:h-10 object-contain opacity-70 mx-2 inline-block" />
+          <img src={partnersFull} alt="Partners" className="h-10 md:h-12 object-contain opacity-80 mx-4 inline-block" />
+          <img src={partnersFull} alt="Partners" className="h-10 md:h-12 object-contain opacity-80 mx-4 inline-block" />
         </div>
-        {/* Disclaimer - bottom right, smaller */}
-        <p className="text-[10px] text-muted-foreground/60 text-right pr-4 mt-2">
+        {/* Disclaimer - centered at bottom */}
+        <p className="text-[9px] text-muted-foreground/50 text-center mt-3 pb-1">
           Note: Due to high demand, not everyone will be selected.
         </p>
       </div>
