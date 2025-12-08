@@ -266,7 +266,7 @@ const RegistrationForm = () => {
       case 8:
         return <PhotoUploadStep data={formData} onChange={updateFormData} />;
       case 9:
-        return <ReviewStep formData={formData} onSubmit={handleSubmit} isSubmitting={isSubmitting} />;
+        return <ReviewStep formData={formData} onSubmit={handleSubmit} onChange={updateFormData} isSubmitting={isSubmitting} />;
       default:
         return null;
     }
