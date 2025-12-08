@@ -43,7 +43,7 @@ const WelcomeStep = ({ onGenderSelect }: WelcomeStepProps) => {
       <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t border-border py-2">
         <p className="text-xs text-muted-foreground text-center mb-1">Trusted by leading brands</p>
         <div className="flex justify-center mx-auto px-4">
-          <img src={partnersFull} alt="Partners" className="h-12 md:h-16 object-contain animate-camera-flash" />
+          <img src={partnersFull} alt="Partners" className="h-16 md:h-20 object-contain animate-camera-flash" />
         </div>
         {/* Disclaimer - centered at bottom */}
         <p className="text-[10px] text-muted-foreground/60 text-center mt-1 pb-1">
