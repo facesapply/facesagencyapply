@@ -45,17 +45,9 @@ const WelcomeStep = ({ onGenderSelect }: WelcomeStepProps) => {
       {/* Partner logos - smooth scrolling banner at bottom */}
       <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t border-border py-4 overflow-hidden">
         <p className="text-xs text-muted-foreground text-center mb-3">Trusted by leading brands</p>
-        <div className="flex flex-col gap-3">
-          {/* Row 1 - scrolling left */}
-          <div className="flex animate-scroll-left">
-            <img src={partnersRow1} alt="Partners" className="h-8 md:h-10 object-contain opacity-70 mx-4" />
-            <img src={partnersRow1} alt="Partners" className="h-8 md:h-10 object-contain opacity-70 mx-4" />
-          </div>
-          {/* Row 2 - scrolling right */}
-          <div className="flex animate-scroll-right">
-            <img src={partnersRow2} alt="Partners" className="h-8 md:h-10 object-contain opacity-70 mx-4" />
-            <img src={partnersRow2} alt="Partners" className="h-8 md:h-10 object-contain opacity-70 mx-4" />
-          </div>
+        <div className="flex animate-scroll-slow whitespace-nowrap">
+          <img src={partnersRow1} alt="Partners" className="h-8 md:h-10 object-contain opacity-70 mx-2 inline-block" />
+          <img src={partnersRow2} alt="Partners" className="h-8 md:h-10 object-contain opacity-70 mx-2 inline-block" />
         </div>
         {/* Disclaimer - bottom right, smaller */}
         <p className="text-[10px] text-muted-foreground/60 text-right pr-4 mt-2">
