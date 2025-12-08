@@ -18,7 +18,7 @@ const LogoAnimation = ({ onComplete }: LogoAnimationProps) => {
   ];
 
   useEffect(() => {
-    // Type in letters one by one
+    // Type in letters one by one (slower - 300ms per letter)
     const letterInterval = setInterval(() => {
       setVisibleLetters((prev) => {
         if (prev < letters.length) {
@@ -26,18 +26,18 @@ const LogoAnimation = ({ onComplete }: LogoAnimationProps) => {
         }
         return prev;
       });
-    }, 120);
+    }, 300);
 
-    // After all letters, trigger flash
+    // After all letters, wait a moment then trigger flash
     const flashTimeout = setTimeout(() => {
       clearInterval(letterInterval);
       setShowFlash(true);
-    }, letters.length * 120 + 100);
+    }, letters.length * 300 + 800);
 
-    // Complete animation after flash
+    // Complete animation after flash (total ~3.5 seconds)
     const completeTimeout = setTimeout(() => {
       onComplete();
-    }, letters.length * 120 + 500);
+    }, letters.length * 300 + 1800);
 
     return () => {
       clearInterval(letterInterval);
