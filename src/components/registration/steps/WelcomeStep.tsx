@@ -15,7 +15,7 @@ const WelcomeStep = ({ onGenderSelect }: WelcomeStepProps) => {
         <span className="text-primary">S</span>
       </h1>
       <p className="text-lg md:text-xl text-muted-foreground mb-2">
-        Model & Talent Agency
+        You are now working with the best
       </p>
       <p className="text-foreground mb-12 max-w-md">
         Join our roster of exceptional talents. Complete your registration to get started.
