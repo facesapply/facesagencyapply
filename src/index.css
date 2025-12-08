@@ -153,19 +153,26 @@
   animation: fadeInUp 0.5s ease-out forwards;
 }
 
-/* Partner logos centered scrolling */
-@keyframes scrollCenter {
-  0% {
-    transform: translateX(30%);
+/* Partner logos camera flash effect */
+@keyframes cameraFlash {
+  0%, 100% {
+    opacity: 0.7;
+    filter: brightness(1);
   }
-  50% {
-    transform: translateX(-30%);
+  5% {
+    opacity: 1;
+    filter: brightness(2) contrast(1.2);
   }
-  100% {
-    transform: translateX(30%);
+  10% {
+    opacity: 0.9;
+    filter: brightness(1.5);
+  }
+  15% {
+    opacity: 0.7;
+    filter: brightness(1);
   }
 }
 
-.animate-scroll-center {
-  animation: scrollCenter 25s ease-in-out infinite;
+.animate-camera-flash {
+  animation: cameraFlash 4s ease-in-out infinite;
 }

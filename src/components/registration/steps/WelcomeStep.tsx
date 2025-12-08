@@ -42,10 +42,8 @@ const WelcomeStep = ({ onGenderSelect }: WelcomeStepProps) => {
       {/* Partner logos - centered scrolling banner at bottom */}
       <div className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t border-border py-4">
         <p className="text-xs text-muted-foreground text-center mb-3">Trusted by leading brands</p>
-        <div className="flex justify-center overflow-hidden mx-auto max-w-[90vw]">
-          <div className="animate-scroll-center">
-            <img src={partnersFull} alt="Partners" className="h-16 md:h-20 object-contain" />
-          </div>
+        <div className="flex justify-center mx-auto">
+          <img src={partnersFull} alt="Partners" className="h-16 md:h-20 object-contain animate-camera-flash" />
         </div>
         {/* Disclaimer - centered at bottom */}
         <p className="text-[9px] text-muted-foreground/50 text-center mt-3 pb-1">
