@@ -6,11 +6,17 @@ import { Check, Clock } from "lucide-react";
 interface ReviewStepProps {
   formData: {
     gender: "male" | "female";
-    fullName: string;
+    firstName: string;
+    middleName: string;
+    lastName: string;
     dateOfBirth: string;
     nationality: string;
     mobile: string;
+    mobileCountryCode: string;
     whatsapp: string;
+    whatsappCountryCode: string;
+    otherNumber: string;
+    otherNumberCountryCode: string;
     governorate: string;
     area: string;
     languages: string[];
@@ -109,15 +115,18 @@ const ReviewStep = ({ formData, onSubmit, onChange, isSubmitting }: ReviewStepPr
 
       <div className="space-y-4 max-h-[50vh] overflow-y-auto pr-2">
         <Section title="Personal Information">
-          <Field label="Name" value={formData.fullName} />
+          <Field label="First Name" value={formData.firstName} />
+          <Field label="Middle Name" value={formData.middleName} />
+          <Field label="Last Name" value={formData.lastName} />
           <Field label="Gender" value={formData.gender === "male" ? "Male" : "Female"} />
           <Field label="Date of Birth" value={formData.dateOfBirth} />
           <Field label="Nationality" value={formData.nationality} />
         </Section>
 
         <Section title="Contact">
-          <Field label="Mobile" value={`+961 ${formData.mobile}`} />
-          <Field label="WhatsApp" value={formData.whatsapp ? `+961 ${formData.whatsapp}` : "Same as mobile"} />
+          <Field label="Mobile" value={`${formData.mobileCountryCode} ${formData.mobile}`} />
+          <Field label="WhatsApp" value={`${formData.whatsappCountryCode} ${formData.whatsapp}`} />
+          <Field label="Other Number" value={`${formData.otherNumberCountryCode} ${formData.otherNumber}`} />
         </Section>
 
         <Section title="Location">

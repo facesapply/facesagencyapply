@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight, Calendar } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import FormProgress from "./FormProgress";
 import WelcomeStep from "./steps/WelcomeStep";
 import MainInfoStep from "./steps/MainInfoStep";
-import ContactInfoStep from "./steps/ContactInfoStep";
 import AddressStep from "./steps/AddressStep";
 import LanguagesStep from "./steps/LanguagesStep";
 import PhysicalFeaturesStep from "./steps/PhysicalFeaturesStep";
@@ -16,11 +15,17 @@ import ReviewStep from "./steps/ReviewStep";
 
 interface FormData {
   gender: "male" | "female";
-  fullName: string;
+  firstName: string;
+  middleName: string;
+  lastName: string;
   dateOfBirth: string;
   nationality: string;
   mobile: string;
+  mobileCountryCode: string;
   whatsapp: string;
+  whatsappCountryCode: string;
+  otherNumber: string;
+  otherNumberCountryCode: string;
   governorate: string;
   area: string;
   languages: string[];
@@ -51,11 +56,17 @@ interface FormData {
 
 const initialFormData: FormData = {
   gender: "female",
-  fullName: "",
+  firstName: "",
+  middleName: "",
+  lastName: "",
   dateOfBirth: "",
   nationality: "",
   mobile: "",
+  mobileCountryCode: "+961",
   whatsapp: "",
+  whatsappCountryCode: "+961",
+  otherNumber: "",
+  otherNumberCountryCode: "+961",
   governorate: "",
   area: "",
   languages: [],
@@ -91,7 +102,7 @@ const RegistrationForm = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { toast } = useToast();
 
-  const totalSteps = 10;
+  const totalSteps = 9; // Reduced by 1 since we merged Contact into Main
 
   const updateFormData = (field: string, value: string | string[] | boolean | File | null | Record<string, number>) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -105,26 +116,24 @@ const RegistrationForm = () => {
   const validateCurrentStep = (): boolean => {
     switch (currentStep) {
       case 1:
-        if (!formData.fullName || !formData.dateOfBirth || !formData.nationality) {
+        if (!formData.firstName || !formData.middleName || !formData.lastName || !formData.dateOfBirth || !formData.nationality) {
           toast({
             title: "Required Fields",
-            description: "Please fill in all required fields.",
+            description: "Please fill in all name fields, date of birth, and nationality.",
+            variant: "destructive",
+          });
+          return false;
+        }
+        if (!formData.mobile || !formData.whatsapp || !formData.otherNumber) {
+          toast({
+            title: "Required Fields",
+            description: "Please fill in all phone number fields.",
             variant: "destructive",
           });
           return false;
         }
         break;
       case 2:
-        if (!formData.mobile) {
-          toast({
-            title: "Required Fields",
-            description: "Please provide your mobile number.",
-            variant: "destructive",
-          });
-          return false;
-        }
-        break;
-      case 3:
         if (!formData.governorate || !formData.area) {
           toast({
             title: "Required Fields",
@@ -134,7 +143,7 @@ const RegistrationForm = () => {
           return false;
         }
         break;
-      case 4:
+      case 3:
         if (!formData.languages || formData.languages.length === 0) {
           toast({
             title: "Required Fields",
@@ -144,7 +153,7 @@ const RegistrationForm = () => {
           return false;
         }
         break;
-      case 5:
+      case 4:
         if (!formData.height || !formData.weight || !formData.eyeColor || !formData.hairColor || !formData.skinTone) {
           toast({
             title: "Required Fields",
@@ -154,8 +163,8 @@ const RegistrationForm = () => {
           return false;
         }
         break;
-      // Step 6 (Talents) is not mandatory
-      // Step 7 (Availability) and Step 8 (Photos) are not mandatory
+      // Step 5 (Talents) is not mandatory
+      // Step 6 (Availability) and Step 7 (Photos) are not mandatory
     }
     return true;
   };
@@ -227,20 +236,18 @@ const RegistrationForm = () => {
       case 1:
         return <MainInfoStep data={formData} onChange={updateFormData} />;
       case 2:
-        return <ContactInfoStep data={formData} onChange={updateFormData} />;
-      case 3:
         return <AddressStep data={formData} onChange={updateFormData} />;
-      case 4:
+      case 3:
         return <LanguagesStep data={formData} onChange={updateFormData} />;
-      case 5:
+      case 4:
         return <PhysicalFeaturesStep data={formData} gender={formData.gender} onChange={updateFormData} />;
-      case 6:
+      case 5:
         return <TalentsStep data={formData} onChange={updateFormData} />;
-      case 7:
+      case 6:
         return <AvailabilityStep data={formData} onChange={updateFormData} />;
-      case 8:
+      case 7:
         return <PhotoUploadStep data={formData} onChange={updateFormData} />;
-      case 9:
+      case 8:
         return <ReviewStep formData={formData} onSubmit={handleSubmit} onChange={updateFormData} isSubmitting={isSubmitting} />;
       default:
         return null;
