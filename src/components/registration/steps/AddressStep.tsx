@@ -1,23 +1,34 @@
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { governorates, areasByGovernorate, Governorate } from "@/data/lebanese-locations";
+import { governorates, districtsByGovernorate, areasByDistrict, Governorate } from "@/data/lebanese-locations";
 
 interface AddressStepProps {
   data: {
     governorate: string;
+    district: string;
     area: string;
   };
   onChange: (field: string, value: string) => void;
 }
 
 const AddressStep = ({ data, onChange }: AddressStepProps) => {
-  const areas = data.governorate 
-    ? areasByGovernorate[data.governorate as Governorate] || []
+  const districts = data.governorate 
+    ? districtsByGovernorate[data.governorate as Governorate] || []
+    : [];
+
+  const areas = data.district 
+    ? areasByDistrict[data.district] || []
     : [];
 
   const handleGovernorateChange = (value: string) => {
     onChange("governorate", value);
+    onChange("district", ""); // Reset district when governorate changes
     onChange("area", ""); // Reset area when governorate changes
+  };
+
+  const handleDistrictChange = (value: string) => {
+    onChange("district", value);
+    onChange("area", ""); // Reset area when district changes
   };
 
   return (
@@ -50,14 +61,34 @@ const AddressStep = ({ data, onChange }: AddressStepProps) => {
         </div>
 
         <div className="space-y-2">
+          <Label htmlFor="district">District *</Label>
+          <Select
+            value={data.district}
+            onValueChange={handleDistrictChange}
+            disabled={!data.governorate}
+          >
+            <SelectTrigger className="h-12">
+              <SelectValue placeholder={data.governorate ? "Select district" : "Select governorate first"} />
+            </SelectTrigger>
+            <SelectContent>
+              {districts.map((district) => (
+                <SelectItem key={district} value={district}>
+                  {district}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="space-y-2">
           <Label htmlFor="area">Area *</Label>
           <Select
             value={data.area}
             onValueChange={(value) => onChange("area", value)}
-            disabled={!data.governorate}
+            disabled={!data.district}
           >
             <SelectTrigger className="h-12">
-              <SelectValue placeholder={data.governorate ? "Select area" : "Select governorate first"} />
+              <SelectValue placeholder={data.district ? "Select area" : "Select district first"} />
             </SelectTrigger>
             <SelectContent>
               {areas.map((area) => (

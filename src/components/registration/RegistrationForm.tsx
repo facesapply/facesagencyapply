@@ -27,6 +27,7 @@ interface FormData {
   otherNumber: string;
   otherNumberCountryCode: string;
   governorate: string;
+  district: string;
   area: string;
   languages: string[];
   languageLevels: Record<string, number>;
@@ -68,6 +69,7 @@ const initialFormData: FormData = {
   otherNumber: "",
   otherNumberCountryCode: "+961",
   governorate: "",
+  district: "",
   area: "",
   languages: [],
   languageLevels: {},
@@ -134,10 +136,10 @@ const RegistrationForm = () => {
         }
         break;
       case 2:
-        if (!formData.governorate || !formData.area) {
+        if (!formData.governorate || !formData.district || !formData.area) {
           toast({
             title: "Required Fields",
-            description: "Please select your governorate and area.",
+            description: "Please select your governorate, district, and area.",
             variant: "destructive",
           });
           return false;

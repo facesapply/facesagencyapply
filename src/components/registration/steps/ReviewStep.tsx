@@ -18,6 +18,7 @@ interface ReviewStepProps {
     otherNumber: string;
     otherNumberCountryCode: string;
     governorate: string;
+    district: string;
     area: string;
     languages: string[];
     languageLevels?: Record<string, number>;
@@ -131,6 +132,7 @@ const ReviewStep = ({ formData, onSubmit, onChange, isSubmitting }: ReviewStepPr
 
         <Section title="Location">
           <Field label="Governorate" value={formData.governorate} />
+          <Field label="District" value={formData.district} />
           <Field label="Area" value={formData.area} />
         </Section>
 
