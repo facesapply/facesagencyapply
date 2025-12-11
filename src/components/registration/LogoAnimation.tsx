@@ -19,27 +19,60 @@ const LogoAnimation = ({ onComplete }: LogoAnimationProps) => {
     { char: "s", isRed: true },
   ];
 
-  // Camera shutter sound effect using Web Audio API
+  // Camera shutter snap sound effect using Web Audio API
   const playCameraSound = () => {
     try {
       const audioContext = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
       audioContextRef.current = audioContext;
       
-      // Create a quick "click" sound
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
+      // Create noise buffer for the mechanical snap
+      const bufferSize = audioContext.sampleRate * 0.08;
+      const noiseBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+      const output = noiseBuffer.getChannelData(0);
       
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
+      for (let i = 0; i < bufferSize; i++) {
+        output[i] = Math.random() * 2 - 1;
+      }
       
-      oscillator.frequency.setValueAtTime(1200, audioContext.currentTime);
-      oscillator.frequency.exponentialRampToValueAtTime(200, audioContext.currentTime + 0.05);
+      // Noise source for the snap
+      const noiseSource = audioContext.createBufferSource();
+      noiseSource.buffer = noiseBuffer;
       
-      gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+      // High-pass filter for crisp snap
+      const highPass = audioContext.createBiquadFilter();
+      highPass.type = 'highpass';
+      highPass.frequency.value = 2000;
       
-      oscillator.start(audioContext.currentTime);
-      oscillator.stop(audioContext.currentTime + 0.1);
+      // Low-pass filter for less harshness
+      const lowPass = audioContext.createBiquadFilter();
+      lowPass.type = 'lowpass';
+      lowPass.frequency.value = 8000;
+      
+      // Gain envelope for snap attack
+      const noiseGain = audioContext.createGain();
+      noiseGain.gain.setValueAtTime(0.4, audioContext.currentTime);
+      noiseGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.06);
+      
+      noiseSource.connect(highPass);
+      highPass.connect(lowPass);
+      lowPass.connect(noiseGain);
+      noiseGain.connect(audioContext.destination);
+      
+      // Add a click transient
+      const clickOsc = audioContext.createOscillator();
+      const clickGain = audioContext.createGain();
+      clickOsc.frequency.setValueAtTime(4000, audioContext.currentTime);
+      clickOsc.frequency.exponentialRampToValueAtTime(500, audioContext.currentTime + 0.02);
+      clickGain.gain.setValueAtTime(0.3, audioContext.currentTime);
+      clickGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.03);
+      
+      clickOsc.connect(clickGain);
+      clickGain.connect(audioContext.destination);
+      
+      noiseSource.start(audioContext.currentTime);
+      clickOsc.start(audioContext.currentTime);
+      noiseSource.stop(audioContext.currentTime + 0.08);
+      clickOsc.stop(audioContext.currentTime + 0.03);
     } catch (e) {
       console.log("Audio not supported");
     }
