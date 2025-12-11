@@ -19,7 +19,7 @@ const LogoAnimation = ({ onComplete }: LogoAnimationProps) => {
     { char: "s", isRed: true },
   ];
 
-  // Realistic DSLR camera shutter sound effect
+  // Classic Hollywood "tic-tic" camera shutter sound
   const playCameraSound = () => {
     try {
       const audioContext = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
@@ -27,63 +27,59 @@ const LogoAnimation = ({ onComplete }: LogoAnimationProps) => {
       
       const now = audioContext.currentTime;
       
-      // Helper to create filtered noise burst
-      const createNoiseBurst = (startTime: number, duration: number, volume: number, highFreq: number, lowFreq: number) => {
-        const bufferSize = Math.floor(audioContext.sampleRate * duration);
-        const noiseBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
-        const output = noiseBuffer.getChannelData(0);
+      // Create a sharp click sound
+      const createClick = (startTime: number, frequency: number, volume: number) => {
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(frequency, startTime);
+        osc.frequency.exponentialRampToValueAtTime(100, startTime + 0.02);
+        
+        gain.gain.setValueAtTime(volume, startTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.03);
+        
+        osc.connect(gain);
+        gain.connect(audioContext.destination);
+        
+        osc.start(startTime);
+        osc.stop(startTime + 0.03);
+      };
+      
+      // Create noise pop for texture
+      const createPop = (startTime: number, volume: number) => {
+        const bufferSize = audioContext.sampleRate * 0.02;
+        const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+        const data = buffer.getChannelData(0);
+        
         for (let i = 0; i < bufferSize; i++) {
-          output[i] = Math.random() * 2 - 1;
+          data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.1));
         }
         
         const source = audioContext.createBufferSource();
-        source.buffer = noiseBuffer;
-        
-        const highPass = audioContext.createBiquadFilter();
-        highPass.type = 'highpass';
-        highPass.frequency.value = highFreq;
-        
-        const lowPass = audioContext.createBiquadFilter();
-        lowPass.type = 'lowpass';
-        lowPass.frequency.value = lowFreq;
+        source.buffer = buffer;
         
         const gain = audioContext.createGain();
         gain.gain.setValueAtTime(volume, startTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
         
-        source.connect(highPass);
-        highPass.connect(lowPass);
-        lowPass.connect(gain);
+        const filter = audioContext.createBiquadFilter();
+        filter.type = 'highpass';
+        filter.frequency.value = 2000;
+        
+        source.connect(filter);
+        filter.connect(gain);
         gain.connect(audioContext.destination);
         
         source.start(startTime);
-        source.stop(startTime + duration);
       };
       
-      // Helper to create click transient
-      const createClick = (startTime: number, startFreq: number, endFreq: number, duration: number, volume: number) => {
-        const osc = audioContext.createOscillator();
-        const gain = audioContext.createGain();
-        osc.frequency.setValueAtTime(startFreq, startTime);
-        osc.frequency.exponentialRampToValueAtTime(endFreq, startTime + duration);
-        gain.gain.setValueAtTime(volume, startTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
-        osc.connect(gain);
-        gain.connect(audioContext.destination);
-        osc.start(startTime);
-        osc.stop(startTime + duration);
-      };
+      // First "tic" - sharp click
+      createClick(now, 4000, 0.8);
+      createPop(now, 0.6);
       
-      // 1. Mirror slap - first sharp click
-      createClick(now, 3500, 300, 0.015, 0.6);
-      createNoiseBurst(now, 0.025, 0.8, 1500, 6000);
-      
-      // 2. Shutter curtain travel - soft whoosh
-      createNoiseBurst(now + 0.02, 0.04, 0.4, 800, 4000);
-      
-      // 3. Second curtain / mirror return - slightly softer click
-      createClick(now + 0.055, 2800, 250, 0.018, 0.5);
-      createNoiseBurst(now + 0.055, 0.03, 0.6, 1200, 5000);
+      // Second "tic" - slightly delayed and softer
+      createClick(now + 0.08, 3500, 0.6);
+      createPop(now + 0.08, 0.4);
       
     } catch (e) {
       console.log("Audio not supported");
