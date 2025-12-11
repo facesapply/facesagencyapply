@@ -26,9 +26,11 @@ const LogoAnimation = ({ onComplete }: LogoAnimationProps) => {
       const audio = new Audio(cameraSound);
       audio.volume = 1.0;
       audioRef.current = audio;
-      audio.play();
+      audio.play().catch(err => {
+        console.log("Audio play failed:", err);
+      });
     } catch (e) {
-      console.log("Audio not supported");
+      console.log("Audio not supported:", e);
     }
   };
 
