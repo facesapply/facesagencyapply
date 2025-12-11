@@ -7,6 +7,7 @@ interface LogoAnimationProps {
 
 const LogoAnimation = ({ onComplete }: LogoAnimationProps) => {
   const [visibleLetters, setVisibleLetters] = useState(0);
+  const [logoFading, setLogoFading] = useState(false);
   const [showFlash, setShowFlash] = useState(false);
   const [flashPhase, setFlashPhase] = useState<"off" | "in" | "hold" | "out">("off");
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -53,27 +54,35 @@ const LogoAnimation = ({ onComplete }: LogoAnimationProps) => {
       });
     }, 300);
 
-    // After all letters, start flash sequence
-    const flashInTimeout = setTimeout(() => {
+    const lettersDuration = letters.length * 300;
+
+    // After all letters shown, start logo fade out
+    const logoFadeTimeout = setTimeout(() => {
       clearInterval(letterInterval);
+      setLogoFading(true);
+    }, lettersDuration + 600);
+
+    // After logo fades, play sound and start flash
+    const flashStartTimeout = setTimeout(() => {
       playCameraSound();
       setShowFlash(true);
       setFlashPhase("in");
-    }, letters.length * 300 + 800);
+    }, lettersDuration + 1200);
 
-    // Flash reaches full white
+    // Flash reaches full intensity
     const flashHoldTimeout = setTimeout(() => {
       setFlashPhase("hold");
-    }, letters.length * 300 + 1100);
+    }, lettersDuration + 1500);
 
-    // Complete - transition to home page while screen is white
+    // Complete - transition to home page while screen is white (longer hold for audio)
     const completeTimeout = setTimeout(() => {
       onComplete();
-    }, letters.length * 300 + 1400);
+    }, lettersDuration + 2500);
 
     return () => {
       clearInterval(letterInterval);
-      clearTimeout(flashInTimeout);
+      clearTimeout(logoFadeTimeout);
+      clearTimeout(flashStartTimeout);
       clearTimeout(flashHoldTimeout);
       clearTimeout(completeTimeout);
       // Don't pause audio on cleanup - let it finish playing
@@ -91,7 +100,7 @@ const LogoAnimation = ({ onComplete }: LogoAnimationProps) => {
             style={{
               background: 'radial-gradient(circle at center, rgba(255,255,255,1) 0%, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0.7) 100%)',
               animation: flashPhase === "in" 
-                ? "cameraFlashIn 0.15s ease-out forwards" 
+                ? "cameraFlashIn 0.3s ease-out forwards" 
                 : flashPhase === "hold" 
                   ? "none" 
                   : undefined,
@@ -103,7 +112,7 @@ const LogoAnimation = ({ onComplete }: LogoAnimationProps) => {
             className="absolute inset-0 pointer-events-none"
             style={{
               background: 'conic-gradient(from 0deg, transparent 0deg, rgba(255,255,255,0.3) 10deg, transparent 20deg, rgba(255,255,255,0.2) 30deg, transparent 40deg, rgba(255,255,255,0.3) 50deg, transparent 60deg)',
-              animation: flashPhase === "in" ? "flashBurst 0.2s ease-out forwards" : undefined,
+              animation: flashPhase === "in" ? "flashBurst 0.4s ease-out forwards" : undefined,
               opacity: flashPhase === "in" ? 0 : flashPhase === "hold" ? 0.5 : 0,
             }}
           />
@@ -111,7 +120,11 @@ const LogoAnimation = ({ onComplete }: LogoAnimationProps) => {
       )}
 
       {/* Logo Letters */}
-      <div className="flex items-center justify-center gap-0">
+      <div 
+        className={`flex items-center justify-center gap-0 transition-opacity duration-500 ${
+          logoFading ? "opacity-0" : "opacity-100"
+        }`}
+      >
         {letters.map((letter, index) => (
           <span
             key={index}
