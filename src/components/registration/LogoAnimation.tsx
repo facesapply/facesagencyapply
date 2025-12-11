@@ -75,15 +75,15 @@ const LogoAnimation = ({ onComplete }: LogoAnimationProps) => {
       };
       
       // 1. Mirror slap - first sharp click
-      createClick(now, 3500, 300, 0.015, 0.25);
-      createNoiseBurst(now, 0.025, 0.35, 1500, 6000);
+      createClick(now, 3500, 300, 0.015, 0.6);
+      createNoiseBurst(now, 0.025, 0.8, 1500, 6000);
       
       // 2. Shutter curtain travel - soft whoosh
-      createNoiseBurst(now + 0.02, 0.04, 0.15, 800, 4000);
+      createNoiseBurst(now + 0.02, 0.04, 0.4, 800, 4000);
       
       // 3. Second curtain / mirror return - slightly softer click
-      createClick(now + 0.055, 2800, 250, 0.018, 0.2);
-      createNoiseBurst(now + 0.055, 0.03, 0.25, 1200, 5000);
+      createClick(now + 0.055, 2800, 250, 0.018, 0.5);
+      createNoiseBurst(now + 0.055, 0.03, 0.6, 1200, 5000);
       
     } catch (e) {
       console.log("Audio not supported");
