@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import cameraSound from "@/assets/camera-shutter.m4a";
 
 interface LogoAnimationProps {
   onComplete: () => void;
@@ -8,7 +9,7 @@ const LogoAnimation = ({ onComplete }: LogoAnimationProps) => {
   const [visibleLetters, setVisibleLetters] = useState(0);
   const [showFlash, setShowFlash] = useState(false);
   const [flashPhase, setFlashPhase] = useState<"off" | "in" | "hold" | "out">("off");
-  const audioContextRef = useRef<AudioContext | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   
   // "faces" in lowercase with last 's' in red
   const letters = [
@@ -19,68 +20,13 @@ const LogoAnimation = ({ onComplete }: LogoAnimationProps) => {
     { char: "s", isRed: true },
   ];
 
-  // Classic Hollywood "tic-tic" camera shutter sound
+  // Play the uploaded camera sound
   const playCameraSound = () => {
     try {
-      const audioContext = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
-      audioContextRef.current = audioContext;
-      
-      const now = audioContext.currentTime;
-      
-      // Create a sharp click sound
-      const createClick = (startTime: number, frequency: number, volume: number) => {
-        const osc = audioContext.createOscillator();
-        const gain = audioContext.createGain();
-        
-        osc.type = 'square';
-        osc.frequency.setValueAtTime(frequency, startTime);
-        osc.frequency.exponentialRampToValueAtTime(100, startTime + 0.02);
-        
-        gain.gain.setValueAtTime(volume, startTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.03);
-        
-        osc.connect(gain);
-        gain.connect(audioContext.destination);
-        
-        osc.start(startTime);
-        osc.stop(startTime + 0.03);
-      };
-      
-      // Create noise pop for texture
-      const createPop = (startTime: number, volume: number) => {
-        const bufferSize = audioContext.sampleRate * 0.02;
-        const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
-        const data = buffer.getChannelData(0);
-        
-        for (let i = 0; i < bufferSize; i++) {
-          data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.1));
-        }
-        
-        const source = audioContext.createBufferSource();
-        source.buffer = buffer;
-        
-        const gain = audioContext.createGain();
-        gain.gain.setValueAtTime(volume, startTime);
-        
-        const filter = audioContext.createBiquadFilter();
-        filter.type = 'highpass';
-        filter.frequency.value = 2000;
-        
-        source.connect(filter);
-        filter.connect(gain);
-        gain.connect(audioContext.destination);
-        
-        source.start(startTime);
-      };
-      
-      // First "tic" - sharp click
-      createClick(now, 4000, 0.8);
-      createPop(now, 0.6);
-      
-      // Second "tic" - slightly delayed and softer
-      createClick(now + 0.08, 3500, 0.6);
-      createPop(now + 0.08, 0.4);
-      
+      const audio = new Audio(cameraSound);
+      audio.volume = 1.0;
+      audioRef.current = audio;
+      audio.play();
     } catch (e) {
       console.log("Audio not supported");
     }
@@ -120,8 +66,8 @@ const LogoAnimation = ({ onComplete }: LogoAnimationProps) => {
       clearTimeout(flashInTimeout);
       clearTimeout(flashHoldTimeout);
       clearTimeout(completeTimeout);
-      if (audioContextRef.current) {
-        audioContextRef.current.close();
+      if (audioRef.current) {
+        audioRef.current.pause();
       }
     };
   }, [onComplete, letters.length]);
