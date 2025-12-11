@@ -23,12 +23,20 @@ const LogoAnimation = ({ onComplete }: LogoAnimationProps) => {
   // Play the uploaded camera sound
   const playCameraSound = () => {
     try {
+      // Stop any previous audio first
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
       const audio = new Audio(cameraSound);
       audio.volume = 1.0;
       audioRef.current = audio;
-      audio.play().catch(err => {
-        console.log("Audio play failed:", err);
-      });
+      // Small delay to ensure audio is ready
+      setTimeout(() => {
+        audio.play().catch(err => {
+          console.log("Audio play failed:", err);
+        });
+      }, 10);
     } catch (e) {
       console.log("Audio not supported:", e);
     }
@@ -68,9 +76,7 @@ const LogoAnimation = ({ onComplete }: LogoAnimationProps) => {
       clearTimeout(flashInTimeout);
       clearTimeout(flashHoldTimeout);
       clearTimeout(completeTimeout);
-      if (audioRef.current) {
-        audioRef.current.pause();
-      }
+      // Don't pause audio on cleanup - let it finish playing
     };
   }, [onComplete, letters.length]);
 
