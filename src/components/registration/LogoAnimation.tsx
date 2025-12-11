@@ -60,24 +60,24 @@ const LogoAnimation = ({ onComplete }: LogoAnimationProps) => {
     const logoFadeTimeout = setTimeout(() => {
       clearInterval(letterInterval);
       setLogoFading(true);
-    }, lettersDuration + 600);
+    }, lettersDuration + 400);
 
-    // After logo fades, play sound and start flash
+    // After logo fades, play sound and start flash simultaneously
     const flashStartTimeout = setTimeout(() => {
       playCameraSound();
       setShowFlash(true);
       setFlashPhase("in");
-    }, lettersDuration + 1200);
+    }, lettersDuration + 900);
 
-    // Flash reaches full intensity
+    // Flash reaches full intensity quickly
     const flashHoldTimeout = setTimeout(() => {
       setFlashPhase("hold");
-    }, lettersDuration + 1500);
+    }, lettersDuration + 1100);
 
-    // Complete - transition to home page while screen is white (longer hold for audio)
+    // Complete - transition after audio finishes
     const completeTimeout = setTimeout(() => {
       onComplete();
-    }, lettersDuration + 2500);
+    }, lettersDuration + 2200);
 
     return () => {
       clearInterval(letterInterval);
