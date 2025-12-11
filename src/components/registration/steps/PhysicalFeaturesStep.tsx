@@ -9,6 +9,9 @@ interface PhysicalFeaturesStepProps {
   data: {
     height: string;
     weight: string;
+    pantSize: string;
+    jacketSize: string;
+    shoeSize: string;
     bust: string;
     waist: string;
     hips: string;
@@ -74,6 +77,42 @@ const PhysicalFeaturesStep = ({ data, gender, onChange }: PhysicalFeaturesStepPr
               placeholder="60"
               value={data.weight}
               onChange={(e) => onChange("weight", e.target.value)}
+              className="h-12"
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-3 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="pantSize">Pant Size *</Label>
+            <Input
+              id="pantSize"
+              type="text"
+              placeholder="32"
+              value={data.pantSize}
+              onChange={(e) => onChange("pantSize", e.target.value)}
+              className="h-12"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="jacketSize">Jacket Size *</Label>
+            <Input
+              id="jacketSize"
+              type="text"
+              placeholder="M"
+              value={data.jacketSize}
+              onChange={(e) => onChange("jacketSize", e.target.value)}
+              className="h-12"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="shoeSize">Shoe Size *</Label>
+            <Input
+              id="shoeSize"
+              type="text"
+              placeholder="42"
+              value={data.shoeSize}
+              onChange={(e) => onChange("shoeSize", e.target.value)}
               className="h-12"
             />
           </div>

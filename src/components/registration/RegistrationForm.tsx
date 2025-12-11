@@ -34,6 +34,9 @@ interface FormData {
   customLanguage: string;
   height: string;
   weight: string;
+  pantSize: string;
+  jacketSize: string;
+  shoeSize: string;
   bust: string;
   waist: string;
   hips: string;
@@ -76,6 +79,9 @@ const initialFormData: FormData = {
   customLanguage: "",
   height: "",
   weight: "",
+  pantSize: "",
+  jacketSize: "",
+  shoeSize: "",
   bust: "",
   waist: "",
   hips: "",
@@ -156,7 +162,7 @@ const RegistrationForm = () => {
         }
         break;
       case 4:
-        if (!formData.height || !formData.weight || !formData.eyeColor || !formData.hairColor || !formData.skinTone) {
+        if (!formData.height || !formData.weight || !formData.pantSize || !formData.jacketSize || !formData.shoeSize || !formData.eyeColor || !formData.hairColor || !formData.skinTone) {
           toast({
             title: "Required Fields",
             description: "Please fill in all required physical features.",
