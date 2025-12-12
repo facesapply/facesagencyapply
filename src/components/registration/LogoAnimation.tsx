@@ -62,16 +62,16 @@ const LogoAnimation = ({ onComplete }: LogoAnimationProps) => {
       setLogoFading(true);
     }, lettersDuration + 200);
 
+    // Play sound 30ms before flash starts so it peaks with the flash
+    const soundTimeout = setTimeout(() => {
+      playCameraSound();
+    }, lettersDuration + 570);
+
     // After logo fades, start flash
     const flashStartTimeout = setTimeout(() => {
       setShowFlash(true);
       setFlashPhase("in");
     }, lettersDuration + 600);
-
-    // Play sound when flash is at peak intensity (middle of flash)
-    const soundTimeout = setTimeout(() => {
-      playCameraSound();
-    }, lettersDuration + 700);
 
     // Flash reaches full intensity
     const flashHoldTimeout = setTimeout(() => {
