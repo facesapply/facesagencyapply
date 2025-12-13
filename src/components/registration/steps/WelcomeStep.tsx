@@ -6,7 +6,7 @@ const WelcomeStep = ({
   onGenderSelect
 }: WelcomeStepProps) => {
   return <div className="flex flex-col items-center justify-center min-h-[80vh] text-center px-4 pb-32">
-      <h1 className="text-5xl md:text-7xl font-bold mb-4 tracking-wider" style={{
+      <h1 className="text-8xl md:text-[10rem] lg:text-[12rem] font-bold mb-6 tracking-wider" style={{
       fontFamily: "'Bebas Neue', sans-serif"
     }}>
         <span className="text-foreground">FACE</span>

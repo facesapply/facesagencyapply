@@ -46,6 +46,18 @@ const sizeGuides = {
       ["13", "12", "46"],
     ],
   },
+  womenBody: {
+    title: "Women's Body Measurements",
+    headers: ["Size", "Bust (cm)", "Waist (cm)", "Hips (cm)"],
+    rows: [
+      ["XS (6)", "81-84", "61-64", "86-89"],
+      ["S (8)", "84-89", "64-69", "89-94"],
+      ["M (10)", "89-94", "69-74", "94-99"],
+      ["L (12)", "94-99", "74-79", "99-104"],
+      ["XL (14)", "99-104", "79-84", "104-109"],
+      ["XXL (16)", "104-109", "84-89", "109-114"],
+    ],
+  },
 };
 
 const SizeGuideTable = ({ guide }: { guide: typeof sizeGuides.pants }) => (
@@ -108,7 +120,7 @@ const MeasurementsStep = ({ data, gender, onChange }: MeasurementsStepProps) => 
           <Info className="h-4 w-4 text-primary" />
           <span className="text-sm font-medium text-foreground">Size Conversion Guide</span>
         </div>
-        <div className="grid grid-cols-3 gap-2">
+        <div className={`grid ${gender === "female" ? "grid-cols-2 md:grid-cols-4" : "grid-cols-3"} gap-2`}>
           <Popover>
             <PopoverTrigger asChild>
               <button className="text-xs bg-background hover:bg-accent border border-border rounded px-3 py-2 transition-colors">
@@ -139,6 +151,18 @@ const MeasurementsStep = ({ data, gender, onChange }: MeasurementsStepProps) => 
               <SizeGuideTable guide={sizeGuides.shoes} />
             </PopoverContent>
           </Popover>
+          {gender === "female" && (
+            <Popover>
+              <PopoverTrigger asChild>
+                <button className="text-xs bg-primary/10 hover:bg-primary/20 border border-primary/30 text-primary rounded px-3 py-2 transition-colors font-medium">
+                  Body Guide
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="w-72">
+                <SizeGuideTable guide={sizeGuides.womenBody} />
+              </PopoverContent>
+            </Popover>
+          )}
         </div>
       </div>
 
