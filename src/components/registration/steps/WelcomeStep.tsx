@@ -1,44 +1,34 @@
 import partnersFull from "@/assets/partners-full.png";
-
 interface WelcomeStepProps {
   onGenderSelect: (gender: "male" | "female") => void;
 }
-
-const WelcomeStep = ({ onGenderSelect }: WelcomeStepProps) => {
-  return (
-    <div className="flex flex-col min-h-screen">
+const WelcomeStep = ({
+  onGenderSelect
+}: WelcomeStepProps) => {
+  return <div className="flex flex-col min-h-screen">
       {/* Main content area */}
       <div className="flex-1 flex flex-col items-center justify-center text-center px-4 pt-8 pb-4">
-        <h1
-          className="text-8xl md:text-[10rem] lg:text-[12rem] font-bold mb-6 tracking-wider"
-          style={{ fontFamily: "'Bebas Neue', sans-serif" }}
-        >
+        <h1 className="text-8xl md:text-[10rem] lg:text-[12rem] font-bold mb-6 tracking-wider" style={{
+        fontFamily: "'Bebas Neue', sans-serif"
+      }}>
           <span className="text-foreground">FACE</span>
           <span className="text-primary">S</span>
         </h1>
-        <p className="text-lg md:text-xl text-muted-foreground mb-2">
-          You are now working with the best to serve the best
-        </p>
+        <p className="text-lg md:text-xl text-muted-foreground mb-2 font-medium font-serif">You can now have that chance to work, create, and perform, for the best and most favourable brands internationally
+      </p>
         <p className="text-foreground mb-8 max-w-md">
-          Join our roster of exceptional talents. Complete your registration to get started.
-        </p>
+      </p>
 
         {/* Gender selection */}
         <div className="w-full max-w-sm mb-8">
           <p className="text-muted-foreground text-sm mb-6">I am a...</p>
           <div className="flex gap-4">
-            <button
-              onClick={() => onGenderSelect("female")}
-              className="flex-1 py-6 px-4 rounded-xl border-2 border-border bg-card hover:border-primary hover:bg-primary/5 transition-all duration-200 group"
-            >
+            <button onClick={() => onGenderSelect("female")} className="flex-1 py-6 px-4 rounded-xl border-2 border-border bg-card hover:border-primary hover:bg-primary/5 transition-all duration-200 group">
               <span className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
                 Female
               </span>
             </button>
-            <button
-              onClick={() => onGenderSelect("male")}
-              className="flex-1 py-6 px-4 rounded-xl border-2 border-border bg-card hover:border-primary hover:bg-primary/5 transition-all duration-200 group"
-            >
+            <button onClick={() => onGenderSelect("male")} className="flex-1 py-6 px-4 rounded-xl border-2 border-border bg-card hover:border-primary hover:bg-primary/5 transition-all duration-200 group">
               <span className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
                 Male
               </span>
@@ -64,8 +54,6 @@ const WelcomeStep = ({ onGenderSelect }: WelcomeStepProps) => {
           Note: Due to high demand, not everyone will be selected.
         </p>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default WelcomeStep;
