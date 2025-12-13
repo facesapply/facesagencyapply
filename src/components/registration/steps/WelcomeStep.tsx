@@ -54,8 +54,8 @@ const WelcomeStep = ({ onGenderSelect }: WelcomeStepProps) => {
         {/* Single row - infinite scroll */}
         <div className="overflow-hidden">
           <div className="logo-scroll-container animate-scroll-left">
-            <img src={partnersFull} alt="Partners" className="h-16 md:h-20 lg:h-24 object-contain px-4" />
-            <img src={partnersFull} alt="Partners" className="h-16 md:h-20 lg:h-24 object-contain px-4" />
+            <img src={partnersFull} alt="Partners" className="h-32 md:h-40 lg:h-48 object-contain px-4" />
+            <img src={partnersFull} alt="Partners" className="h-32 md:h-40 lg:h-48 object-contain px-4" />
           </div>
         </div>
 
