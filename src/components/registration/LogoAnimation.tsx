@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import cameraSound from "@/assets/camera-shutter.m4a";
 
+// Module-level flag to ensure sound plays only once per session
+let hasPlayedSoundGlobal = false;
+
 interface LogoAnimationProps {
   onComplete: () => void;
 }
@@ -11,7 +14,6 @@ const LogoAnimation = ({ onComplete }: LogoAnimationProps) => {
   const [showFlash, setShowFlash] = useState(false);
   const [flashPhase, setFlashPhase] = useState<"off" | "in" | "hold" | "out">("off");
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const hasPlayedSound = useRef(false);
   
   // "faces" in lowercase with last 's' in red
   const letters = [
@@ -23,8 +25,8 @@ const LogoAnimation = ({ onComplete }: LogoAnimationProps) => {
   ];
 
   const playCameraSound = () => {
-    if (hasPlayedSound.current) return;
-    hasPlayedSound.current = true;
+    if (hasPlayedSoundGlobal) return;
+    hasPlayedSoundGlobal = true;
     
     try {
       // Stop any previous audio first
