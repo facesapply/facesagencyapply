@@ -1,5 +1,80 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Info } from "lucide-react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+
+const sizeGuides = {
+  pants: {
+    title: "Pants Size Guide",
+    headers: ["US", "UK", "EU"],
+    rows: [
+      ["28", "28", "44"],
+      ["30", "30", "46"],
+      ["32", "32", "48"],
+      ["34", "34", "50"],
+      ["36", "36", "52"],
+      ["38", "38", "54"],
+      ["40", "40", "56"],
+    ],
+  },
+  jacket: {
+    title: "Jacket/Blouse Size Guide",
+    headers: ["US", "UK", "EU"],
+    rows: [
+      ["XS", "6", "34"],
+      ["S", "8-10", "36-38"],
+      ["M", "12-14", "40-42"],
+      ["L", "16", "44"],
+      ["XL", "18", "46"],
+      ["XXL", "20", "48"],
+    ],
+  },
+  shoes: {
+    title: "Shoe Size Guide",
+    headers: ["US Men", "UK", "EU"],
+    rows: [
+      ["7", "6", "39"],
+      ["8", "7", "40"],
+      ["9", "8", "42"],
+      ["10", "9", "43"],
+      ["11", "10", "44"],
+      ["12", "11", "45"],
+      ["13", "12", "46"],
+    ],
+  },
+};
+
+const SizeGuideTable = ({ guide }: { guide: typeof sizeGuides.pants }) => (
+  <div className="text-xs">
+    <div className="font-semibold mb-2 text-foreground">{guide.title}</div>
+    <table className="w-full border-collapse">
+      <thead>
+        <tr className="border-b border-border">
+          {guide.headers.map((header) => (
+            <th key={header} className="px-2 py-1 text-left font-medium text-muted-foreground">
+              {header}
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {guide.rows.map((row, idx) => (
+          <tr key={idx} className="border-b border-border/50">
+            {row.map((cell, cellIdx) => (
+              <td key={cellIdx} className="px-2 py-1 text-foreground">
+                {cell}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+);
 
 interface MeasurementsStepProps {
   data: {
@@ -25,6 +100,46 @@ const MeasurementsStep = ({ data, gender, onChange }: MeasurementsStepProps) => 
           Measurements
         </h2>
         <p className="text-muted-foreground">Your body measurements and sizes</p>
+      </div>
+
+      {/* Size Guide Panel */}
+      <div className="bg-muted/30 border border-border rounded-lg p-4 mb-6">
+        <div className="flex items-center gap-2 mb-3">
+          <Info className="h-4 w-4 text-primary" />
+          <span className="text-sm font-medium text-foreground">Size Conversion Guide</span>
+        </div>
+        <div className="grid grid-cols-3 gap-2">
+          <Popover>
+            <PopoverTrigger asChild>
+              <button className="text-xs bg-background hover:bg-accent border border-border rounded px-3 py-2 transition-colors">
+                Pants
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="w-56">
+              <SizeGuideTable guide={sizeGuides.pants} />
+            </PopoverContent>
+          </Popover>
+          <Popover>
+            <PopoverTrigger asChild>
+              <button className="text-xs bg-background hover:bg-accent border border-border rounded px-3 py-2 transition-colors">
+                {gender === "male" ? "Jacket" : "Blouse"}
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="w-56">
+              <SizeGuideTable guide={sizeGuides.jacket} />
+            </PopoverContent>
+          </Popover>
+          <Popover>
+            <PopoverTrigger asChild>
+              <button className="text-xs bg-background hover:bg-accent border border-border rounded px-3 py-2 transition-colors">
+                Shoes
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="w-56">
+              <SizeGuideTable guide={sizeGuides.shoes} />
+            </PopoverContent>
+          </Popover>
+        </div>
       </div>
 
       <div className="space-y-4">
