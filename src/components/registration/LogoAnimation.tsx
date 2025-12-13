@@ -11,6 +11,7 @@ const LogoAnimation = ({ onComplete }: LogoAnimationProps) => {
   const [showFlash, setShowFlash] = useState(false);
   const [flashPhase, setFlashPhase] = useState<"off" | "in" | "hold" | "out">("off");
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const hasPlayedSound = useRef(false);
   
   // "faces" in lowercase with last 's' in red
   const letters = [
@@ -21,8 +22,10 @@ const LogoAnimation = ({ onComplete }: LogoAnimationProps) => {
     { char: "s", isRed: true },
   ];
 
-  // Play the uploaded camera sound
   const playCameraSound = () => {
+    if (hasPlayedSound.current) return;
+    hasPlayedSound.current = true;
+    
     try {
       // Stop any previous audio first
       if (audioRef.current) {
@@ -62,10 +65,10 @@ const LogoAnimation = ({ onComplete }: LogoAnimationProps) => {
       setLogoFading(true);
     }, lettersDuration + 200);
 
-    // Play sound 30ms before flash starts so it peaks with the flash
+    // Play sound 40ms before flash starts so it peaks with the flash
     const soundTimeout = setTimeout(() => {
       playCameraSound();
-    }, lettersDuration + 570);
+    }, lettersDuration + 560);
 
     // After logo fades, start flash
     const flashStartTimeout = setTimeout(() => {
