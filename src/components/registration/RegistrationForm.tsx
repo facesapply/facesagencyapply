@@ -12,6 +12,12 @@ import TalentsStep from "./steps/TalentsStep";
 import AvailabilityStep from "./steps/AvailabilityStep";
 import PhotoUploadStep from "./steps/PhotoUploadStep";
 import ReviewStep from "./steps/ReviewStep";
+import {
+  mainInfoSchema,
+  addressSchema,
+  languagesSchema,
+  physicalFeaturesSchema,
+} from "@/lib/formValidation";
 
 interface FormData {
   gender: "male" | "female";
@@ -123,54 +129,58 @@ const RegistrationForm = () => {
 
   const validateCurrentStep = (): boolean => {
     switch (currentStep) {
-      case 1:
-        if (!formData.firstName || !formData.middleName || !formData.lastName || !formData.dateOfBirth || !formData.nationality) {
+      case 1: {
+        const result = mainInfoSchema.safeParse(formData);
+        if (!result.success) {
+          const firstError = result.error.errors[0];
           toast({
-            title: "Required Fields",
-            description: "Please fill in all name fields, date of birth, and nationality.",
-            variant: "destructive",
-          });
-          return false;
-        }
-        if (!formData.mobile || !formData.whatsapp || !formData.otherNumber) {
-          toast({
-            title: "Required Fields",
-            description: "Please fill in all phone number fields.",
+            title: "Validation Error",
+            description: firstError.message,
             variant: "destructive",
           });
           return false;
         }
         break;
-      case 2:
-        if (!formData.governorate || !formData.district || !formData.area) {
+      }
+      case 2: {
+        const result = addressSchema.safeParse(formData);
+        if (!result.success) {
+          const firstError = result.error.errors[0];
           toast({
-            title: "Required Fields",
-            description: "Please select your governorate, district, and area.",
+            title: "Validation Error",
+            description: firstError.message,
             variant: "destructive",
           });
           return false;
         }
         break;
-      case 3:
-        if (!formData.languages || formData.languages.length === 0) {
+      }
+      case 3: {
+        const result = languagesSchema.safeParse(formData);
+        if (!result.success) {
+          const firstError = result.error.errors[0];
           toast({
-            title: "Required Fields",
-            description: "Please select at least one language.",
+            title: "Validation Error",
+            description: firstError.message,
             variant: "destructive",
           });
           return false;
         }
         break;
-      case 4:
-        if (!formData.height || !formData.weight || !formData.pantSize || !formData.jacketSize || !formData.shoeSize || !formData.eyeColor || !formData.hairColor || !formData.skinTone) {
+      }
+      case 4: {
+        const result = physicalFeaturesSchema.safeParse(formData);
+        if (!result.success) {
+          const firstError = result.error.errors[0];
           toast({
-            title: "Required Fields",
-            description: "Please fill in all required physical features.",
+            title: "Validation Error",
+            description: firstError.message,
             variant: "destructive",
           });
           return false;
         }
         break;
+      }
       // Step 5 (Talents) is not mandatory
       // Step 6 (Availability) and Step 7 (Photos) are not mandatory
     }
@@ -193,8 +203,6 @@ const RegistrationForm = () => {
     // Simulate API call - HubSpot integration will be added later
     try {
       await new Promise((resolve) => setTimeout(resolve, 2000));
-      
-      console.log("Form submitted:", formData);
       
       setIsSubmitted(true);
       toast({
