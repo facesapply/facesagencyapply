@@ -23,8 +23,14 @@ const LogoAnimation = ({ onComplete }: LogoAnimationProps) => {
 
   // Play sound only once per session using sessionStorage
   const playCameraSound = () => {
-    if (sessionStorage.getItem('cameraPlayed') === 'true') return;
+    const alreadyPlayed = sessionStorage.getItem('cameraPlayed');
+    console.log('playCameraSound called, alreadyPlayed:', alreadyPlayed);
+    if (alreadyPlayed === 'true') {
+      console.log('Skipping sound - already played');
+      return;
+    }
     sessionStorage.setItem('cameraPlayed', 'true');
+    console.log('Playing camera sound NOW');
     
     try {
       if (audioRef.current) {
@@ -34,11 +40,9 @@ const LogoAnimation = ({ onComplete }: LogoAnimationProps) => {
       const audio = new Audio(cameraSound);
       audio.volume = 1.0;
       audioRef.current = audio;
-      setTimeout(() => {
-        audio.play().catch(err => {
-          console.log("Audio play failed:", err);
-        });
-      }, 10);
+      audio.play().catch(err => {
+        console.log("Audio play failed:", err);
+      });
     } catch (e) {
       console.log("Audio not supported:", e);
     }
