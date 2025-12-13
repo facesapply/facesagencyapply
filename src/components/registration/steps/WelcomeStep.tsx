@@ -1,5 +1,4 @@
-import partnersRow1 from "@/assets/partners-row-1.png";
-import partnersRow2 from "@/assets/partners-row-2.png";
+import partnersFull from "@/assets/partners-full.png";
 
 interface WelcomeStepProps {
   onGenderSelect: (gender: "male" | "female") => void;
@@ -52,19 +51,11 @@ const WelcomeStep = ({ onGenderSelect }: WelcomeStepProps) => {
       <div className="bg-background py-6">
         <p className="text-sm text-muted-foreground text-center mb-4">Trusted by leading brands</p>
         
-        {/* Row 1 - scrolling left */}
-        <div className="overflow-hidden mb-3">
-          <div className="logo-scroll-container animate-scroll-left">
-            <img src={partnersRow1} alt="Partners" className="h-16 md:h-20 lg:h-24 object-contain px-4" />
-            <img src={partnersRow1} alt="Partners" className="h-16 md:h-20 lg:h-24 object-contain px-4" />
-          </div>
-        </div>
-        
-        {/* Row 2 - scrolling left (slightly different speed via inline style) */}
+        {/* Single row - infinite scroll */}
         <div className="overflow-hidden">
-          <div className="logo-scroll-container animate-scroll-left" style={{ animationDuration: '25s' }}>
-            <img src={partnersRow2} alt="Partners" className="h-16 md:h-20 lg:h-24 object-contain px-4" />
-            <img src={partnersRow2} alt="Partners" className="h-16 md:h-20 lg:h-24 object-contain px-4" />
+          <div className="logo-scroll-container animate-scroll-left">
+            <img src={partnersFull} alt="Partners" className="h-16 md:h-20 lg:h-24 object-contain px-4" />
+            <img src={partnersFull} alt="Partners" className="h-16 md:h-20 lg:h-24 object-contain px-4" />
           </div>
         </div>
 
