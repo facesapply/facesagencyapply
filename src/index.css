@@ -207,3 +207,22 @@
 .animate-camera-flash {
   animation: cameraFlash 4s ease-in-out infinite;
 }
+
+/* Netflix-style infinite scroll animation */
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll-left {
+  animation: scroll-left 20s linear infinite;
+}
+
+.logo-scroll-container {
+  display: flex;
+  width: max-content;
+}
