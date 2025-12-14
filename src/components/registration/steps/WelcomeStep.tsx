@@ -37,9 +37,10 @@ const WelcomeStep = ({ onProceed }: WelcomeStepProps) => {
             <p className="text-sm text-muted-foreground text-center mb-4">
               Our Customers
             </p>
-            <div className="overflow-hidden">
-              <div className="logo-scroll-container animate-scroll-left">
-                <img src={partnersFull} alt="Partners" className="h-28 md:h-36 lg:h-44 object-contain px-4" />
+            <div className="logo-scroll-wrapper">
+              <div className="logo-scroll-track">
+                <img src={partnersFull} alt="Partners" className="h-28 md:h-36 lg:h-44 object-contain px-8" />
+                <img src={partnersFull} alt="Partners" className="h-28 md:h-36 lg:h-44 object-contain px-8" />
               </div>
             </div>
           </div>

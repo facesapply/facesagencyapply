@@ -218,11 +218,20 @@
   }
 }
 
-.animate-scroll-left {
+.logo-scroll-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.logo-scroll-track {
+  display: flex;
+  width: max-content;
   animation: scroll-left 20s linear infinite;
 }
 
-.logo-scroll-container {
-  display: flex;
-  width: max-content;
+.logo-scroll-track:hover {
+  animation-play-state: paused;
 }
