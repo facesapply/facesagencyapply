@@ -14,13 +14,13 @@ const WelcomeStep = ({
         <p className="text-sm text-muted-foreground text-center mb-4">
           Trusted by leading brands
         </p>
+      </div>
 
-        {/* Single row - infinite scroll */}
-        <div className="overflow-hidden">
-          <div className="logo-scroll-container animate-scroll-left">
-            <img alt="Partners" className="h-32 md:h-40 lg:h-48 object-contain px-4" src="" />
-            <img alt="Partners" src="/lovable-uploads/2deb1052-2f17-4966-bd3f-b0852e8b60f3.png" className="h-32 md:h-40 lg:h-48 px-4 object-fill" />
-          </div>
+      {/* Single row - infinite scroll */}
+      <div className="overflow-hidden">
+        <div className="logo-scroll-container animate-scroll-left">
+          <img alt="Partners" className="h-32 md:h-40 lg:h-48 object-contain px-4" src="" />
+          <img alt="Partners" src="/lovable-uploads/2deb1052-2f17-4966-bd3f-b0852e8b60f3.png" className="h-32 md:h-40 lg:h-48 px-4 object-fill" />
         </div>
       </div>
 
