@@ -21,13 +21,7 @@ export const mainInfoSchema = z.object({
     .regex(/^[a-zA-Z\s\-']+$/, "Last name can only contain letters, spaces, hyphens, and apostrophes"),
   dateOfBirth: z
     .string()
-    .min(1, "Date of birth is required")
-    .refine((date) => {
-      const birthDate = new Date(date);
-      const today = new Date();
-      const age = today.getFullYear() - birthDate.getFullYear();
-      return age >= 16 && age <= 100;
-    }, "Age must be between 16 and 100 years"),
+    .min(1, "Date of birth is required"),
   nationality: z.string().min(1, "Nationality is required"),
   mobile: z
     .string()
