@@ -5,6 +5,7 @@ import { nationalities, countryCodes } from "@/data/lebanese-locations";
 
 interface MainInfoStepProps {
   data: {
+    gender: "male" | "female";
     firstName: string;
     middleName: string;
     lastName: string;
@@ -45,6 +46,35 @@ const MainInfoStep = ({ data, onChange }: MainInfoStepProps) => {
       </div>
 
       <div className="space-y-4">
+        {/* Gender Selection */}
+        <div className="space-y-2">
+          <Label>I am a... *</Label>
+          <div className="flex gap-4">
+            <button
+              type="button"
+              onClick={() => onChange("gender", "female")}
+              className={`flex-1 py-4 px-4 rounded-xl border-2 transition-all duration-200 ${
+                data.gender === "female"
+                  ? "border-primary bg-primary/10 text-primary"
+                  : "border-border bg-card hover:border-primary hover:bg-primary/5 text-foreground"
+              }`}
+            >
+              <span className="text-lg font-semibold">Female</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => onChange("gender", "male")}
+              className={`flex-1 py-4 px-4 rounded-xl border-2 transition-all duration-200 ${
+                data.gender === "male"
+                  ? "border-primary bg-primary/10 text-primary"
+                  : "border-border bg-card hover:border-primary hover:bg-primary/5 text-foreground"
+              }`}
+            >
+              <span className="text-lg font-semibold">Male</span>
+            </button>
+          </div>
+        </div>
+
         {/* Name Fields */}
         <div className="space-y-2">
           <Label htmlFor="firstName">First Name *</Label>
