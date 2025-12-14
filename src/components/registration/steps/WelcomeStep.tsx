@@ -21,18 +21,6 @@ const WelcomeStep = ({
         {phase === "ready-question" && <div className="animate-fade-in">
             <p className="text-lg md:text-xl text-muted-foreground mb-6 font-medium font-serif">Are you ready to have that chance to work, create, and perform, for the best and most favourable and recognizable brands internationally?</p>
 
-            {/* Partner logos section - under tagline */}
-            <div className="mb-8">
-              <p className="text-sm text-muted-foreground text-center mb-4">
-                Trusted by leading brands
-              </p>
-              <div className="overflow-hidden">
-                <div className="logo-scroll-container animate-scroll-left flex gap-8 md:gap-12 lg:gap-16">
-                  <img alt="Partners" src="/lovable-uploads/7d49f235-ebe1-46c2-ad55-000dc69727ae.png" className="h-32 md:h-40 lg:h-48 object-contain border-destructive-foreground" />
-                </div>
-              </div>
-            </div>
-
             {/* Ready question */}
             <div className="w-full max-w-sm mb-8 mx-auto">
               <div className="bg-card border border-border rounded-xl p-4 mb-6">
@@ -83,10 +71,25 @@ const WelcomeStep = ({
           </div>}
       </div>
 
-      {/* Disclaimer */}
-      <p className="text-xs text-muted-foreground/60 text-center py-4">
-        Note: Due to high demand, not everyone will be selected.
-      </p>
+      {/* Partner logos section - Netflix-style infinite scroll */}
+      <div className="bg-background py-6">
+        <p className="text-sm text-muted-foreground text-center mb-4">
+          Trusted by leading brands
+        </p>
+
+        {/* Single row - infinite scroll */}
+        <div className="overflow-hidden">
+          <div className="logo-scroll-container animate-scroll-left">
+            <img alt="Partners" className="h-32 md:h-40 lg:h-48 object-contain px-4" src="" />
+            <img src={partnersFull} alt="Partners" className="h-32 md:h-40 lg:h-48 object-contain px-4" />
+          </div>
+        </div>
+
+        {/* Disclaimer */}
+        <p className="text-xs text-muted-foreground/60 text-center mt-4">
+          Note: Due to high demand, not everyone will be selected.
+        </p>
+      </div>
     </div>;
 };
 export default WelcomeStep;
