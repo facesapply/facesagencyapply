@@ -18,6 +18,11 @@ const WelcomeStep = ({
           <span className="text-primary">S</span>
         </h1>
 
+        {/* Tagline */}
+        <p className="text-lg md:text-xl text-muted-foreground mb-6 font-medium font-serif max-w-2xl">
+          Are you ready to have that chance to work, create, and perform, for the best and most favourable and recognizable brands internationally?
+        </p>
+
         {/* Partner logos section - Our Customers */}
         <div className="w-full mb-6">
           <p className="text-sm text-muted-foreground text-center mb-3">
@@ -32,8 +37,6 @@ const WelcomeStep = ({
         </div>
 
         {phase === "ready-question" && <div className="animate-fade-in">
-            <p className="text-lg md:text-xl text-muted-foreground mb-6 font-medium font-serif">Are you ready to have that chance to work, create, and perform, for the best and most favourable and recognizable brands internationally?</p>
-
             {/* Ready question */}
             <div className="w-full max-w-sm mb-8 mx-auto">
               <div className="bg-card border border-border rounded-xl p-4 mb-6">
