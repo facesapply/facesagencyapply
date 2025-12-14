@@ -124,14 +124,13 @@ const RegistrationForm = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { toast } = useToast();
 
-  const totalSteps = 10; // Now 10 steps with Appearance and Measurements split
+  const totalSteps = 10;
 
   const updateFormData = (field: string, value: string | string[] | boolean | File | null | Record<string, number>) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleGenderSelect = (gender: "male" | "female") => {
-    updateFormData("gender", gender);
+  const handleProceed = () => {
     setCurrentStep(1);
   };
 
@@ -202,8 +201,6 @@ const RegistrationForm = () => {
         }
         break;
       }
-      // Step 6 (Talents) is not mandatory
-      // Step 7 (Availability) and Step 8 (Photos) are not mandatory
     }
     return true;
   };
@@ -221,7 +218,6 @@ const RegistrationForm = () => {
   const handleSubmit = async () => {
     setIsSubmitting(true);
     
-    // Simulate API call - HubSpot integration will be added later
     try {
       await new Promise((resolve) => setTimeout(resolve, 2000));
       
@@ -261,7 +257,6 @@ const RegistrationForm = () => {
         <p className="text-muted-foreground max-w-md mb-8">
           Keep an eye on your WhatsApp — our team will reach out to you soon!
         </p>
-        
       </div>
     );
   }
@@ -269,7 +264,7 @@ const RegistrationForm = () => {
   const renderStep = () => {
     switch (currentStep) {
       case 0:
-        return <WelcomeStep onGenderSelect={handleGenderSelect} />;
+        return <WelcomeStep onProceed={handleProceed} />;
       case 1:
         return <MainInfoStep data={formData} onChange={updateFormData} />;
       case 2:

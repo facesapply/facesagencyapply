@@ -2,14 +2,12 @@ import { useState } from "react";
 import partnersFull from "@/assets/partners-full.png";
 
 interface WelcomeStepProps {
-  onGenderSelect: (gender: "male" | "female") => void;
+  onProceed: () => void;
 }
 
-type Phase = "ready-question" | "declined" | "gender-selection";
+type Phase = "ready-question" | "declined";
 
-const WelcomeStep = ({
-  onGenderSelect
-}: WelcomeStepProps) => {
+const WelcomeStep = ({ onProceed }: WelcomeStepProps) => {
   const [phase, setPhase] = useState<Phase>("ready-question");
 
   return (
@@ -50,7 +48,7 @@ const WelcomeStep = ({
                 </p>
               </div>
               <div className="flex gap-4">
-                <button onClick={() => setPhase("gender-selection")} className="flex-1 py-6 px-4 rounded-xl border-2 border-border bg-card hover:border-primary hover:bg-primary/5 transition-all duration-200 group">
+                <button onClick={onProceed} className="flex-1 py-6 px-4 rounded-xl border-2 border-border bg-card hover:border-primary hover:bg-primary/5 transition-all duration-200 group">
                   <span className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
                     Yes
                   </span>
@@ -75,24 +73,6 @@ const WelcomeStep = ({
                 Try again
               </span>
             </button>
-          </div>
-        )}
-
-        {phase === "gender-selection" && (
-          <div className="animate-fade-in w-full max-w-sm mb-8 mx-auto">
-            <p className="text-muted-foreground text-sm mb-6">I am a...</p>
-            <div className="flex gap-4">
-              <button onClick={() => onGenderSelect("female")} className="flex-1 py-6 px-4 rounded-xl border-2 border-border bg-card hover:border-primary hover:bg-primary/5 transition-all duration-200 group">
-                <span className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
-                  Female
-                </span>
-              </button>
-              <button onClick={() => onGenderSelect("male")} className="flex-1 py-6 px-4 rounded-xl border-2 border-border bg-card hover:border-primary hover:bg-primary/5 transition-all duration-200 group">
-                <span className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
-                  Male
-                </span>
-              </button>
-            </div>
           </div>
         )}
       </div>
