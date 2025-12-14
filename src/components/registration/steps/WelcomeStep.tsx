@@ -1,25 +1,22 @@
 import { useState } from "react";
 import partnersFull from "@/assets/partners-full.png";
-
 interface WelcomeStepProps {
   onProceed: () => void;
 }
-
 type Phase = "ready-question" | "declined";
-
-const WelcomeStep = ({ onProceed }: WelcomeStepProps) => {
+const WelcomeStep = ({
+  onProceed
+}: WelcomeStepProps) => {
   const [phase, setPhase] = useState<Phase>("ready-question");
-
-  return (
-    <div className="flex flex-col min-h-screen">
+  return <div className="flex flex-col min-h-screen">
       {/* Main content area */}
       <div className="flex-1 flex flex-col items-center justify-between text-center px-4 py-12 md:py-16">
         
         {/* Top section - Logo */}
         <div className="flex-shrink-0">
           <h1 className="text-8xl md:text-[10rem] lg:text-[12rem] font-bold tracking-wider" style={{
-            fontFamily: "'Bebas Neue', sans-serif"
-          }}>
+          fontFamily: "'Bebas Neue', sans-serif"
+        }}>
             <span className="text-foreground">FACE</span>
             <span className="text-primary">S</span>
           </h1>
@@ -39,7 +36,7 @@ const WelcomeStep = ({ onProceed }: WelcomeStepProps) => {
             </p>
             <div className="logo-scroll-wrapper">
               <div className="logo-scroll-track">
-                <img src={partnersFull} alt="Partners" className="h-28 md:h-36 lg:h-44 object-contain px-8" />
+                <img alt="Partners" className="h-28 md:h-36 lg:h-44 object-contain px-8" src="/lovable-uploads/07543e1b-278c-4ebb-bb58-a8107bf32277.png" />
                 <img src={partnersFull} alt="Partners" className="h-28 md:h-36 lg:h-44 object-contain px-8" />
               </div>
             </div>
@@ -48,8 +45,7 @@ const WelcomeStep = ({ onProceed }: WelcomeStepProps) => {
 
         {/* Bottom section - CTA */}
         <div className="flex-shrink-0 w-full max-w-sm mx-auto">
-          {phase === "ready-question" && (
-            <div className="animate-fade-in">
+          {phase === "ready-question" && <div className="animate-fade-in">
               <div className="bg-card border border-border rounded-xl p-4 mb-6">
                 <p className="text-foreground font-medium">
                   Are you ready to join the FACES community?
@@ -67,11 +63,9 @@ const WelcomeStep = ({ onProceed }: WelcomeStepProps) => {
                   </span>
                 </button>
               </div>
-            </div>
-          )}
+            </div>}
 
-          {phase === "declined" && (
-            <div className="animate-fade-in">
+          {phase === "declined" && <div className="animate-fade-in">
               <p className="text-2xl text-muted-foreground mb-6">
                 😢 Come back whenever you feel ready. Hope to see you at FACES soon!
               </p>
@@ -80,8 +74,7 @@ const WelcomeStep = ({ onProceed }: WelcomeStepProps) => {
                   Try again
                 </span>
               </button>
-            </div>
-          )}
+            </div>}
         </div>
       </div>
 
@@ -91,8 +84,6 @@ const WelcomeStep = ({ onProceed }: WelcomeStepProps) => {
           Note: Due to high demand, not everyone will be selected.
         </p>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default WelcomeStep;
