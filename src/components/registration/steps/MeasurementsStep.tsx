@@ -247,7 +247,7 @@ const MeasurementsStep = ({ data, gender, onChange }: MeasurementsStepProps) => 
 
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="waist">Waist (cm) *</Label>
+            <Label htmlFor="waist">Waist (cm)</Label>
             <Input
               id="waist"
               type="number"
@@ -258,7 +258,7 @@ const MeasurementsStep = ({ data, gender, onChange }: MeasurementsStepProps) => 
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="bust">{gender === "male" ? "Chest" : "Bust"} (cm) *</Label>
+            <Label htmlFor="bust">{gender === "male" ? "Chest" : "Bust"} (cm)</Label>
             <Input
               id="bust"
               type="number"
@@ -272,7 +272,7 @@ const MeasurementsStep = ({ data, gender, onChange }: MeasurementsStepProps) => 
 
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="hips">Hips (cm) *</Label>
+            <Label htmlFor="hips">Hips (cm)</Label>
             <Input
               id="hips"
               type="number"
@@ -283,7 +283,7 @@ const MeasurementsStep = ({ data, gender, onChange }: MeasurementsStepProps) => 
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="shoulders">Shoulders (cm) *</Label>
+            <Label htmlFor="shoulders">Shoulders (cm)</Label>
             <Input
               id="shoulders"
               type="number"

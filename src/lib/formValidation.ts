@@ -64,10 +64,10 @@ export const measurementsSchema = z.object({
   pantSize: z.string().min(1, "Pant size is required"),
   jacketSize: z.string().min(1, "Jacket/Blouse size is required"),
   shoeSize: z.string().min(1, "Shoe size is required"),
-  waist: z.string().min(1, "Waist is required"),
-  bust: z.string().min(1, "Bust/Chest is required"),
-  hips: z.string().min(1, "Hips is required"),
-  shoulders: z.string().min(1, "Shoulders is required"),
+  waist: z.string().optional(),
+  bust: z.string().optional(),
+  hips: z.string().optional(),
+  shoulders: z.string().optional(),
 });
 
 export type MainInfoData = z.infer<typeof mainInfoSchema>;
