@@ -5,6 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import FormProgress from "./FormProgress";
 import WelcomeStep from "./steps/WelcomeStep";
 import MainInfoStep from "./steps/MainInfoStep";
+import ContactStep from "./steps/ContactStep";
 import AddressStep from "./steps/AddressStep";
 import LanguagesStep from "./steps/LanguagesStep";
 import AppearanceStep from "./steps/AppearanceStep";
@@ -14,6 +15,7 @@ import AvailabilityStep from "./steps/AvailabilityStep";
 import ReviewStep from "./steps/ReviewStep";
 import {
   mainInfoSchema,
+  contactSchema,
   addressSchema,
   languagesSchema,
   appearanceSchema,
@@ -33,6 +35,9 @@ interface FormData {
   whatsappCountryCode: string;
   otherNumber: string;
   otherNumberCountryCode: string;
+  instagram: string;
+  tiktok: string;
+  website: string;
   governorate: string;
   district: string;
   area: string;
@@ -79,6 +84,9 @@ const initialFormData: FormData = {
   whatsappCountryCode: "+961",
   otherNumber: "",
   otherNumberCountryCode: "+961",
+  instagram: "",
+  tiktok: "",
+  website: "",
   governorate: "",
   district: "",
   area: "",
@@ -119,7 +127,7 @@ const RegistrationForm = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { toast } = useToast();
 
-  const totalSteps = 9;
+  const totalSteps = 10;
 
   const updateFormData = (field: string, value: string | string[] | boolean | File | null | Record<string, number>) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -145,7 +153,7 @@ const RegistrationForm = () => {
         break;
       }
       case 2: {
-        const result = addressSchema.safeParse(formData);
+        const result = contactSchema.safeParse(formData);
         if (!result.success) {
           const firstError = result.error.errors[0];
           toast({
@@ -158,7 +166,7 @@ const RegistrationForm = () => {
         break;
       }
       case 3: {
-        const result = languagesSchema.safeParse(formData);
+        const result = addressSchema.safeParse(formData);
         if (!result.success) {
           const firstError = result.error.errors[0];
           toast({
@@ -171,7 +179,7 @@ const RegistrationForm = () => {
         break;
       }
       case 4: {
-        const result = appearanceSchema.safeParse(formData);
+        const result = languagesSchema.safeParse(formData);
         if (!result.success) {
           const firstError = result.error.errors[0];
           toast({
@@ -184,6 +192,19 @@ const RegistrationForm = () => {
         break;
       }
       case 5: {
+        const result = appearanceSchema.safeParse(formData);
+        if (!result.success) {
+          const firstError = result.error.errors[0];
+          toast({
+            title: "Validation Error",
+            description: firstError.message,
+            variant: "destructive",
+          });
+          return false;
+        }
+        break;
+      }
+      case 6: {
         const result = measurementsSchema.safeParse(formData);
         if (!result.success) {
           const firstError = result.error.errors[0];
@@ -263,18 +284,20 @@ const RegistrationForm = () => {
       case 1:
         return <MainInfoStep data={formData} onChange={updateFormData} />;
       case 2:
-        return <AddressStep data={formData} onChange={updateFormData} />;
+        return <ContactStep data={formData} onChange={updateFormData} />;
       case 3:
-        return <LanguagesStep data={formData} onChange={updateFormData} />;
+        return <AddressStep data={formData} onChange={updateFormData} />;
       case 4:
-        return <AppearanceStep data={formData} onChange={updateFormData} />;
+        return <LanguagesStep data={formData} onChange={updateFormData} />;
       case 5:
-        return <MeasurementsStep data={formData} gender={formData.gender} onChange={updateFormData} />;
+        return <AppearanceStep data={formData} onChange={updateFormData} />;
       case 6:
-        return <TalentsStep data={formData} onChange={updateFormData} />;
+        return <MeasurementsStep data={formData} gender={formData.gender} onChange={updateFormData} />;
       case 7:
-        return <AvailabilityStep data={formData} onChange={updateFormData} />;
+        return <TalentsStep data={formData} onChange={updateFormData} />;
       case 8:
+        return <AvailabilityStep data={formData} onChange={updateFormData} />;
+      case 9:
         return <ReviewStep formData={formData} onSubmit={handleSubmit} onChange={updateFormData} isSubmitting={isSubmitting} />;
       default:
         return null;

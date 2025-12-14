@@ -23,6 +23,9 @@ export const mainInfoSchema = z.object({
     .string()
     .min(1, "Date of birth is required"),
   nationality: z.string().min(1, "Nationality is required"),
+});
+
+export const contactSchema = z.object({
   mobile: z
     .string()
     .min(1, "Mobile number is required")
@@ -38,6 +41,9 @@ export const mainInfoSchema = z.object({
     .min(1, "Other number is required")
     .max(20, "Other number is too long")
     .regex(phoneRegex, "Invalid phone number format"),
+  instagram: z.string().optional(),
+  tiktok: z.string().optional(),
+  website: z.string().optional(),
 });
 
 export const addressSchema = z.object({
@@ -71,6 +77,7 @@ export const measurementsSchema = z.object({
 });
 
 export type MainInfoData = z.infer<typeof mainInfoSchema>;
+export type ContactData = z.infer<typeof contactSchema>;
 export type AddressData = z.infer<typeof addressSchema>;
 export type LanguagesData = z.infer<typeof languagesSchema>;
 export type AppearanceData = z.infer<typeof appearanceSchema>;

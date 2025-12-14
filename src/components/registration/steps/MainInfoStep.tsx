@@ -11,12 +11,6 @@ interface MainInfoStepProps {
     lastName: string;
     dateOfBirth: string;
     nationality: string;
-    mobile: string;
-    mobileCountryCode: string;
-    whatsapp: string;
-    whatsappCountryCode: string;
-    otherNumber: string;
-    otherNumberCountryCode: string;
   };
   onChange: (field: string, value: string) => void;
 }
@@ -147,99 +141,6 @@ const MainInfoStep = ({ data, onChange }: MainInfoStepProps) => {
           </Select>
         </div>
 
-        {/* Contact Information Section */}
-        <div className="pt-6 border-t border-border">
-          <h3 className="text-lg md:text-xl font-semibold text-foreground mb-4 md:mb-5">Contact Information</h3>
-          
-          <div className="space-y-4 md:space-y-5">
-            <div className="space-y-2">
-              <Label htmlFor="mobile">Mobile Number *</Label>
-              <div className="flex gap-2 md:gap-3">
-                <Select
-                  value={data.mobileCountryCode || "+961"}
-                  onValueChange={(value) => onChange("mobileCountryCode", value)}
-                >
-                  <SelectTrigger className="w-28 md:w-32 h-12 md:h-14">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {countryCodes.map((code) => (
-                      <SelectItem key={code.code} value={code.code}>
-                        {code.code}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <Input
-                  id="mobile"
-                  placeholder="XX XXX XXX"
-                  value={data.mobile}
-                  onChange={(e) => onChange("mobile", e.target.value)}
-                  className="h-12 md:h-14 flex-1"
-                  type="tel"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="whatsapp">WhatsApp Number *</Label>
-              <div className="flex gap-2 md:gap-3">
-                <Select
-                  value={data.whatsappCountryCode || "+961"}
-                  onValueChange={(value) => onChange("whatsappCountryCode", value)}
-                >
-                  <SelectTrigger className="w-28 md:w-32 h-12 md:h-14">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {countryCodes.map((code) => (
-                      <SelectItem key={code.code} value={code.code}>
-                        {code.code}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <Input
-                  id="whatsapp"
-                  placeholder="XX XXX XXX"
-                  value={data.whatsapp}
-                  onChange={(e) => onChange("whatsapp", e.target.value)}
-                  className="h-12 md:h-14 flex-1"
-                  type="tel"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="otherNumber">Other Number *</Label>
-              <div className="flex gap-2 md:gap-3">
-                <Select
-                  value={data.otherNumberCountryCode || "+961"}
-                  onValueChange={(value) => onChange("otherNumberCountryCode", value)}
-                >
-                  <SelectTrigger className="w-28 md:w-32 h-12 md:h-14">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {countryCodes.map((code) => (
-                      <SelectItem key={code.code} value={code.code}>
-                        {code.code}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <Input
-                  id="otherNumber"
-                  placeholder="XX XXX XXX"
-                  value={data.otherNumber}
-                  onChange={(e) => onChange("otherNumber", e.target.value)}
-                  className="h-12 md:h-14 flex-1"
-                  type="tel"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );
