@@ -38,8 +38,6 @@ interface ReviewStepProps {
     hasLicense: boolean;
     hasPassport: boolean;
     canTravel: boolean;
-    headshot: File | null;
-    fullBody: File | null;
     acceptTerms?: boolean;
     acceptAmbassador?: boolean;
   };
@@ -171,10 +169,6 @@ const ReviewStep = ({ formData, onSubmit, onChange, isSubmitting }: ReviewStepPr
           <Field label="Can Travel" value={formData.canTravel} />
         </Section>
 
-        <Section title="Photos">
-          <Field label="Headshot" value={formData.headshot ? "Uploaded ✓" : "Not uploaded"} />
-          <Field label="Full Body" value={formData.fullBody ? "Uploaded ✓" : "Not uploaded"} />
-        </Section>
       </div>
 
       {/* Terms and Conditions */}

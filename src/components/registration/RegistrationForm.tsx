@@ -11,7 +11,6 @@ import AppearanceStep from "./steps/AppearanceStep";
 import MeasurementsStep from "./steps/MeasurementsStep";
 import TalentsStep from "./steps/TalentsStep";
 import AvailabilityStep from "./steps/AvailabilityStep";
-import PhotoUploadStep from "./steps/PhotoUploadStep";
 import ReviewStep from "./steps/ReviewStep";
 import {
   mainInfoSchema,
@@ -65,8 +64,6 @@ interface FormData {
   hasLicense: boolean;
   hasPassport: boolean;
   canTravel: boolean;
-  headshot: File | null;
-  fullBody: File | null;
 }
 
 const initialFormData: FormData = {
@@ -113,8 +110,6 @@ const initialFormData: FormData = {
   hasLicense: false,
   hasPassport: false,
   canTravel: false,
-  headshot: null,
-  fullBody: null,
 };
 
 const RegistrationForm = () => {
@@ -124,7 +119,7 @@ const RegistrationForm = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { toast } = useToast();
 
-  const totalSteps = 10;
+  const totalSteps = 9;
 
   const updateFormData = (field: string, value: string | string[] | boolean | File | null | Record<string, number>) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -280,8 +275,6 @@ const RegistrationForm = () => {
       case 7:
         return <AvailabilityStep data={formData} onChange={updateFormData} />;
       case 8:
-        return <PhotoUploadStep data={formData} onChange={updateFormData} />;
-      case 9:
         return <ReviewStep formData={formData} onSubmit={handleSubmit} onChange={updateFormData} isSubmitting={isSubmitting} />;
       default:
         return null;
