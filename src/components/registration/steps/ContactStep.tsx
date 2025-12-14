@@ -2,7 +2,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { countryCodes } from "@/data/lebanese-locations";
-
 interface ContactStepProps {
   data: {
     mobile: string;
@@ -17,12 +16,13 @@ interface ContactStepProps {
   };
   onChange: (field: string, value: string) => void;
 }
-
-const ContactStep = ({ data, onChange }: ContactStepProps) => {
-  return (
-    <div className="space-y-6">
+const ContactStep = ({
+  data,
+  onChange
+}: ContactStepProps) => {
+  return <div className="space-y-6">
       <div className="text-center mb-8">
-        <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
+        <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2 font-sans text-center">
           Contact Information
         </h2>
         <p className="text-muted-foreground">How can we reach you?</p>
@@ -32,95 +32,58 @@ const ContactStep = ({ data, onChange }: ContactStepProps) => {
         <div className="space-y-2">
           <Label htmlFor="mobile">Mobile Number *</Label>
           <div className="flex gap-2 md:gap-3">
-            <Select
-              value={data.mobileCountryCode || "+961"}
-              onValueChange={(value) => onChange("mobileCountryCode", value)}
-            >
+            <Select value={data.mobileCountryCode || "+961"} onValueChange={value => onChange("mobileCountryCode", value)}>
               <SelectTrigger className="w-28 md:w-32 h-12 md:h-14">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {countryCodes.map((code) => (
-                  <SelectItem key={code.code} value={code.code}>
+                {countryCodes.map(code => <SelectItem key={code.code} value={code.code}>
                     {code.code}
-                  </SelectItem>
-                ))}
+                  </SelectItem>)}
               </SelectContent>
             </Select>
-            <Input
-              id="mobile"
-              placeholder="XX XXX XXX"
-              value={data.mobile}
-              onChange={(e) => onChange("mobile", e.target.value)}
-              className="h-12 md:h-14 flex-1"
-              type="tel"
-            />
+            <Input id="mobile" placeholder="XX XXX XXX" value={data.mobile} onChange={e => onChange("mobile", e.target.value)} className="h-12 md:h-14 flex-1" type="tel" />
           </div>
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="whatsapp">WhatsApp Number *</Label>
           <div className="flex gap-2 md:gap-3">
-            <Select
-              value={data.whatsappCountryCode || "+961"}
-              onValueChange={(value) => onChange("whatsappCountryCode", value)}
-            >
+            <Select value={data.whatsappCountryCode || "+961"} onValueChange={value => onChange("whatsappCountryCode", value)}>
               <SelectTrigger className="w-28 md:w-32 h-12 md:h-14">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {countryCodes.map((code) => (
-                  <SelectItem key={code.code} value={code.code}>
+                {countryCodes.map(code => <SelectItem key={code.code} value={code.code}>
                     {code.code}
-                  </SelectItem>
-                ))}
+                  </SelectItem>)}
               </SelectContent>
             </Select>
-            <Input
-              id="whatsapp"
-              placeholder="XX XXX XXX"
-              value={data.whatsapp}
-              onChange={(e) => onChange("whatsapp", e.target.value)}
-              className="h-12 md:h-14 flex-1"
-              type="tel"
-            />
+            <Input id="whatsapp" placeholder="XX XXX XXX" value={data.whatsapp} onChange={e => onChange("whatsapp", e.target.value)} className="h-12 md:h-14 flex-1" type="tel" />
           </div>
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="otherNumber">Other Number *</Label>
           <div className="flex gap-2 md:gap-3">
-            <Select
-              value={data.otherNumberCountryCode || "+961"}
-              onValueChange={(value) => onChange("otherNumberCountryCode", value)}
-            >
+            <Select value={data.otherNumberCountryCode || "+961"} onValueChange={value => onChange("otherNumberCountryCode", value)}>
               <SelectTrigger className="w-28 md:w-32 h-12 md:h-14">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {countryCodes.map((code) => (
-                  <SelectItem key={code.code} value={code.code}>
+                {countryCodes.map(code => <SelectItem key={code.code} value={code.code}>
                     {code.code}
-                  </SelectItem>
-                ))}
+                  </SelectItem>)}
               </SelectContent>
             </Select>
-            <Input
-              id="otherNumber"
-              placeholder="XX XXX XXX"
-              value={data.otherNumber}
-              onChange={(e) => onChange("otherNumber", e.target.value)}
-              className="h-12 md:h-14 flex-1"
-              type="tel"
-            />
+            <Input id="otherNumber" placeholder="XX XXX XXX" value={data.otherNumber} onChange={e => onChange("otherNumber", e.target.value)} className="h-12 md:h-14 flex-1" type="tel" />
           </div>
         </div>
       </div>
 
       {/* Social Media Section */}
-      <div className="pt-6 border-t border-border">
-        <h3 className="text-lg md:text-xl font-semibold text-foreground mb-4 md:mb-5">
-          Social Media Accounts <span className="text-muted-foreground text-sm font-normal">(Optional)</span>
+      <div className="pt-6 border-t border-border my-[80px]">
+        <h3 className="text-lg text-foreground mb-4 md:mb-5 text-center font-bold md:text-3xl">Contact Information<span className="text-muted-foreground text-sm font-normal">(Optional)</span>
         </h3>
         
         <div className="space-y-4 md:space-y-5">
@@ -128,13 +91,7 @@ const ContactStep = ({ data, onChange }: ContactStepProps) => {
             <Label htmlFor="instagram">Instagram</Label>
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">@</span>
-              <Input
-                id="instagram"
-                placeholder="username"
-                value={data.instagram}
-                onChange={(e) => onChange("instagram", e.target.value)}
-                className="h-12 md:h-14 pl-8"
-              />
+              <Input id="instagram" placeholder="username" value={data.instagram} onChange={e => onChange("instagram", e.target.value)} className="h-12 md:h-14 pl-8" />
             </div>
           </div>
 
@@ -142,31 +99,16 @@ const ContactStep = ({ data, onChange }: ContactStepProps) => {
             <Label htmlFor="tiktok">TikTok</Label>
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">@</span>
-              <Input
-                id="tiktok"
-                placeholder="username"
-                value={data.tiktok}
-                onChange={(e) => onChange("tiktok", e.target.value)}
-                className="h-12 md:h-14 pl-8"
-              />
+              <Input id="tiktok" placeholder="username" value={data.tiktok} onChange={e => onChange("tiktok", e.target.value)} className="h-12 md:h-14 pl-8" />
             </div>
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="website">Website</Label>
-            <Input
-              id="website"
-              placeholder="https://yourwebsite.com"
-              value={data.website}
-              onChange={(e) => onChange("website", e.target.value)}
-              className="h-12 md:h-14"
-              type="url"
-            />
+            <Input id="website" placeholder="https://yourwebsite.com" value={data.website} onChange={e => onChange("website", e.target.value)} className="h-12 md:h-14" type="url" />
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default ContactStep;

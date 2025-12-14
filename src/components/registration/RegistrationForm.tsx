@@ -13,15 +13,7 @@ import MeasurementsStep from "./steps/MeasurementsStep";
 import TalentsStep from "./steps/TalentsStep";
 import AvailabilityStep from "./steps/AvailabilityStep";
 import ReviewStep from "./steps/ReviewStep";
-import {
-  mainInfoSchema,
-  contactSchema,
-  addressSchema,
-  languagesSchema,
-  appearanceSchema,
-  measurementsSchema,
-} from "@/lib/formValidation";
-
+import { mainInfoSchema, contactSchema, addressSchema, languagesSchema, appearanceSchema, measurementsSchema } from "@/lib/formValidation";
 interface FormData {
   gender: "male" | "female";
   firstName: string;
@@ -70,7 +62,6 @@ interface FormData {
   hasPassport: boolean;
   canTravel: boolean;
 }
-
 const initialFormData: FormData = {
   gender: "female",
   firstName: "",
@@ -117,154 +108,152 @@ const initialFormData: FormData = {
   hasCar: false,
   hasLicense: false,
   hasPassport: false,
-  canTravel: false,
+  canTravel: false
 };
-
 const RegistrationForm = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const { toast } = useToast();
-
+  const {
+    toast
+  } = useToast();
   const totalSteps = 10;
-
   const updateFormData = (field: string, value: string | string[] | boolean | File | null | Record<string, number>) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
   };
-
   const handleProceed = () => {
     setCurrentStep(1);
   };
-
   const validateCurrentStep = (): boolean => {
     switch (currentStep) {
-      case 1: {
-        const result = mainInfoSchema.safeParse(formData);
-        if (!result.success) {
-          const firstError = result.error.errors[0];
-          toast({
-            title: "Validation Error",
-            description: firstError.message,
-            variant: "destructive",
-          });
-          return false;
+      case 1:
+        {
+          const result = mainInfoSchema.safeParse(formData);
+          if (!result.success) {
+            const firstError = result.error.errors[0];
+            toast({
+              title: "Validation Error",
+              description: firstError.message,
+              variant: "destructive"
+            });
+            return false;
+          }
+          break;
         }
-        break;
-      }
-      case 2: {
-        const result = contactSchema.safeParse(formData);
-        if (!result.success) {
-          const firstError = result.error.errors[0];
-          toast({
-            title: "Validation Error",
-            description: firstError.message,
-            variant: "destructive",
-          });
-          return false;
+      case 2:
+        {
+          const result = contactSchema.safeParse(formData);
+          if (!result.success) {
+            const firstError = result.error.errors[0];
+            toast({
+              title: "Validation Error",
+              description: firstError.message,
+              variant: "destructive"
+            });
+            return false;
+          }
+          break;
         }
-        break;
-      }
-      case 3: {
-        const result = addressSchema.safeParse(formData);
-        if (!result.success) {
-          const firstError = result.error.errors[0];
-          toast({
-            title: "Validation Error",
-            description: firstError.message,
-            variant: "destructive",
-          });
-          return false;
+      case 3:
+        {
+          const result = addressSchema.safeParse(formData);
+          if (!result.success) {
+            const firstError = result.error.errors[0];
+            toast({
+              title: "Validation Error",
+              description: firstError.message,
+              variant: "destructive"
+            });
+            return false;
+          }
+          break;
         }
-        break;
-      }
-      case 4: {
-        const result = languagesSchema.safeParse(formData);
-        if (!result.success) {
-          const firstError = result.error.errors[0];
-          toast({
-            title: "Validation Error",
-            description: firstError.message,
-            variant: "destructive",
-          });
-          return false;
+      case 4:
+        {
+          const result = languagesSchema.safeParse(formData);
+          if (!result.success) {
+            const firstError = result.error.errors[0];
+            toast({
+              title: "Validation Error",
+              description: firstError.message,
+              variant: "destructive"
+            });
+            return false;
+          }
+          break;
         }
-        break;
-      }
-      case 5: {
-        const result = appearanceSchema.safeParse(formData);
-        if (!result.success) {
-          const firstError = result.error.errors[0];
-          toast({
-            title: "Validation Error",
-            description: firstError.message,
-            variant: "destructive",
-          });
-          return false;
+      case 5:
+        {
+          const result = appearanceSchema.safeParse(formData);
+          if (!result.success) {
+            const firstError = result.error.errors[0];
+            toast({
+              title: "Validation Error",
+              description: firstError.message,
+              variant: "destructive"
+            });
+            return false;
+          }
+          break;
         }
-        break;
-      }
-      case 6: {
-        const result = measurementsSchema.safeParse(formData);
-        if (!result.success) {
-          const firstError = result.error.errors[0];
-          toast({
-            title: "Validation Error",
-            description: firstError.message,
-            variant: "destructive",
-          });
-          return false;
+      case 6:
+        {
+          const result = measurementsSchema.safeParse(formData);
+          if (!result.success) {
+            const firstError = result.error.errors[0];
+            toast({
+              title: "Validation Error",
+              description: firstError.message,
+              variant: "destructive"
+            });
+            return false;
+          }
+          break;
         }
-        break;
-      }
     }
     return true;
   };
-
   const handleNext = () => {
     if (validateCurrentStep()) {
-      setCurrentStep((prev) => Math.min(prev + 1, totalSteps - 1));
+      setCurrentStep(prev => Math.min(prev + 1, totalSteps - 1));
     }
   };
-
   const handleBack = () => {
-    setCurrentStep((prev) => Math.max(prev - 1, 0));
+    setCurrentStep(prev => Math.max(prev - 1, 0));
   };
-
   const handleSubmit = async () => {
     setIsSubmitting(true);
-    
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      
+      await new Promise(resolve => setTimeout(resolve, 2000));
       setIsSubmitted(true);
       toast({
         title: "Application Submitted!",
-        description: "Thank you for registering with Faces Agency. We'll be in touch soon!",
+        description: "Thank you for registering with Faces Agency. We'll be in touch soon!"
       });
     } catch (error) {
       toast({
         title: "Submission Failed",
         description: "There was an error submitting your application. Please try again.",
-        variant: "destructive",
+        variant: "destructive"
       });
     } finally {
       setIsSubmitting(false);
     }
   };
-
   if (isSubmitted) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4 animate-fade-in-up">
+    return <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4 animate-fade-in-up">
         <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center mb-6">
           <svg className="w-10 h-10 text-primary-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h1 
-          className="text-4xl md:text-5xl font-bold text-primary mb-4 tracking-wider"
-          style={{ fontFamily: "'Bebas Neue', sans-serif" }}
-        >
+        <h1 className="text-4xl md:text-5xl font-bold text-primary mb-4 tracking-wider" style={{
+        fontFamily: "'Bebas Neue', sans-serif"
+      }}>
           THANK YOU!
         </h1>
         <p className="text-lg text-foreground mb-6">
@@ -273,10 +262,8 @@ const RegistrationForm = () => {
         <p className="text-muted-foreground max-w-md mb-8">
           Keep an eye on your WhatsApp — our team will reach out to you soon!
         </p>
-      </div>
-    );
+      </div>;
   }
-
   const renderStep = () => {
     switch (currentStep) {
       case 0:
@@ -284,7 +271,7 @@ const RegistrationForm = () => {
       case 1:
         return <MainInfoStep data={formData} onChange={updateFormData} />;
       case 2:
-        return <ContactStep data={formData} onChange={updateFormData} />;
+        return <ContactStep data={formData} onChange={updateFormData} className="my-[20px]" />;
       case 3:
         return <AddressStep data={formData} onChange={updateFormData} />;
       case 4:
@@ -303,17 +290,13 @@ const RegistrationForm = () => {
         return null;
     }
   };
-
-  return (
-    <div className="min-h-screen bg-background flex flex-col">
+  return <div className="min-h-screen bg-background flex flex-col">
       {/* Header with Progress */}
-      {currentStep > 0 && (
-        <div className="sticky top-0 z-40 bg-background/95 backdrop-blur-sm border-b border-border px-4 md:px-6 py-4">
+      {currentStep > 0 && <div className="sticky top-0 z-40 bg-background/95 backdrop-blur-sm border-b border-border px-4 md:px-6 py-4">
           <div className="max-w-md md:max-w-lg lg:max-w-xl mx-auto">
             <FormProgress currentStep={currentStep} totalSteps={totalSteps - 1} />
           </div>
-        </div>
-      )}
+        </div>}
 
       {/* Form Content */}
       <div className="flex-1 px-4 md:px-6 py-6 md:py-8">
@@ -323,46 +306,28 @@ const RegistrationForm = () => {
       </div>
 
       {/* Navigation Buttons */}
-      {currentStep > 0 && currentStep < totalSteps - 1 && (
-        <div className="sticky bottom-0 bg-background/95 backdrop-blur-sm border-t border-border px-4 md:px-6 py-4">
+      {currentStep > 0 && currentStep < totalSteps - 1 && <div className="sticky bottom-0 bg-background/95 backdrop-blur-sm border-t border-border px-4 md:px-6 py-4">
           <div className="max-w-md md:max-w-lg lg:max-w-xl mx-auto flex gap-3 md:gap-4">
-            <Button
-              variant="outline"
-              onClick={handleBack}
-              className="flex-1 h-12 md:h-14 md:text-base"
-            >
+            <Button variant="outline" onClick={handleBack} className="flex-1 h-12 md:h-14 md:text-base">
               <ArrowLeft className="w-4 h-4 md:w-5 md:h-5 mr-2" />
               Back
             </Button>
-            <Button
-              onClick={handleNext}
-              className="flex-1 h-12 md:h-14 md:text-base"
-            >
+            <Button onClick={handleNext} className="flex-1 h-12 md:h-14 md:text-base">
               Next
               <ArrowRight className="w-4 h-4 md:w-5 md:h-5 ml-2" />
             </Button>
           </div>
-        </div>
-      )}
+        </div>}
 
       {/* Back button only for review step */}
-      {currentStep === totalSteps - 1 && (
-        <div className="sticky bottom-0 bg-background/95 backdrop-blur-sm border-t border-border px-4 md:px-6 py-4">
+      {currentStep === totalSteps - 1 && <div className="sticky bottom-0 bg-background/95 backdrop-blur-sm border-t border-border px-4 md:px-6 py-4">
           <div className="max-w-md md:max-w-lg lg:max-w-xl mx-auto">
-            <Button
-              variant="outline"
-              onClick={handleBack}
-              className="w-full h-12 md:h-14 md:text-base"
-              disabled={isSubmitting}
-            >
+            <Button variant="outline" onClick={handleBack} className="w-full h-12 md:h-14 md:text-base" disabled={isSubmitting}>
               <ArrowLeft className="w-4 h-4 md:w-5 md:h-5 mr-2" />
               Back to Edit
             </Button>
           </div>
-        </div>
-      )}
-    </div>
-  );
+        </div>}
+    </div>;
 };
-
 export default RegistrationForm;
