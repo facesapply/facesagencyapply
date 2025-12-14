@@ -30,7 +30,7 @@ const WelcomeStep = ({
           </p>
           <div className="overflow-hidden">
             <div className="logo-scroll-container animate-scroll-left">
-              <img alt="Partners" src="/lovable-uploads/ed5c9267-8c59-461e-bd05-727f48c642a8.png" className="h-32 md:h-40 lg:h-48 px-4 object-scale-down" />
+              <img src={partnersFull} alt="Partners" className="h-32 md:h-40 lg:h-48 object-contain px-4" />
               <img src={partnersFull} alt="Partners" className="h-32 md:h-40 lg:h-48 object-contain px-4" />
             </div>
           </div>
