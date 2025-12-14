@@ -9,6 +9,21 @@ const WelcomeStep = ({
 }: WelcomeStepProps) => {
   const [phase, setPhase] = useState<Phase>("ready-question");
   return <div className="flex flex-col min-h-screen">
+      {/* Partner logos section - Netflix-style infinite scroll */}
+      <div className="bg-background py-6">
+        <p className="text-sm text-muted-foreground text-center mb-4">
+          Trusted by leading brands
+        </p>
+
+        {/* Single row - infinite scroll */}
+        <div className="overflow-hidden">
+          <div className="logo-scroll-container animate-scroll-left">
+            <img alt="Partners" className="h-32 md:h-40 lg:h-48 object-contain px-4" src="" />
+            <img alt="Partners" src="/lovable-uploads/2deb1052-2f17-4966-bd3f-b0852e8b60f3.png" className="h-32 md:h-40 lg:h-48 px-4 object-fill" />
+          </div>
+        </div>
+      </div>
+
       {/* Main content area */}
       <div className="flex-1 flex flex-col items-center justify-center text-center px-4 pt-8 pb-4">
         <h1 className="text-8xl md:text-[10rem] lg:text-[12rem] font-bold mb-6 tracking-wider" style={{
@@ -71,25 +86,10 @@ const WelcomeStep = ({
           </div>}
       </div>
 
-      {/* Partner logos section - Netflix-style infinite scroll */}
-      <div className="bg-background py-6">
-        <p className="text-sm text-muted-foreground text-center mb-4">
-          Trusted by leading brands
-        </p>
-
-        {/* Single row - infinite scroll */}
-        <div className="overflow-hidden">
-          <div className="logo-scroll-container animate-scroll-left">
-            <img alt="Partners" className="h-32 md:h-40 lg:h-48 object-contain px-4" src="" />
-            <img alt="Partners" src="/lovable-uploads/2deb1052-2f17-4966-bd3f-b0852e8b60f3.png" className="h-32 md:h-40 lg:h-48 px-4 object-fill" />
-          </div>
-        </div>
-
-        {/* Disclaimer */}
-        <p className="text-xs text-muted-foreground/60 text-center mt-4">
-          Note: Due to high demand, not everyone will be selected.
-        </p>
-      </div>
+      {/* Disclaimer */}
+      <p className="text-xs text-muted-foreground/60 text-center py-4">
+        Note: Due to high demand, not everyone will be selected.
+      </p>
     </div>;
 };
 export default WelcomeStep;
