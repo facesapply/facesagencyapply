@@ -25,9 +25,7 @@ const WelcomeStep = ({
         {/* Middle section - Tagline & Partners */}
         <div className="flex-1 flex flex-col items-center justify-start py-2 md:py-4">
           {/* Tagline */}
-          <p className="text-lg md:text-xl lg:text-2xl text-muted-foreground mb-12 md:mb-16 font-serif max-w-2xl font-semibold px-4 mt-8 md:mt-12">
-            Want to have that chance to work, create, and perform, for the best and most recognizable brands internationally?
-          </p>
+          <p className="text-lg md:text-xl lg:text-2xl text-muted-foreground mb-12 md:mb-16 font-serif max-w-2xl font-semibold px-4 mt-8 md:mt-12">Want to have that chance to work, create, and be seen representing the best and most recognizable brands internationally?</p>
 
           {/* Partner logos section - Our Customers */}
           <div className="w-full">
@@ -45,16 +43,16 @@ const WelcomeStep = ({
         <div className="flex-shrink-0 w-full max-w-md md:max-w-lg lg:max-w-xl mx-auto mb-8 md:mb-12 px-2 md:px-4">
           {phase === "ready-question" && <div className="animate-fade-in">
               <div className="bg-card border border-border rounded-2xl p-6 md:p-8 lg:p-10 mb-6 md:mb-8">
-                <p className="text-xl md:text-2xl lg:text-3xl font-medium text-secondary-foreground">Are you ready to join our community and team?</p>
+                <p className="text-xl md:text-2xl lg:text-3xl text-secondary-foreground font-semibold">Are you ready to join our community and team?</p>
               </div>
               <div className="flex gap-4 md:gap-6">
-                <button onClick={onProceed} className="flex-1 py-6 md:py-8 lg:py-10 px-4 md:px-6 rounded-2xl border-2 border-border bg-card hover:border-primary hover:bg-primary/5 transition-all duration-200 group">
-                  <span className="text-xl md:text-2xl lg:text-3xl text-foreground group-hover:text-primary transition-colors font-medium">
+                <button onClick={onProceed} className="flex-1 py-6 md:py-8 lg:py-10 px-4 md:px-6 border-2 border-border bg-card hover:border-primary hover:bg-primary/5 transition-all duration-200 group rounded-lg">
+                  <span className="text-xl md:text-2xl lg:text-3xl text-foreground group-hover:text-primary transition-colors font-semibold">
                     Yes
                   </span>
                 </button>
                 <button onClick={() => setPhase("declined")} className="flex-1 py-6 md:py-8 lg:py-10 px-4 md:px-6 rounded-2xl border-2 border-border bg-card hover:border-primary hover:bg-primary/5 transition-all duration-200 group">
-                  <span className="text-xl md:text-2xl lg:text-3xl text-foreground group-hover:text-primary transition-colors font-medium">
+                  <span className="text-xl md:text-2xl lg:text-3xl text-foreground group-hover:text-primary transition-colors font-semibold">
                     No
                   </span>
                 </button>
