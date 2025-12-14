@@ -80,7 +80,7 @@ const WelcomeStep = ({
         {/* Single row - infinite scroll */}
         <div className="overflow-hidden">
           <div className="logo-scroll-container animate-scroll-left">
-            <img alt="Partners" className="h-32 md:h-40 lg:h-48 object-contain px-4" src="/lovable-uploads/949a4c65-135a-44bd-b37c-12faa470edd1.png" />
+            <img alt="Partners" className="h-32 md:h-40 lg:h-48 object-contain px-4" src="" />
             <img src={partnersFull} alt="Partners" className="h-32 md:h-40 lg:h-48 object-contain px-4" />
           </div>
         </div>
