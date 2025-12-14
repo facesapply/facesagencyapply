@@ -6,6 +6,17 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+const usPantSizes = ["28", "30", "32", "34", "36", "38", "40", "42", "44"];
+const usJacketSizes = ["XS", "S", "M", "L", "XL", "XXL", "3XL"];
+const euShoeSizes = ["36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48"];
 
 const sizeGuides = {
   pants: {
@@ -194,37 +205,43 @@ const MeasurementsStep = ({ data, gender, onChange }: MeasurementsStepProps) => 
 
         <div className="grid grid-cols-3 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="pantSize">Pant Size *</Label>
-            <Input
-              id="pantSize"
-              type="text"
-              placeholder="32"
-              value={data.pantSize}
-              onChange={(e) => onChange("pantSize", e.target.value)}
-              className="h-12"
-            />
+            <Label htmlFor="pantSize">Pant Size (US) *</Label>
+            <Select value={data.pantSize} onValueChange={(value) => onChange("pantSize", value)}>
+              <SelectTrigger className="h-12">
+                <SelectValue placeholder="Select size" />
+              </SelectTrigger>
+              <SelectContent>
+                {usPantSizes.map((size) => (
+                  <SelectItem key={size} value={size}>{size}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="jacketSize">{gender === "male" ? "Jacket" : "Blouse"} Size *</Label>
-            <Input
-              id="jacketSize"
-              type="text"
-              placeholder="M"
-              value={data.jacketSize}
-              onChange={(e) => onChange("jacketSize", e.target.value)}
-              className="h-12"
-            />
+            <Label htmlFor="jacketSize">{gender === "male" ? "Jacket" : "Blouse"} (US) *</Label>
+            <Select value={data.jacketSize} onValueChange={(value) => onChange("jacketSize", value)}>
+              <SelectTrigger className="h-12">
+                <SelectValue placeholder="Select size" />
+              </SelectTrigger>
+              <SelectContent>
+                {usJacketSizes.map((size) => (
+                  <SelectItem key={size} value={size}>{size}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="shoeSize">Shoe Size *</Label>
-            <Input
-              id="shoeSize"
-              type="text"
-              placeholder="42"
-              value={data.shoeSize}
-              onChange={(e) => onChange("shoeSize", e.target.value)}
-              className="h-12"
-            />
+            <Label htmlFor="shoeSize">Shoe Size (EU) *</Label>
+            <Select value={data.shoeSize} onValueChange={(value) => onChange("shoeSize", value)}>
+              <SelectTrigger className="h-12">
+                <SelectValue placeholder="Select size" />
+              </SelectTrigger>
+              <SelectContent>
+                {euShoeSizes.map((size) => (
+                  <SelectItem key={size} value={size}>{size}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
 
