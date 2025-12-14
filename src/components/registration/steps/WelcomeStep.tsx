@@ -9,21 +9,6 @@ const WelcomeStep = ({
 }: WelcomeStepProps) => {
   const [phase, setPhase] = useState<Phase>("ready-question");
   return <div className="flex flex-col min-h-screen">
-      {/* Partner logos section - Netflix-style infinite scroll */}
-      <div className="bg-background py-6">
-        <p className="text-sm text-muted-foreground text-center mb-4">
-          Trusted by leading brands
-        </p>
-      </div>
-
-      {/* Single row - infinite scroll */}
-      <div className="overflow-hidden">
-        <div className="logo-scroll-container animate-scroll-left flex gap-8 md:gap-12 lg:gap-16">
-          <img alt="Partners" className="h-32 md:h-40 lg:h-48 object-contain" src="" />
-          <img alt="Partners" src="/lovable-uploads/2deb1052-2f17-4966-bd3f-b0852e8b60f3.png" className="h-32 md:h-40 lg:h-48 object-fill" />
-        </div>
-      </div>
-
       {/* Main content area */}
       <div className="flex-1 flex flex-col items-center justify-center text-center px-4 pt-8 pb-4">
         <h1 className="text-8xl md:text-[10rem] lg:text-[12rem] font-bold mb-6 tracking-wider" style={{
@@ -35,6 +20,18 @@ const WelcomeStep = ({
 
         {phase === "ready-question" && <div className="animate-fade-in">
             <p className="text-lg md:text-xl text-muted-foreground mb-6 font-medium font-serif">Are you ready to have that chance to work, create, and perform, for the best and most favourable and recognizable brands internationally?</p>
+
+            {/* Partner logos section - under tagline */}
+            <div className="mb-8">
+              <p className="text-sm text-muted-foreground text-center mb-4">
+                Trusted by leading brands
+              </p>
+              <div className="overflow-hidden">
+                <div className="logo-scroll-container animate-scroll-left flex gap-8 md:gap-12 lg:gap-16">
+                  <img alt="Partners" src="/lovable-uploads/2deb1052-2f17-4966-bd3f-b0852e8b60f3.png" className="h-32 md:h-40 lg:h-48 object-contain" />
+                </div>
+              </div>
+            </div>
 
             {/* Ready question */}
             <div className="w-full max-w-sm mb-8 mx-auto">
