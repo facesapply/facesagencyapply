@@ -44,21 +44,21 @@ const WelcomeStep = ({
         </div>
 
         {/* Bottom section - CTA */}
-        <div className="flex-shrink-0 w-full max-w-sm mx-auto mb-8 md:mb-12">
+        <div className="flex-shrink-0 w-full max-w-lg mx-auto mb-8 md:mb-12">
           {phase === "ready-question" && <div className="animate-fade-in">
-              <div className="bg-card border border-border rounded-xl p-4 mb-6">
-                <p className="text-foreground font-medium">
+              <div className="bg-card border border-border rounded-2xl p-6 md:p-8 mb-8">
+                <p className="text-xl md:text-2xl lg:text-3xl text-foreground font-semibold">
                   Are you ready to join the FACES community?
                 </p>
               </div>
-              <div className="flex gap-4">
-                <button onClick={onProceed} className="flex-1 py-6 px-4 rounded-xl border-2 border-border bg-card hover:border-primary hover:bg-primary/5 transition-all duration-200 group">
-                  <span className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
+              <div className="flex gap-6">
+                <button onClick={onProceed} className="flex-1 py-8 md:py-10 px-6 rounded-2xl border-2 border-border bg-card hover:border-primary hover:bg-primary/5 transition-all duration-200 group">
+                  <span className="text-2xl md:text-3xl font-bold text-foreground group-hover:text-primary transition-colors">
                     Yes
                   </span>
                 </button>
-                <button onClick={() => setPhase("declined")} className="flex-1 py-6 px-4 rounded-xl border-2 border-border bg-card hover:border-primary hover:bg-primary/5 transition-all duration-200 group">
-                  <span className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
+                <button onClick={() => setPhase("declined")} className="flex-1 py-8 md:py-10 px-6 rounded-2xl border-2 border-border bg-card hover:border-primary hover:bg-primary/5 transition-all duration-200 group">
+                  <span className="text-2xl md:text-3xl font-bold text-foreground group-hover:text-primary transition-colors">
                     No
                   </span>
                 </button>
