@@ -43,14 +43,14 @@ const WelcomeStep = ({
         <div className="flex-shrink-0 w-full max-w-md md:max-w-lg lg:max-w-xl mx-auto mb-8 md:mb-12 px-2 md:px-4">
           {phase === "ready-question" && <div className="animate-fade-in">
               <div className="bg-card border border-border rounded-2xl p-6 md:p-8 lg:p-10 mb-6 md:mb-8">
-                <p className="text-xl md:text-2xl lg:text-3xl text-secondary-foreground font-semibold">internationallyReady to join the team?</p>
+                <p className="text-xl md:text-2xl lg:text-3xl font-sans font-medium text-[#666666]">Ready to join the team?</p>
               </div>
               <div className="flex gap-4 md:gap-6">
                 <button onClick={onProceed} className="flex-1 py-6 md:py-8 lg:py-10 px-4 md:px-6 border-2 border-border bg-card hover:border-primary hover:bg-primary/5 transition-all duration-200 group rounded-lg">
-                  <span className="text-xl md:text-2xl lg:text-3xl text-foreground group-hover:text-primary transition-colors font-semibold">internationally</span>
+                  <span className="text-xl md:text-2xl lg:text-3xl transition-colors font-semibold text-[#666666] font-sans">Yes</span>
                 </button>
                 <button onClick={() => setPhase("declined")} className="flex-1 py-6 md:py-8 lg:py-10 px-4 md:px-6 rounded-2xl border-2 border-border bg-card hover:border-primary hover:bg-primary/5 transition-all duration-200 group">
-                  <span className="text-xl md:text-2xl lg:text-3xl text-foreground group-hover:text-primary transition-colors font-semibold">internationally</span>
+                  <span className="text-xl md:text-2xl lg:text-3xl transition-colors font-semibold font-sans text-[#666666]">No</span>
                 </button>
               </div>
             </div>}
