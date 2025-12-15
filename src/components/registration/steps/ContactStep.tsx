@@ -84,7 +84,7 @@ const ContactStep = ({
       </div>
 
       {/* Social Media Section */}
-      <div className="pt-6 border-t border-border mt-[50px]">
+      <div className="pt-6 border-t border-border mt-[100px]">
         <div className="text-center mb-8">
           <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2 font-sans text-center">
             Social Media
