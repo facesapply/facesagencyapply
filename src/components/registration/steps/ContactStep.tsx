@@ -84,9 +84,13 @@ const ContactStep = ({
       </div>
 
       {/* Social Media Section */}
-      <div className="pt-6 border-t border-border my-[100px]">
-        <h3 className="text-lg text-foreground mb-4 md:mb-5 text-center font-bold font-sans my-[100px] md:text-2xl"><span className="text-muted-foreground text-sm font-normal">Social Media</span>
-        </h3>
+      <div className="pt-6 border-t border-border">
+        <div className="text-center mb-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2 font-sans text-center">
+            Social Media
+          </h2>
+          <p className="text-muted-foreground">Share your online presence</p>
+        </div>
         
         <div className="space-y-4 md:space-y-5">
           <div className="space-y-2">
