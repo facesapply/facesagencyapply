@@ -47,7 +47,7 @@ const WelcomeStep = ({
               </div>
               <div className="flex gap-4 md:gap-6">
                 <button onClick={onProceed} className="flex-1 py-6 md:py-8 lg:py-10 px-4 md:px-6 border-2 border-border bg-card hover:border-primary hover:bg-primary/5 transition-all duration-200 group rounded-lg">
-                  <span className="text-xl md:text-2xl lg:text-3xl text-foreground group-hover:text-primary transition-colors font-semibold">join </span>
+                  <span className="text-xl md:text-2xl lg:text-3xl text-foreground group-hover:text-primary transition-colors font-semibold">Yes</span>
                 </button>
                 <button onClick={() => setPhase("declined")} className="flex-1 py-6 md:py-8 lg:py-10 px-4 md:px-6 rounded-2xl border-2 border-border bg-card hover:border-primary hover:bg-primary/5 transition-all duration-200 group">
                   <span className="text-xl md:text-2xl lg:text-3xl text-foreground group-hover:text-primary transition-colors font-semibold">join </span>
