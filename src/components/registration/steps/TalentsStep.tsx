@@ -26,12 +26,15 @@ const TalentsStep = ({ data, onChange }: TalentsStepProps) => {
     );
   }, [searchQuery]);
 
+  const maxTalents = 8;
+
   const handleTalentToggle = (talent: string) => {
     const currentTalents = data.talents || [];
-    const newTalents = currentTalents.includes(talent)
-      ? currentTalents.filter((t) => t !== talent)
-      : [...currentTalents, talent];
-    onChange("talents", newTalents);
+    if (currentTalents.includes(talent)) {
+      onChange("talents", currentTalents.filter((t) => t !== talent));
+    } else if (currentTalents.length < maxTalents) {
+      onChange("talents", [...currentTalents, talent]);
+    }
   };
 
   const handleRemoveTalent = (talent: string) => {
@@ -99,8 +102,8 @@ const TalentsStep = ({ data, onChange }: TalentsStepProps) => {
             >
               <span className="text-muted-foreground">
                 {selectedTalents.length === 0
-                  ? "Select your talents..."
-                  : `${selectedTalents.length} talent${selectedTalents.length > 1 ? "s" : ""} selected`}
+                  ? "Select your talents (max 8)..."
+                  : `${selectedTalents.length}/${maxTalents} talents selected`}
               </span>
               <ChevronDown className={`h-5 w-5 text-muted-foreground transition-transform ${isOpen ? "rotate-180" : ""}`} />
             </button>
@@ -130,14 +133,16 @@ const TalentsStep = ({ data, onChange }: TalentsStepProps) => {
                   ) : (
                     filteredTalents.map((talent) => {
                       const isSelected = selectedTalents.includes(talent);
+                      const isDisabled = !isSelected && selectedTalents.length >= maxTalents;
                       return (
                         <button
                           key={talent}
                           type="button"
-                          onClick={() => handleTalentToggle(talent)}
-                          className={`w-full flex items-center justify-between px-4 py-3 hover:bg-muted/50 transition-colors text-left ${
-                            isSelected ? "bg-primary/5" : ""
-                          }`}
+                          onClick={() => !isDisabled && handleTalentToggle(talent)}
+                          disabled={isDisabled}
+                          className={`w-full flex items-center justify-between px-4 py-3 transition-colors text-left ${
+                            isSelected ? "bg-primary/5 hover:bg-primary/10" : ""
+                          } ${isDisabled ? "opacity-50 cursor-not-allowed" : "hover:bg-muted/50"}`}
                         >
                           <span className={isSelected ? "text-primary font-medium" : "text-foreground"}>
                             {talent}
