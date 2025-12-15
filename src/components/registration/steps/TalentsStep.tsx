@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { talents } from "@/data/lebanese-locations";
+import { Check, ChevronDown, X, Search } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 interface TalentsStepProps {
   data: {
@@ -15,6 +16,15 @@ interface TalentsStepProps {
 
 const TalentsStep = ({ data, onChange }: TalentsStepProps) => {
   const [customTalent, setCustomTalent] = useState(data.customTalent || "");
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredTalents = useMemo(() => {
+    if (!searchQuery.trim()) return talents;
+    return talents.filter((talent) =>
+      talent.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [searchQuery]);
 
   const handleTalentToggle = (talent: string) => {
     const currentTalents = data.talents || [];
@@ -22,6 +32,15 @@ const TalentsStep = ({ data, onChange }: TalentsStepProps) => {
       ? currentTalents.filter((t) => t !== talent)
       : [...currentTalents, talent];
     onChange("talents", newTalents);
+  };
+
+  const handleRemoveTalent = (talent: string) => {
+    const currentTalents = data.talents || [];
+    onChange("talents", currentTalents.filter((t) => t !== talent));
+    if (talent === "Other") {
+      setCustomTalent("");
+      onChange("customTalent", "");
+    }
   };
 
   const handleCustomTalentChange = (value: string) => {
@@ -32,6 +51,9 @@ const TalentsStep = ({ data, onChange }: TalentsStepProps) => {
   const handleExperienceSelect = (hasExperience: string) => {
     onChange("experience", hasExperience);
   };
+
+  const selectedTalents = data.talents || [];
+  const hasOtherSelected = selectedTalents.includes("Other");
 
   return (
     <div className="space-y-6">
@@ -45,51 +67,100 @@ const TalentsStep = ({ data, onChange }: TalentsStepProps) => {
       <div className="space-y-6">
         <div className="space-y-2">
           <Label>Talents & Skills *</Label>
-          <div className="grid grid-cols-2 gap-3 mt-4">
-            {talents.map((talent) => {
-              const isSelected = data.talents?.includes(talent);
-              const isOther = talent === "Other";
-              
-              return (
-                <div
+          
+          {/* Selected talents badges */}
+          {selectedTalents.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-3">
+              {selectedTalents.map((talent) => (
+                <Badge
                   key={talent}
-                  className={`flex flex-col p-4 rounded-lg border cursor-pointer transition-colors ${
-                    isSelected
-                      ? "border-primary bg-primary/10"
-                      : "border-border hover:border-primary/50"
-                  }`}
-                  onClick={() => handleTalentToggle(talent)}
+                  variant="secondary"
+                  className="flex items-center gap-1 px-3 py-1.5 text-sm bg-primary/10 text-primary border border-primary/20"
                 >
-                  <div className="flex items-center space-x-3">
-                    <Checkbox
-                      id={talent}
-                      checked={isSelected}
-                      onCheckedChange={() => handleTalentToggle(talent)}
-                    />
-                    <label
-                      htmlFor={talent}
-                      className="text-sm font-medium cursor-pointer"
-                    >
-                      {talent}
-                    </label>
-                  </div>
-                  
-                  {isSelected && isOther && (
+                  {talent}
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveTalent(talent)}
+                    className="ml-1 hover:bg-primary/20 rounded-full p-0.5"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </Badge>
+              ))}
+            </div>
+          )}
+
+          {/* Searchable dropdown */}
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setIsOpen(!isOpen)}
+              className="w-full flex items-center justify-between p-4 rounded-lg border border-border bg-background hover:border-primary/50 transition-colors text-left"
+            >
+              <span className="text-muted-foreground">
+                {selectedTalents.length === 0
+                  ? "Select your talents..."
+                  : `${selectedTalents.length} talent${selectedTalents.length > 1 ? "s" : ""} selected`}
+              </span>
+              <ChevronDown className={`h-5 w-5 text-muted-foreground transition-transform ${isOpen ? "rotate-180" : ""}`} />
+            </button>
+
+            {isOpen && (
+              <div className="absolute z-50 w-full mt-2 bg-background border border-border rounded-lg shadow-lg overflow-hidden">
+                {/* Search input */}
+                <div className="p-3 border-b border-border">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input
-                      placeholder="Specify your talent..."
-                      value={customTalent}
-                      onChange={(e) => {
-                        e.stopPropagation();
-                        handleCustomTalentChange(e.target.value);
-                      }}
-                      onClick={(e) => e.stopPropagation()}
-                      className="mt-3 h-10"
+                      placeholder="Search talents..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-9"
+                      autoFocus
                     />
+                  </div>
+                </div>
+
+                {/* Talents list */}
+                <div className="max-h-64 overflow-y-auto">
+                  {filteredTalents.length === 0 ? (
+                    <div className="p-4 text-center text-muted-foreground">
+                      No talents found
+                    </div>
+                  ) : (
+                    filteredTalents.map((talent) => {
+                      const isSelected = selectedTalents.includes(talent);
+                      return (
+                        <button
+                          key={talent}
+                          type="button"
+                          onClick={() => handleTalentToggle(talent)}
+                          className={`w-full flex items-center justify-between px-4 py-3 hover:bg-muted/50 transition-colors text-left ${
+                            isSelected ? "bg-primary/5" : ""
+                          }`}
+                        >
+                          <span className={isSelected ? "text-primary font-medium" : "text-foreground"}>
+                            {talent}
+                          </span>
+                          {isSelected && <Check className="h-4 w-4 text-primary" />}
+                        </button>
+                      );
+                    })
                   )}
                 </div>
-              );
-            })}
+              </div>
+            )}
           </div>
+
+          {/* Custom talent input when "Other" is selected */}
+          {hasOtherSelected && (
+            <Input
+              placeholder="Specify your other talent..."
+              value={customTalent}
+              onChange={(e) => handleCustomTalentChange(e.target.value)}
+              className="mt-3"
+            />
+          )}
         </div>
 
         <div className="space-y-3">
@@ -129,6 +200,14 @@ const TalentsStep = ({ data, onChange }: TalentsStepProps) => {
           </p>
         </div>
       </div>
+
+      {/* Click outside to close */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-40"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
     </div>
   );
 };
