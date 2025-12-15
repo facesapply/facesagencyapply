@@ -15,12 +15,14 @@ interface ContactStepProps {
     website: string;
   };
   onChange: (field: string, value: string) => void;
+  className?: string;
 }
 const ContactStep = ({
   data,
-  onChange
+  onChange,
+  className
 }: ContactStepProps) => {
-  return <div className="space-y-6">
+  return <div className={`space-y-6 ${className || ''}`}>
       <div className="text-center mb-8">
         <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2 font-sans text-center">
           Contact Information

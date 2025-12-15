@@ -217,13 +217,16 @@ const RegistrationForm = () => {
     }
     return true;
   };
-  const handleNext = () => {
-    if (validateCurrentStep()) {
+  const handleNext = (skipValidation = false) => {
+    if (skipValidation || validateCurrentStep()) {
       setCurrentStep(prev => Math.min(prev + 1, totalSteps - 1));
     }
   };
   const handleBack = () => {
     setCurrentStep(prev => Math.max(prev - 1, 0));
+  };
+  const handleSkipNext = () => {
+    setCurrentStep(prev => Math.min(prev + 1, totalSteps - 1));
   };
   const handleSubmit = async () => {
     setIsSubmitting(true);
@@ -308,13 +311,15 @@ const RegistrationForm = () => {
       {/* Navigation Buttons */}
       {currentStep > 0 && currentStep < totalSteps - 1 && <div className="sticky bottom-0 bg-background/95 backdrop-blur-sm border-t border-border px-4 md:px-6 py-4">
           <div className="max-w-md md:max-w-lg lg:max-w-xl mx-auto flex gap-3 md:gap-4">
-            <Button variant="outline" onClick={handleBack} className="flex-1 h-12 md:h-14 md:text-base">
-              <ArrowLeft className="w-4 h-4 md:w-5 md:h-5 mr-2" />
-              Back
+            <Button variant="outline" onClick={handleBack} className="h-12 md:h-14 md:text-base px-4">
+              <ArrowLeft className="w-4 h-4 md:w-5 md:h-5" />
             </Button>
-            <Button onClick={handleNext} className="flex-1 h-12 md:h-14 md:text-base">
+            <Button onClick={() => handleNext()} className="flex-1 h-12 md:h-14 md:text-base">
               Next
               <ArrowRight className="w-4 h-4 md:w-5 md:h-5 ml-2" />
+            </Button>
+            <Button variant="outline" onClick={handleSkipNext} className="h-12 md:h-14 md:text-base px-4">
+              <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
             </Button>
           </div>
         </div>}
