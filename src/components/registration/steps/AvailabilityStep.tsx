@@ -13,7 +13,6 @@ interface AvailabilityStepProps {
     hasPassport: string;
     hasMultiplePassports: string;
     passports: string[];
-    comfortableWithSwimwear: boolean | null;
   };
   onChange: (field: string, value: string | boolean | string[]) => void;
 }
@@ -169,40 +168,6 @@ const AvailabilityStep = ({ data, onChange }: AvailabilityStepProps) => {
             )}
           </div>
         )}
-
-        <div className="space-y-3">
-          <Label>Are you comfortable modeling swimwear?</Label>
-          <div className="grid grid-cols-2 gap-4">
-            <div
-              onClick={() => onChange("comfortableWithSwimwear", true)}
-              className={`flex items-center justify-center p-5 rounded-xl border-2 cursor-pointer transition-all ${
-                data.comfortableWithSwimwear === true
-                  ? "border-primary bg-primary/10 shadow-md"
-                  : "border-border hover:border-primary/50 hover:bg-muted/50"
-              }`}
-            >
-              <span className={`text-lg font-semibold ${
-                data.comfortableWithSwimwear === true ? "text-primary" : "text-foreground"
-              }`}>
-                Yes
-              </span>
-            </div>
-            <div
-              onClick={() => onChange("comfortableWithSwimwear", false)}
-              className={`flex items-center justify-center p-5 rounded-xl border-2 cursor-pointer transition-all ${
-                data.comfortableWithSwimwear === false
-                  ? "border-primary bg-primary/10 shadow-md"
-                  : "border-border hover:border-primary/50 hover:bg-muted/50"
-              }`}
-            >
-              <span className={`text-lg font-semibold ${
-                data.comfortableWithSwimwear === false ? "text-primary" : "text-foreground"
-              }`}>
-                No
-              </span>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );
