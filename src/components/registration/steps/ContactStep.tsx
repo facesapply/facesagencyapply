@@ -11,8 +11,6 @@ interface ContactStepProps {
     otherNumber: string;
     otherNumberCountryCode: string;
     instagram: string;
-    tiktok: string;
-    website: string;
   };
   onChange: (field: string, value: string) => void;
   className?: string;
@@ -101,18 +99,6 @@ const ContactStep = ({
             </div>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="tiktok">TikTok</Label>
-            <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">@</span>
-              <Input id="tiktok" placeholder="username" value={data.tiktok} onChange={e => onChange("tiktok", e.target.value)} className="h-12 md:h-14 pl-8" />
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="website">Website</Label>
-            <Input id="website" placeholder="https://yourwebsite.com" value={data.website} onChange={e => onChange("website", e.target.value)} className="h-12 md:h-14" type="url" />
-          </div>
         </div>
       </div>
     </div>;

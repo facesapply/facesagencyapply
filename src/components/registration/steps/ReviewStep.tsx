@@ -16,8 +16,6 @@ interface ReviewStepProps {
     otherNumber: string;
     otherNumberCountryCode: string;
     instagram: string;
-    tiktok: string;
-    website: string;
     governorate: string;
     district: string;
     area: string;
@@ -120,8 +118,6 @@ const ReviewStep = ({ formData, onSubmit, onChange, isSubmitting }: ReviewStepPr
 
         <Section title="Social Media">
           <Field label="Instagram" value={formData.instagram ? `@${formData.instagram}` : "-"} />
-          <Field label="TikTok" value={formData.tiktok ? `@${formData.tiktok}` : "-"} />
-          <Field label="Website" value={formData.website || "-"} />
         </Section>
 
         <Section title="Location">

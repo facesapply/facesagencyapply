@@ -28,8 +28,6 @@ interface FormData {
   otherNumber: string;
   otherNumberCountryCode: string;
   instagram: string;
-  tiktok: string;
-  website: string;
   governorate: string;
   district: string;
   area: string;
@@ -81,8 +79,6 @@ const initialFormData: FormData = {
   otherNumber: "",
   otherNumberCountryCode: "+961",
   instagram: "",
-  tiktok: "",
-  website: "",
   governorate: "",
   district: "",
   area: "",
