@@ -1,13 +1,10 @@
-import { useState } from "react";
-import partnersFull from "@/assets/partners-full.png";
 interface WelcomeStepProps {
   onProceed: () => void;
 }
-type Phase = "ready-question" | "declined";
+
 const WelcomeStep = ({
   onProceed
 }: WelcomeStepProps) => {
-  const [phase, setPhase] = useState<Phase>("ready-question");
   return <div className="flex flex-col min-h-screen">
       {/* Main content area */}
       <div className="flex-1 flex flex-col items-center justify-between text-center px-4 py-12 md:py-16">
@@ -22,49 +19,27 @@ const WelcomeStep = ({
           </h1>
         </div>
 
-        {/* Middle section - Tagline & Partners */}
+        {/* Middle section - Tagline */}
         <div className="flex-1 flex flex-col items-center justify-start py-2 md:py-4">
-          {/* Tagline */}
           <p className="text-lg md:text-xl lg:text-2xl text-muted-foreground mb-12 md:mb-16 font-serif max-w-2xl font-semibold px-4 mt-8 md:mt-12">Want to have that chance to work, create, and be seen representing the best and most recognizable brands internationally?</p>
+        </div>
 
-          {/* Partner logos section - Our Customers */}
-          <div className="w-full">
+        {/* Bottom section - Partner logos & CTA */}
+        <div className="flex-shrink-0 w-full max-w-4xl mx-auto mb-8 md:mb-12 px-2 md:px-4">
+          {/* Partner logos section */}
+          <div className="w-full mb-8">
             <p className="text-muted-foreground text-center mb-4 text-base">Our Trusted Partners</p>
             <div className="logo-scroll-wrapper">
               <div className="logo-scroll-track">
                 <img alt="Partners" className="h-28 md:h-36 lg:h-44 object-contain px-8" src="/lovable-uploads/07543e1b-278c-4ebb-bb58-a8107bf32277.png" />
-                
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Bottom section - CTA */}
-        <div className="flex-shrink-0 w-full max-w-md md:max-w-lg lg:max-w-xl mx-auto mb-8 md:mb-12 px-2 md:px-4">
-          {phase === "ready-question" && <div className="animate-fade-in">
-              <div className="bg-card border border-border rounded-2xl p-6 md:p-8 lg:p-10 mb-6 md:mb-8">
-                <p className="text-xl md:text-2xl lg:text-3xl font-sans font-medium text-[#666666]">Ready to join the team?</p>
-              </div>
-              <div className="flex gap-4 md:gap-6">
-                <button onClick={onProceed} className="flex-1 py-6 md:py-8 lg:py-10 px-4 md:px-6 border-2 border-border bg-card hover:border-primary hover:bg-primary/5 transition-all duration-200 group rounded-lg">
-                  <span className="text-xl md:text-2xl lg:text-3xl transition-colors font-semibold text-[#666666] font-sans">Yes</span>
-                </button>
-                <button onClick={() => setPhase("declined")} className="flex-1 py-6 md:py-8 lg:py-10 px-4 md:px-6 rounded-2xl border-2 border-border bg-card hover:border-primary hover:bg-primary/5 transition-all duration-200 group">
-                  <span className="text-xl md:text-2xl lg:text-3xl transition-colors font-semibold font-sans text-[#666666]">No</span>
-                </button>
-              </div>
-            </div>}
-
-          {phase === "declined" && <div className="animate-fade-in">
-              <p className="text-2xl text-muted-foreground mb-6">
-                😢 Come back whenever you feel ready. Hope to see you at FACES soon!
-              </p>
-              <button onClick={() => setPhase("ready-question")} className="py-4 px-8 rounded-xl border-2 border-border bg-card hover:border-primary hover:bg-primary/5 transition-all duration-200 group">
-                <span className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
-                  Try again
-                </span>
-              </button>
-            </div>}
+          {/* Apply button */}
+          <button onClick={onProceed} className="py-6 md:py-8 px-12 md:px-16 border-2 border-border bg-card hover:border-primary hover:bg-primary/5 transition-all duration-200 group rounded-xl">
+            <span className="text-xl md:text-2xl lg:text-3xl transition-colors font-semibold text-foreground group-hover:text-primary font-sans">Apply Now</span>
+          </button>
         </div>
       </div>
 
