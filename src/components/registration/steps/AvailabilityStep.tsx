@@ -73,12 +73,6 @@ const AvailabilityStep = ({ data, onChange }: AvailabilityStepProps) => {
 
       <div className="space-y-6">
         <PollQuestion
-          label="If needed, would you be interested in casting as a Background Actor/Extra/Comparse?"
-          field="interestedInExtra"
-          value={data.interestedInExtra}
-        />
-
-        <PollQuestion
           label="Do you own a car?"
           field="hasCar"
           value={data.hasCar}

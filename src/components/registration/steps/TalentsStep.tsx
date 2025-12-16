@@ -13,6 +13,7 @@ interface TalentsStepProps {
     customTalent?: string;
     customSport?: string;
     comfortableWithSwimwear: boolean | null;
+    interestedInExtra: string;
   };
   onChange: (field: string, value: string | string[] | boolean) => void;
 }
@@ -388,6 +389,13 @@ const TalentsStep = ({ data, onChange }: TalentsStepProps) => {
             </div>
           </div>
         </div>
+
+        {/* Extra/Background actor question */}
+        <PollQuestion
+          label="If needed, would you be interested in casting as a Background Actor/Extra/Comparse?"
+          field="interestedInExtra"
+          value={data.interestedInExtra}
+        />
 
       </div>
 
