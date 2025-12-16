@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -257,6 +257,33 @@ const RegistrationForm = () => {
       setIsSubmitting(false);
     }
   };
+  // Letter-by-letter animation for thank you page
+  const [visibleLetters, setVisibleLetters] = useState(0);
+  const facesLetters = [
+    { char: "f", isRed: false },
+    { char: "a", isRed: false },
+    { char: "c", isRed: false },
+    { char: "e", isRed: false },
+    { char: "s", isRed: true },
+  ];
+
+  // Animate letters when submitted
+  useEffect(() => {
+    if (isSubmitted) {
+      setVisibleLetters(0);
+      const interval = setInterval(() => {
+        setVisibleLetters((prev) => {
+          if (prev < facesLetters.length) {
+            return prev + 1;
+          }
+          clearInterval(interval);
+          return prev;
+        });
+      }, 250); // Medium pace - 250ms per letter
+      return () => clearInterval(interval);
+    }
+  }, [isSubmitted]);
+
   if (isSubmitted) {
     return <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4 animate-fade-in-up">
         <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center mb-6">
@@ -264,7 +291,26 @@ const RegistrationForm = () => {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h1 className="text-4xl md:text-5xl font-bold text-primary mb-4 tracking-wider" style={{
+        
+        {/* Animated FACES Logo */}
+        <div className="flex items-center justify-center gap-0 mb-6">
+          {facesLetters.map((letter, index) => (
+            <span
+              key={index}
+              className={`text-5xl md:text-7xl font-bold tracking-wider transition-all duration-300 ${
+                index < visibleLetters ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+              } ${letter.isRed ? "text-primary" : "text-foreground"}`}
+              style={{
+                fontFamily: "'Bebas Neue', sans-serif",
+                transitionDelay: `${index * 50}ms`,
+              }}
+            >
+              {letter.char}
+            </span>
+          ))}
+        </div>
+
+        <h1 className="text-3xl md:text-4xl font-bold text-primary mb-4 tracking-wider" style={{
         fontFamily: "'Bebas Neue', sans-serif"
       }}>
           THANK YOU!
