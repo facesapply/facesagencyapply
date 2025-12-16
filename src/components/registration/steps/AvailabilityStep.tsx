@@ -91,12 +91,6 @@ const AvailabilityStep = ({ data, onChange }: AvailabilityStepProps) => {
         />
 
         <PollQuestion
-          label="Are you employed?"
-          field="isEmployed"
-          value={data.isEmployed}
-        />
-
-        <PollQuestion
           label="Are you willing to travel?"
           field="canTravel"
           value={data.canTravel}
