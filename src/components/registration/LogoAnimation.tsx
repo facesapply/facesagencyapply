@@ -21,17 +21,8 @@ const LogoAnimation = ({ onComplete }: LogoAnimationProps) => {
     { char: "s", isRed: true },
   ];
 
-  // Play sound only once per session using sessionStorage
+  // Play camera sound
   const playCameraSound = () => {
-    const alreadyPlayed = sessionStorage.getItem('cameraPlayed');
-    console.log('playCameraSound called, alreadyPlayed:', alreadyPlayed);
-    if (alreadyPlayed === 'true') {
-      console.log('Skipping sound - already played');
-      return;
-    }
-    sessionStorage.setItem('cameraPlayed', 'true');
-    console.log('Playing camera sound NOW');
-    
     try {
       if (audioRef.current) {
         audioRef.current.pause();
