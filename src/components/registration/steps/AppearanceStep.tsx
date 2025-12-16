@@ -171,7 +171,7 @@ const AppearanceStep = ({ data, onChange }: AppearanceStepProps) => {
         </div>
 
         <div className="flex items-center justify-between p-4 rounded-lg border border-border">
-          <Label htmlFor="piercings" className="cursor-pointer">Do you have any visible piercings?</Label>
+          <Label htmlFor="piercings" className="cursor-pointer">Do you have any piercings?</Label>
           <Switch
             id="piercings"
             checked={data.hasPiercings}
