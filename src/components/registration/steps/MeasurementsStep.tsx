@@ -14,13 +14,55 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const usPantSizes = ["28", "30", "32", "34", "36", "38", "40", "42", "44"];
-const usJacketSizes = ["XS", "S", "M", "L", "XL", "XXL", "3XL"];
-const euShoeSizes = ["36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48"];
+// Children's sizes
+const childPantSizes = ["2T", "3T", "4T", "5", "6", "7", "8", "10", "12", "14", "16"];
+const childJacketSizes = ["2T", "3T", "4T", "5", "6", "7", "8", "10", "12", "14", "16"];
+const childShoeSizes = ["22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35"];
+
+// Adult sizes
+const adultPantSizes = ["28", "30", "32", "34", "36", "38", "40", "42", "44"];
+const adultJacketSizes = ["XS", "S", "M", "L", "XL", "XXL", "3XL"];
+const adultShoeSizes = ["36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48"];
+
+// Combined sizes for dropdowns
+const allPantSizes = [...childPantSizes, ...adultPantSizes];
+const allJacketSizes = [...childJacketSizes, ...adultJacketSizes];
+const allShoeSizes = [...childShoeSizes, ...adultShoeSizes];
 
 const sizeGuides = {
+  childPants: {
+    title: "Children's Pants Size Guide",
+    headers: ["US", "Age", "Height (cm)"],
+    rows: [
+      ["2T", "2 yrs", "84-89"],
+      ["3T", "3 yrs", "89-97"],
+      ["4T", "4 yrs", "97-104"],
+      ["5", "5 yrs", "104-109"],
+      ["6", "6 yrs", "109-117"],
+      ["7", "7 yrs", "117-122"],
+      ["8", "8 yrs", "122-128"],
+      ["10", "9-10 yrs", "128-140"],
+      ["12", "11-12 yrs", "140-152"],
+      ["14", "13-14 yrs", "152-163"],
+      ["16", "15-16 yrs", "163-168"],
+    ],
+  },
+  childShoes: {
+    title: "Children's Shoe Size Guide",
+    headers: ["EU", "US", "Age"],
+    rows: [
+      ["22", "6", "1-2 yrs"],
+      ["24", "8", "2-3 yrs"],
+      ["26", "9.5", "3-4 yrs"],
+      ["28", "11", "4-5 yrs"],
+      ["30", "12.5", "5-6 yrs"],
+      ["32", "1Y", "7-8 yrs"],
+      ["34", "3Y", "9-10 yrs"],
+      ["35", "4Y", "10-11 yrs"],
+    ],
+  },
   pants: {
-    title: "Pants Size Guide",
+    title: "Adult Pants Size Guide",
     headers: ["US", "UK", "EU"],
     rows: [
       ["28", "28", "44"],
@@ -33,7 +75,7 @@ const sizeGuides = {
     ],
   },
   jacket: {
-    title: "Jacket/Blouse Size Guide",
+    title: "Adult Jacket/Blouse Size Guide",
     headers: ["US", "UK", "EU"],
     rows: [
       ["XS", "6", "34"],
@@ -45,7 +87,7 @@ const sizeGuides = {
     ],
   },
   shoes: {
-    title: "Shoe Size Guide",
+    title: "Adult Shoe Size Guide",
     headers: ["US Men", "UK", "EU"],
     rows: [
       ["7", "6", "39"],
@@ -131,49 +173,76 @@ const MeasurementsStep = ({ data, gender, onChange }: MeasurementsStepProps) => 
           <Info className="h-4 w-4 text-primary" />
           <span className="text-sm font-medium text-foreground">Size Conversion Guide</span>
         </div>
-        <div className={`grid ${gender === "female" ? "grid-cols-2 md:grid-cols-4" : "grid-cols-3"} gap-2`}>
-          <Popover>
-            <PopoverTrigger asChild>
-              <button className="text-xs bg-background hover:bg-accent border border-border rounded px-3 py-2 transition-colors">
-                Pants
-              </button>
-            </PopoverTrigger>
-            <PopoverContent className="w-56">
-              <SizeGuideTable guide={sizeGuides.pants} />
-            </PopoverContent>
-          </Popover>
-          <Popover>
-            <PopoverTrigger asChild>
-              <button className="text-xs bg-background hover:bg-accent border border-border rounded px-3 py-2 transition-colors">
-                {gender === "male" ? "Jacket" : "Blouse"}
-              </button>
-            </PopoverTrigger>
-            <PopoverContent className="w-56">
-              <SizeGuideTable guide={sizeGuides.jacket} />
-            </PopoverContent>
-          </Popover>
-          <Popover>
-            <PopoverTrigger asChild>
-              <button className="text-xs bg-background hover:bg-accent border border-border rounded px-3 py-2 transition-colors">
-                Shoes
-              </button>
-            </PopoverTrigger>
-            <PopoverContent className="w-56">
-              <SizeGuideTable guide={sizeGuides.shoes} />
-            </PopoverContent>
-          </Popover>
-          {gender === "female" && (
+        <div className="space-y-2">
+          <div className="text-xs text-muted-foreground font-medium mb-1">Children</div>
+          <div className="grid grid-cols-2 gap-2">
             <Popover>
               <PopoverTrigger asChild>
-                <button className="text-xs bg-primary/10 hover:bg-primary/20 border border-primary/30 text-primary rounded px-3 py-2 transition-colors font-medium">
-                  Body Guide
+                <button className="text-xs bg-background hover:bg-accent border border-border rounded px-3 py-2 transition-colors">
+                  Kids Clothing
                 </button>
               </PopoverTrigger>
-              <PopoverContent className="w-72">
-                <SizeGuideTable guide={sizeGuides.womenBody} />
+              <PopoverContent className="w-64">
+                <SizeGuideTable guide={sizeGuides.childPants} />
               </PopoverContent>
             </Popover>
-          )}
+            <Popover>
+              <PopoverTrigger asChild>
+                <button className="text-xs bg-background hover:bg-accent border border-border rounded px-3 py-2 transition-colors">
+                  Kids Shoes
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="w-56">
+                <SizeGuideTable guide={sizeGuides.childShoes} />
+              </PopoverContent>
+            </Popover>
+          </div>
+          
+          <div className="text-xs text-muted-foreground font-medium mt-3 mb-1">Adults</div>
+          <div className={`grid ${gender === "female" ? "grid-cols-2 md:grid-cols-4" : "grid-cols-3"} gap-2`}>
+            <Popover>
+              <PopoverTrigger asChild>
+                <button className="text-xs bg-background hover:bg-accent border border-border rounded px-3 py-2 transition-colors">
+                  Pants
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="w-56">
+                <SizeGuideTable guide={sizeGuides.pants} />
+              </PopoverContent>
+            </Popover>
+            <Popover>
+              <PopoverTrigger asChild>
+                <button className="text-xs bg-background hover:bg-accent border border-border rounded px-3 py-2 transition-colors">
+                  {gender === "male" ? "Jacket" : "Blouse"}
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="w-56">
+                <SizeGuideTable guide={sizeGuides.jacket} />
+              </PopoverContent>
+            </Popover>
+            <Popover>
+              <PopoverTrigger asChild>
+                <button className="text-xs bg-background hover:bg-accent border border-border rounded px-3 py-2 transition-colors">
+                  Shoes
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="w-56">
+                <SizeGuideTable guide={sizeGuides.shoes} />
+              </PopoverContent>
+            </Popover>
+            {gender === "female" && (
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button className="text-xs bg-primary/10 hover:bg-primary/20 border border-primary/30 text-primary rounded px-3 py-2 transition-colors font-medium">
+                    Body Guide
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-72">
+                  <SizeGuideTable guide={sizeGuides.womenBody} />
+                </PopoverContent>
+              </Popover>
+            )}
+          </div>
         </div>
       </div>
 
@@ -211,8 +280,13 @@ const MeasurementsStep = ({ data, gender, onChange }: MeasurementsStepProps) => 
                 <SelectValue placeholder="Size" />
               </SelectTrigger>
               <SelectContent>
-                {usPantSizes.map((size) => (
-                  <SelectItem key={size} value={size}>{size}</SelectItem>
+                <div className="px-2 py-1 text-xs font-semibold text-muted-foreground">Children</div>
+                {childPantSizes.map((size) => (
+                  <SelectItem key={`child-${size}`} value={size}>{size}</SelectItem>
+                ))}
+                <div className="px-2 py-1 text-xs font-semibold text-muted-foreground border-t mt-1 pt-1">Adults</div>
+                {adultPantSizes.map((size) => (
+                  <SelectItem key={`adult-${size}`} value={size}>{size}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -224,8 +298,13 @@ const MeasurementsStep = ({ data, gender, onChange }: MeasurementsStepProps) => 
                 <SelectValue placeholder="Size" />
               </SelectTrigger>
               <SelectContent>
-                {usJacketSizes.map((size) => (
-                  <SelectItem key={size} value={size}>{size}</SelectItem>
+                <div className="px-2 py-1 text-xs font-semibold text-muted-foreground">Children</div>
+                {childJacketSizes.map((size) => (
+                  <SelectItem key={`child-${size}`} value={size}>{size}</SelectItem>
+                ))}
+                <div className="px-2 py-1 text-xs font-semibold text-muted-foreground border-t mt-1 pt-1">Adults</div>
+                {adultJacketSizes.map((size) => (
+                  <SelectItem key={`adult-${size}`} value={size}>{size}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -237,8 +316,13 @@ const MeasurementsStep = ({ data, gender, onChange }: MeasurementsStepProps) => 
                 <SelectValue placeholder="Size" />
               </SelectTrigger>
               <SelectContent>
-                {euShoeSizes.map((size) => (
-                  <SelectItem key={size} value={size}>{size}</SelectItem>
+                <div className="px-2 py-1 text-xs font-semibold text-muted-foreground">Children</div>
+                {childShoeSizes.map((size) => (
+                  <SelectItem key={`child-${size}`} value={size}>{size}</SelectItem>
+                ))}
+                <div className="px-2 py-1 text-xs font-semibold text-muted-foreground border-t mt-1 pt-1">Adults</div>
+                {adultShoeSizes.map((size) => (
+                  <SelectItem key={`adult-${size}`} value={size}>{size}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
