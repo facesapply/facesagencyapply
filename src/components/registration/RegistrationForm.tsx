@@ -7,7 +7,6 @@ import WelcomeStep from "./steps/WelcomeStep";
 import MainInfoStep from "./steps/MainInfoStep";
 import ContactStep from "./steps/ContactStep";
 import AddressStep from "./steps/AddressStep";
-import LanguagesStep from "./steps/LanguagesStep";
 import AppearanceStep from "./steps/AppearanceStep";
 import MeasurementsStep from "./steps/MeasurementsStep";
 import TalentsStep from "./steps/TalentsStep";
@@ -132,7 +131,7 @@ const RegistrationForm = () => {
   const {
     toast
   } = useToast();
-  const totalSteps = 10;
+  const totalSteps = 9;
   const updateFormData = (field: string, value: string | string[] | boolean | File | null | Record<string, number>) => {
     setFormData(prev => ({
       ...prev,
@@ -174,9 +173,20 @@ const RegistrationForm = () => {
         }
       case 3:
         {
-          const result = addressSchema.safeParse(formData);
-          if (!result.success) {
-            const firstError = result.error.errors[0];
+          // Validate both address and languages
+          const addressResult = addressSchema.safeParse(formData);
+          if (!addressResult.success) {
+            const firstError = addressResult.error.errors[0];
+            toast({
+              title: "Validation Error",
+              description: firstError.message,
+              variant: "destructive"
+            });
+            return false;
+          }
+          const langResult = languagesSchema.safeParse(formData);
+          if (!langResult.success) {
+            const firstError = langResult.error.errors[0];
             toast({
               title: "Validation Error",
               description: firstError.message,
@@ -187,20 +197,6 @@ const RegistrationForm = () => {
           break;
         }
       case 4:
-        {
-          const result = languagesSchema.safeParse(formData);
-          if (!result.success) {
-            const firstError = result.error.errors[0];
-            toast({
-              title: "Validation Error",
-              description: firstError.message,
-              variant: "destructive"
-            });
-            return false;
-          }
-          break;
-        }
-      case 5:
         {
           const result = appearanceSchema.safeParse(formData);
           if (!result.success) {
@@ -214,7 +210,7 @@ const RegistrationForm = () => {
           }
           break;
         }
-      case 6:
+      case 5:
         {
           const result = measurementsSchema.safeParse(formData);
           if (!result.success) {
@@ -338,16 +334,14 @@ const RegistrationForm = () => {
       case 3:
         return <AddressStep data={formData} onChange={updateFormData} />;
       case 4:
-        return <LanguagesStep data={formData} onChange={updateFormData} />;
-      case 5:
         return <AppearanceStep data={formData} onChange={updateFormData} />;
-      case 6:
+      case 5:
         return <MeasurementsStep data={formData} gender={formData.gender} onChange={updateFormData} />;
-      case 7:
+      case 6:
         return <TalentsStep data={formData} onChange={updateFormData} />;
-      case 8:
+      case 7:
         return <AvailabilityStep data={formData} onChange={updateFormData} />;
-      case 9:
+      case 8:
         return <ReviewStep formData={formData} onSubmit={handleSubmit} onChange={updateFormData} isSubmitting={isSubmitting} />;
       default:
         return null;
