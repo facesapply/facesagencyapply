@@ -55,8 +55,10 @@ interface FormData {
   shoulders: string;
   talents: string[];
   sports: string[];
+  modeling: string[];
   customTalent: string;
   customSport: string;
+  customModeling: string;
   experience: string;
   interestedInExtra: string;
   hasCar: string;
@@ -110,8 +112,10 @@ const initialFormData: FormData = {
   shoulders: "",
   talents: [],
   sports: [],
+  modeling: [],
   customTalent: "",
   customSport: "",
+  customModeling: "",
   experience: "",
   interestedInExtra: "",
   hasCar: "",

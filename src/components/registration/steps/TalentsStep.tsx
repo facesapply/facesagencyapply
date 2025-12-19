@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { talents, sports } from "@/data/lebanese-locations";
+import { talents, sports, modelingTypes } from "@/data/lebanese-locations";
 import { Check, ChevronDown, X, Search } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
@@ -9,9 +9,11 @@ interface TalentsStepProps {
   data: {
     talents: string[];
     sports: string[];
+    modeling: string[];
     experience: string;
     customTalent?: string;
     customSport?: string;
+    customModeling?: string;
     comfortableWithSwimwear: boolean | null;
     interestedInExtra: string;
   };
@@ -21,10 +23,13 @@ interface TalentsStepProps {
 const TalentsStep = ({ data, onChange }: TalentsStepProps) => {
   const [customTalent, setCustomTalent] = useState(data.customTalent || "");
   const [customSport, setCustomSport] = useState(data.customSport || "");
+  const [customModeling, setCustomModeling] = useState(data.customModeling || "");
   const [isTalentsOpen, setIsTalentsOpen] = useState(false);
   const [isSportsOpen, setIsSportsOpen] = useState(false);
+  const [isModelingOpen, setIsModelingOpen] = useState(false);
   const [talentSearchQuery, setTalentSearchQuery] = useState("");
   const [sportSearchQuery, setSportSearchQuery] = useState("");
+  const [modelingSearchQuery, setModelingSearchQuery] = useState("");
 
   const filteredTalents = useMemo(() => {
     if (!talentSearchQuery.trim()) return talents;
@@ -40,8 +45,16 @@ const TalentsStep = ({ data, onChange }: TalentsStepProps) => {
     );
   }, [sportSearchQuery]);
 
-  const maxTalents = 8;
+  const filteredModeling = useMemo(() => {
+    if (!modelingSearchQuery.trim()) return modelingTypes;
+    return modelingTypes.filter((type) =>
+      type.toLowerCase().includes(modelingSearchQuery.toLowerCase())
+    );
+  }, [modelingSearchQuery]);
+
+  const maxTalents = 5;
   const maxSports = 5;
+  const maxModeling = 5;
 
   const handleTalentToggle = (talent: string) => {
     const currentTalents = data.talents || [];
@@ -58,6 +71,15 @@ const TalentsStep = ({ data, onChange }: TalentsStepProps) => {
       onChange("sports", currentSports.filter((s) => s !== sport));
     } else if (currentSports.length < maxSports) {
       onChange("sports", [...currentSports, sport]);
+    }
+  };
+
+  const handleModelingToggle = (type: string) => {
+    const currentModeling = data.modeling || [];
+    if (currentModeling.includes(type)) {
+      onChange("modeling", currentModeling.filter((m) => m !== type));
+    } else if (currentModeling.length < maxModeling) {
+      onChange("modeling", [...currentModeling, type]);
     }
   };
 
@@ -79,6 +101,15 @@ const TalentsStep = ({ data, onChange }: TalentsStepProps) => {
     }
   };
 
+  const handleRemoveModeling = (type: string) => {
+    const currentModeling = data.modeling || [];
+    onChange("modeling", currentModeling.filter((m) => m !== type));
+    if (type === "Other") {
+      setCustomModeling("");
+      onChange("customModeling", "");
+    }
+  };
+
   const handleCustomTalentChange = (value: string) => {
     setCustomTalent(value);
     onChange("customTalent", value);
@@ -89,10 +120,23 @@ const TalentsStep = ({ data, onChange }: TalentsStepProps) => {
     onChange("customSport", value);
   };
 
+  const handleCustomModelingChange = (value: string) => {
+    setCustomModeling(value);
+    onChange("customModeling", value);
+  };
+
   const selectedTalents = data.talents || [];
   const selectedSports = data.sports || [];
+  const selectedModeling = data.modeling || [];
   const hasTalentOtherSelected = selectedTalents.includes("Other");
   const hasSportOtherSelected = selectedSports.includes("Other");
+  const hasModelingOtherSelected = selectedModeling.includes("Other");
+
+  const closeAllDropdowns = () => {
+    setIsTalentsOpen(false);
+    setIsSportsOpen(false);
+    setIsModelingOpen(false);
+  };
 
   const PollQuestion = ({
     label,
@@ -179,12 +223,13 @@ const TalentsStep = ({ data, onChange }: TalentsStepProps) => {
               onClick={() => {
                 setIsTalentsOpen(!isTalentsOpen);
                 setIsSportsOpen(false);
+                setIsModelingOpen(false);
               }}
               className="w-full flex items-center justify-between p-4 rounded-lg border border-border bg-background hover:border-primary/50 transition-colors text-left"
             >
               <span className="text-muted-foreground">
                 {selectedTalents.length === 0
-                  ? "Select your talents (max 8)..."
+                  ? "Select your talents (max 5)..."
                   : `${selectedTalents.length}/${maxTalents} talents selected`}
               </span>
               <ChevronDown className={`h-5 w-5 text-muted-foreground transition-transform ${isTalentsOpen ? "rotate-180" : ""}`} />
@@ -278,6 +323,7 @@ const TalentsStep = ({ data, onChange }: TalentsStepProps) => {
               onClick={() => {
                 setIsSportsOpen(!isSportsOpen);
                 setIsTalentsOpen(false);
+                setIsModelingOpen(false);
               }}
               className="w-full flex items-center justify-between p-4 rounded-lg border border-border bg-background hover:border-primary/50 transition-colors text-left"
             >
@@ -355,6 +401,106 @@ const TalentsStep = ({ data, onChange }: TalentsStepProps) => {
           No experience? No problem! We welcome fresh faces.
         </p>
 
+        {/* Modeling dropdown - placed after experience question */}
+        <div className="space-y-2">
+          <Label>Modeling</Label>
+          
+          {selectedModeling.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-3">
+              {selectedModeling.map((type) => (
+                <Badge
+                  key={type}
+                  variant="secondary"
+                  className="flex items-center gap-1 px-3 py-1.5 text-sm bg-primary/10 text-primary border border-primary/20"
+                >
+                  {type}
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveModeling(type)}
+                    className="ml-1 hover:bg-primary/20 rounded-full p-0.5"
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
+                </Badge>
+              ))}
+            </div>
+          )}
+
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => {
+                setIsModelingOpen(!isModelingOpen);
+                setIsTalentsOpen(false);
+                setIsSportsOpen(false);
+              }}
+              className="w-full flex items-center justify-between p-4 rounded-lg border border-border bg-background hover:border-primary/50 transition-colors text-left"
+            >
+              <span className="text-muted-foreground">
+                {selectedModeling.length === 0
+                  ? "Select modeling types (max 5)..."
+                  : `${selectedModeling.length}/${maxModeling} selected`}
+              </span>
+              <ChevronDown className={`h-5 w-5 text-muted-foreground transition-transform ${isModelingOpen ? "rotate-180" : ""}`} />
+            </button>
+
+            {isModelingOpen && (
+              <div className="absolute z-50 w-full mt-2 bg-background border border-border rounded-lg shadow-lg overflow-hidden">
+                <div className="p-3 border-b border-border">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Search modeling types..."
+                      value={modelingSearchQuery}
+                      onChange={(e) => setModelingSearchQuery(e.target.value)}
+                      className="pl-9"
+                      autoFocus
+                    />
+                  </div>
+                </div>
+
+                <div className="max-h-64 overflow-y-auto">
+                  {filteredModeling.length === 0 ? (
+                    <div className="p-4 text-center text-muted-foreground">
+                      No modeling types found
+                    </div>
+                  ) : (
+                    filteredModeling.map((type) => {
+                      const isSelected = selectedModeling.includes(type);
+                      const isDisabled = !isSelected && selectedModeling.length >= maxModeling;
+                      return (
+                        <button
+                          key={type}
+                          type="button"
+                          onClick={() => !isDisabled && handleModelingToggle(type)}
+                          disabled={isDisabled}
+                          className={`w-full flex items-center justify-between px-4 py-3 transition-colors text-left ${
+                            isSelected ? "bg-primary/5 hover:bg-primary/10" : ""
+                          } ${isDisabled ? "opacity-50 cursor-not-allowed" : "hover:bg-muted/50"}`}
+                        >
+                          <span className={isSelected ? "text-primary font-medium" : "text-foreground"}>
+                            {type}
+                          </span>
+                          {isSelected && <Check className="h-4 w-4 text-primary" />}
+                        </button>
+                      );
+                    })
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {hasModelingOtherSelected && (
+            <Input
+              placeholder="Specify your other modeling type..."
+              value={customModeling}
+              onChange={(e) => handleCustomModelingChange(e.target.value)}
+              className="mt-3"
+            />
+          )}
+        </div>
+
         {/* Swimwear comfort question */}
         <div className="space-y-3">
           <Label>Are you comfortable modeling swimwear?</Label>
@@ -400,13 +546,10 @@ const TalentsStep = ({ data, onChange }: TalentsStepProps) => {
       </div>
 
       {/* Click outside to close */}
-      {(isTalentsOpen || isSportsOpen) && (
+      {(isTalentsOpen || isSportsOpen || isModelingOpen) && (
         <div
           className="fixed inset-0 z-40"
-          onClick={() => {
-            setIsTalentsOpen(false);
-            setIsSportsOpen(false);
-          }}
+          onClick={closeAllDropdowns}
         />
       )}
     </div>

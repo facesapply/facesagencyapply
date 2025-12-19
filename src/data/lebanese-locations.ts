@@ -448,8 +448,7 @@ export const skinTones = [
   "Dark",
 ];
 
-export const talents = [
-  // Modeling Types
+export const modelingTypes = [
   "Fashion Modeling",
   "Commercial Modeling",
   "Runway/Catwalk Modeling",
@@ -471,7 +470,10 @@ export const talents = [
   "Child Modeling",
   "Teen Modeling",
   "Bridal Modeling",
-  
+  "Other",
+];
+
+export const talents = [
   // Acting Types
   "Film Acting",
   "TV Acting",
