@@ -161,7 +161,7 @@ const ContactStep = ({
         
         <div className="space-y-4 md:space-y-5">
           <div className="space-y-3">
-            <Label>Do you have a current active Whish account?</Label>
+            <Label>Do you have a current active WHISH account?</Label>
             <div className="grid grid-cols-2 gap-4">
               <div
                 onClick={() => onChange("hasWhishAccount", "yes")}
@@ -196,7 +196,7 @@ const ContactStep = ({
 
           {data.hasWhishAccount === "yes" && (
             <div className="space-y-2">
-              <Label htmlFor="whishNumber">Whish Number *</Label>
+              <Label htmlFor="whishNumber">WHISH Number *</Label>
               <div className="flex gap-2 md:gap-3">
                 <Input 
                   id="whishCountryCode" 
