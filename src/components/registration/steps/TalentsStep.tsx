@@ -403,7 +403,7 @@ const TalentsStep = ({ data, onChange }: TalentsStepProps) => {
 
         {/* Modeling dropdown - placed after experience question */}
         <div className="space-y-2">
-          <Label>Modeling</Label>
+          <Label>What kind of modeling would you be interested in or have experience in?</Label>
           
           {selectedModeling.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-3">
