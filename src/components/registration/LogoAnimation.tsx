@@ -52,32 +52,32 @@ const LogoAnimation = ({ onComplete }: LogoAnimationProps) => {
 
     const lettersDuration = letters.length * 300;
 
-    // After all letters shown, start logo fade out
+    // After all letters shown, wait longer before starting logo fade out
     const logoFadeTimeout = setTimeout(() => {
       clearInterval(letterInterval);
       setLogoFading(true);
-    }, lettersDuration + 200);
+    }, lettersDuration + 600);
 
     // Play sound 250ms before flash starts
     const soundTimeout = setTimeout(() => {
       playCameraSound();
-    }, lettersDuration + 350);
+    }, lettersDuration + 750);
 
     // After logo fades, start flash
     const flashStartTimeout = setTimeout(() => {
       setShowFlash(true);
       setFlashPhase("in");
-    }, lettersDuration + 600);
+    }, lettersDuration + 1000);
 
     // Flash reaches full intensity
     const flashHoldTimeout = setTimeout(() => {
       setFlashPhase("hold");
-    }, lettersDuration + 800);
+    }, lettersDuration + 1200);
 
     // Complete - transition after audio finishes
     const completeTimeout = setTimeout(() => {
       onComplete();
-    }, lettersDuration + 1400);
+    }, lettersDuration + 1800);
 
     return () => {
       clearInterval(letterInterval);
