@@ -4,7 +4,6 @@ import { Input } from "@/components/ui/input";
 import { talents, sports, modelingTypes } from "@/data/lebanese-locations";
 import { Check, ChevronDown, X, Search, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface TalentsStepProps {
@@ -24,20 +23,10 @@ interface TalentsStepProps {
   onChange: (field: string, value: string | string[] | boolean | Record<string, number>) => void;
 }
 
-// Main talents to display as checkboxes
-const mainTalents = ["Film Acting", "TV Acting", "Commercial Acting", "Voice Acting"];
-
-// Main sports to display as checkboxes  
-const mainSports = ["Swimming", "Running/Jogging", "Gym/Weight Training", "Yoga"];
-
 const TalentsStep = ({ data, onChange }: TalentsStepProps) => {
-  const [customTalent, setCustomTalent] = useState(data.customTalent || "");
-  const [customSport, setCustomSport] = useState(data.customSport || "");
   const [customModeling, setCustomModeling] = useState(data.customModeling || "");
   const [isModelingOpen, setIsModelingOpen] = useState(false);
   const [modelingSearchQuery, setModelingSearchQuery] = useState("");
-  const [showOtherTalentsDropdown, setShowOtherTalentsDropdown] = useState(false);
-  const [showOtherSportsDropdown, setShowOtherSportsDropdown] = useState(false);
 
   const talentLevels = data.talentLevels || {};
   const sportLevels = data.sportLevels || {};
@@ -45,64 +34,18 @@ const TalentsStep = ({ data, onChange }: TalentsStepProps) => {
   const selectedSports = data.sports || [];
   const selectedModeling = data.modeling || [];
 
-  // Get "other" talents (not in main list)
-  const otherSelectedTalents = selectedTalents.filter(t => !mainTalents.includes(t) && t !== "Other");
-  const otherSelectedSports = selectedSports.filter(s => !mainSports.includes(s) && s !== "Other");
+  const maxItems = 5;
 
-  // Available other talents/sports for dropdown
-  const availableOtherTalents = talents.filter(t => !mainTalents.includes(t) && !selectedTalents.includes(t) && t !== "Other");
-  const availableOtherSports = sports.filter(s => !mainSports.includes(s) && !selectedSports.includes(s) && s !== "Other");
+  // Available talents/sports for dropdown (excluding already selected)
+  const availableTalents = talents.filter(t => !selectedTalents.includes(t) && t !== "Other");
+  const availableSports = sports.filter(s => !selectedSports.includes(s) && s !== "Other");
 
   const filteredModeling = modelingSearchQuery.trim() 
     ? modelingTypes.filter((type) => type.toLowerCase().includes(modelingSearchQuery.toLowerCase()))
     : modelingTypes;
 
-  const maxModeling = 5;
-
-  const handleTalentToggle = (talent: string) => {
-    const currentTalents = data.talents || [];
-    if (currentTalents.includes(talent)) {
-      const newTalents = currentTalents.filter((t) => t !== talent);
-      const newLevels = { ...talentLevels };
-      delete newLevels[talent];
-      onChange("talents", newTalents);
-      onChange("talentLevels", newLevels);
-    } else {
-      const newTalents = [...currentTalents, talent];
-      const newLevels = { ...talentLevels, [talent]: 3 };
-      onChange("talents", newTalents);
-      onChange("talentLevels", newLevels);
-    }
-  };
-
-  const handleSportToggle = (sport: string) => {
-    const currentSports = data.sports || [];
-    if (currentSports.includes(sport)) {
-      const newSports = currentSports.filter((s) => s !== sport);
-      const newLevels = { ...sportLevels };
-      delete newLevels[sport];
-      onChange("sports", newSports);
-      onChange("sportLevels", newLevels);
-    } else {
-      const newSports = [...currentSports, sport];
-      const newLevels = { ...sportLevels, [sport]: 3 };
-      onChange("sports", newSports);
-      onChange("sportLevels", newLevels);
-    }
-  };
-
-  const handleTalentLevelChange = (talent: string, level: number) => {
-    const newLevels = { ...talentLevels, [talent]: level };
-    onChange("talentLevels", newLevels);
-  };
-
-  const handleSportLevelChange = (sport: string, level: number) => {
-    const newLevels = { ...sportLevels, [sport]: level };
-    onChange("sportLevels", newLevels);
-  };
-
-  const handleAddOtherTalent = (talent: string) => {
-    if (otherSelectedTalents.length < 5 && !selectedTalents.includes(talent)) {
+  const handleAddTalent = (talent: string) => {
+    if (selectedTalents.length < maxItems && !selectedTalents.includes(talent)) {
       const newTalents = [...selectedTalents, talent];
       const newLevels = { ...talentLevels, [talent]: 3 };
       onChange("talents", newTalents);
@@ -110,7 +53,7 @@ const TalentsStep = ({ data, onChange }: TalentsStepProps) => {
     }
   };
 
-  const handleRemoveOtherTalent = (talent: string) => {
+  const handleRemoveTalent = (talent: string) => {
     const newTalents = selectedTalents.filter(t => t !== talent);
     const newLevels = { ...talentLevels };
     delete newLevels[talent];
@@ -118,8 +61,13 @@ const TalentsStep = ({ data, onChange }: TalentsStepProps) => {
     onChange("talentLevels", newLevels);
   };
 
-  const handleAddOtherSport = (sport: string) => {
-    if (otherSelectedSports.length < 5 && !selectedSports.includes(sport)) {
+  const handleTalentLevelChange = (talent: string, level: number) => {
+    const newLevels = { ...talentLevels, [talent]: level };
+    onChange("talentLevels", newLevels);
+  };
+
+  const handleAddSport = (sport: string) => {
+    if (selectedSports.length < maxItems && !selectedSports.includes(sport)) {
       const newSports = [...selectedSports, sport];
       const newLevels = { ...sportLevels, [sport]: 3 };
       onChange("sports", newSports);
@@ -127,7 +75,7 @@ const TalentsStep = ({ data, onChange }: TalentsStepProps) => {
     }
   };
 
-  const handleRemoveOtherSport = (sport: string) => {
+  const handleRemoveSport = (sport: string) => {
     const newSports = selectedSports.filter(s => s !== sport);
     const newLevels = { ...sportLevels };
     delete newLevels[sport];
@@ -135,11 +83,16 @@ const TalentsStep = ({ data, onChange }: TalentsStepProps) => {
     onChange("sportLevels", newLevels);
   };
 
+  const handleSportLevelChange = (sport: string, level: number) => {
+    const newLevels = { ...sportLevels, [sport]: level };
+    onChange("sportLevels", newLevels);
+  };
+
   const handleModelingToggle = (type: string) => {
     const currentModeling = data.modeling || [];
     if (currentModeling.includes(type)) {
       onChange("modeling", currentModeling.filter((m) => m !== type));
-    } else if (currentModeling.length < maxModeling) {
+    } else if (currentModeling.length < maxItems) {
       onChange("modeling", [...currentModeling, type]);
     }
   };
@@ -161,7 +114,7 @@ const TalentsStep = ({ data, onChange }: TalentsStepProps) => {
   const hasModelingOtherSelected = selectedModeling.includes("Other");
 
   const StarRating = ({ item, level, onLevelChange }: { item: string; level: number; onLevelChange: (item: string, level: number) => void }) => (
-    <div className="flex items-center gap-0.5 mt-1.5">
+    <div className="flex items-center gap-0.5">
       {[1, 2, 3, 4, 5].map((star) => (
         <button
           key={star}
@@ -245,107 +198,39 @@ const TalentsStep = ({ data, onChange }: TalentsStepProps) => {
       </div>
 
       <div className="space-y-6">
-        {/* Talents Section - Checkbox style like languages */}
-        <div className="space-y-2">
+        {/* Talents Section */}
+        <div className="space-y-3">
           <Label>Talents & Skills</Label>
-          <p className="text-muted-foreground text-sm mb-4">Select your talents and rate your proficiency</p>
+          <p className="text-muted-foreground text-sm">Select up to 5 talents and rate your proficiency</p>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {mainTalents.map((talent) => {
-              const isSelected = selectedTalents.includes(talent);
-              
-              return (
-                <div
-                  key={talent}
-                  className={`flex flex-col p-3 rounded-lg border cursor-pointer transition-colors ${
-                    isSelected
-                      ? "border-primary bg-primary/10"
-                      : "border-border hover:border-primary/50"
-                  }`}
-                  onClick={() => handleTalentToggle(talent)}
-                >
-                  <div className="flex items-center space-x-3">
-                    <Checkbox
-                      id={talent}
-                      checked={isSelected}
-                      onCheckedChange={() => handleTalentToggle(talent)}
-                    />
-                    <label
-                      htmlFor={talent}
-                      className="text-sm font-medium cursor-pointer flex-1"
-                    >
-                      {talent}
-                    </label>
-                  </div>
-                  
-                  {isSelected && (
-                    <StarRating 
-                      item={talent} 
-                      level={talentLevels[talent] || 3}
-                      onLevelChange={handleTalentLevelChange}
-                    />
-                  )}
-                </div>
-              );
-            })}
+          {selectedTalents.length < maxItems && (
+            <Select onValueChange={handleAddTalent} value="">
+              <SelectTrigger className="h-12">
+                <SelectValue placeholder={`Select talent (${maxItems - selectedTalents.length} left)`} />
+              </SelectTrigger>
+              <SelectContent className="max-h-60">
+                {availableTalents.map((talent) => (
+                  <SelectItem key={talent} value={talent}>
+                    {talent}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
 
-            {/* Other Talents Option */}
-            <div
-              className={`flex flex-col p-3 rounded-lg border cursor-pointer transition-colors ${
-                showOtherTalentsDropdown || otherSelectedTalents.length > 0
-                  ? "border-primary bg-primary/10"
-                  : "border-border hover:border-primary/50"
-              }`}
-              onClick={() => setShowOtherTalentsDropdown(!showOtherTalentsDropdown)}
-            >
-              <div className="flex items-center space-x-3">
-                <Checkbox
-                  id="other-talent"
-                  checked={showOtherTalentsDropdown || otherSelectedTalents.length > 0}
-                  onCheckedChange={() => setShowOtherTalentsDropdown(!showOtherTalentsDropdown)}
-                />
-                <label
-                  htmlFor="other-talent"
-                  className="text-sm font-medium cursor-pointer flex-1"
-                >
-                  Other
-                </label>
-              </div>
-
-              {(showOtherTalentsDropdown || otherSelectedTalents.length > 0) && (
-                <div className="mt-2" onClick={(e) => e.stopPropagation()}>
-                  {otherSelectedTalents.length < 5 && (
-                    <Select onValueChange={handleAddOtherTalent}>
-                      <SelectTrigger className="h-9 text-sm">
-                        <SelectValue placeholder={`Add talent (${5 - otherSelectedTalents.length} left)`} />
-                      </SelectTrigger>
-                      <SelectContent className="max-h-60">
-                        {availableOtherTalents.map((talent) => (
-                          <SelectItem key={talent} value={talent}>
-                            {talent}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Selected Other Talents with Star Ratings */}
-          {otherSelectedTalents.length > 0 && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
-              {otherSelectedTalents.map((talent) => (
+          {/* Selected Talents with Star Ratings */}
+          {selectedTalents.length > 0 && (
+            <div className="grid grid-cols-1 gap-3 mt-3">
+              {selectedTalents.map((talent) => (
                 <div
                   key={talent}
                   className="flex flex-col p-3 rounded-lg border border-primary bg-primary/10"
                 >
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between mb-1">
                     <span className="text-sm font-medium">{talent}</span>
                     <button
                       type="button"
-                      onClick={() => handleRemoveOtherTalent(talent)}
+                      onClick={() => handleRemoveTalent(talent)}
                       className="p-0.5 hover:bg-destructive/20 rounded"
                     >
                       <X className="w-4 h-4 text-destructive" />
@@ -362,107 +247,39 @@ const TalentsStep = ({ data, onChange }: TalentsStepProps) => {
           )}
         </div>
 
-        {/* Sports Section - Checkbox style like languages */}
-        <div className="space-y-2 pt-6 border-t border-border">
+        {/* Sports Section */}
+        <div className="space-y-3 pt-6 border-t border-border">
           <Label>Sports & Fitness</Label>
-          <p className="text-muted-foreground text-sm mb-4">Select your sports and rate your proficiency</p>
+          <p className="text-muted-foreground text-sm">Select up to 5 sports and rate your proficiency</p>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {mainSports.map((sport) => {
-              const isSelected = selectedSports.includes(sport);
-              
-              return (
-                <div
-                  key={sport}
-                  className={`flex flex-col p-3 rounded-lg border cursor-pointer transition-colors ${
-                    isSelected
-                      ? "border-primary bg-primary/10"
-                      : "border-border hover:border-primary/50"
-                  }`}
-                  onClick={() => handleSportToggle(sport)}
-                >
-                  <div className="flex items-center space-x-3">
-                    <Checkbox
-                      id={sport}
-                      checked={isSelected}
-                      onCheckedChange={() => handleSportToggle(sport)}
-                    />
-                    <label
-                      htmlFor={sport}
-                      className="text-sm font-medium cursor-pointer flex-1"
-                    >
-                      {sport}
-                    </label>
-                  </div>
-                  
-                  {isSelected && (
-                    <StarRating 
-                      item={sport} 
-                      level={sportLevels[sport] || 3}
-                      onLevelChange={handleSportLevelChange}
-                    />
-                  )}
-                </div>
-              );
-            })}
+          {selectedSports.length < maxItems && (
+            <Select onValueChange={handleAddSport} value="">
+              <SelectTrigger className="h-12">
+                <SelectValue placeholder={`Select sport (${maxItems - selectedSports.length} left)`} />
+              </SelectTrigger>
+              <SelectContent className="max-h-60">
+                {availableSports.map((sport) => (
+                  <SelectItem key={sport} value={sport}>
+                    {sport}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
 
-            {/* Other Sports Option */}
-            <div
-              className={`flex flex-col p-3 rounded-lg border cursor-pointer transition-colors ${
-                showOtherSportsDropdown || otherSelectedSports.length > 0
-                  ? "border-primary bg-primary/10"
-                  : "border-border hover:border-primary/50"
-              }`}
-              onClick={() => setShowOtherSportsDropdown(!showOtherSportsDropdown)}
-            >
-              <div className="flex items-center space-x-3">
-                <Checkbox
-                  id="other-sport"
-                  checked={showOtherSportsDropdown || otherSelectedSports.length > 0}
-                  onCheckedChange={() => setShowOtherSportsDropdown(!showOtherSportsDropdown)}
-                />
-                <label
-                  htmlFor="other-sport"
-                  className="text-sm font-medium cursor-pointer flex-1"
-                >
-                  Other
-                </label>
-              </div>
-
-              {(showOtherSportsDropdown || otherSelectedSports.length > 0) && (
-                <div className="mt-2" onClick={(e) => e.stopPropagation()}>
-                  {otherSelectedSports.length < 5 && (
-                    <Select onValueChange={handleAddOtherSport}>
-                      <SelectTrigger className="h-9 text-sm">
-                        <SelectValue placeholder={`Add sport (${5 - otherSelectedSports.length} left)`} />
-                      </SelectTrigger>
-                      <SelectContent className="max-h-60">
-                        {availableOtherSports.map((sport) => (
-                          <SelectItem key={sport} value={sport}>
-                            {sport}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Selected Other Sports with Star Ratings */}
-          {otherSelectedSports.length > 0 && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
-              {otherSelectedSports.map((sport) => (
+          {/* Selected Sports with Star Ratings */}
+          {selectedSports.length > 0 && (
+            <div className="grid grid-cols-1 gap-3 mt-3">
+              {selectedSports.map((sport) => (
                 <div
                   key={sport}
                   className="flex flex-col p-3 rounded-lg border border-primary bg-primary/10"
                 >
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between mb-1">
                     <span className="text-sm font-medium">{sport}</span>
                     <button
                       type="button"
-                      onClick={() => handleRemoveOtherSport(sport)}
+                      onClick={() => handleRemoveSport(sport)}
                       className="p-0.5 hover:bg-destructive/20 rounded"
                     >
                       <X className="w-4 h-4 text-destructive" />
@@ -488,7 +305,7 @@ const TalentsStep = ({ data, onChange }: TalentsStepProps) => {
           No experience? No problem! We welcome fresh faces.
         </p>
 
-        {/* Modeling dropdown - placed after experience question */}
+        {/* Modeling dropdown */}
         <div className="space-y-2">
           <Label>What kind of modeling would you be interested in or have experience in?</Label>
           
@@ -516,15 +333,13 @@ const TalentsStep = ({ data, onChange }: TalentsStepProps) => {
           <div className="relative">
             <button
               type="button"
-              onClick={() => {
-                setIsModelingOpen(!isModelingOpen);
-              }}
+              onClick={() => setIsModelingOpen(!isModelingOpen)}
               className="w-full flex items-center justify-between p-4 rounded-lg border border-border bg-background hover:border-primary/50 transition-colors text-left"
             >
               <span className="text-muted-foreground">
                 {selectedModeling.length === 0
                   ? "Select modeling types (max 5)..."
-                  : `${selectedModeling.length}/${maxModeling} selected`}
+                  : `${selectedModeling.length}/${maxItems} selected`}
               </span>
               <ChevronDown className={`h-5 w-5 text-muted-foreground transition-transform ${isModelingOpen ? "rotate-180" : ""}`} />
             </button>
@@ -552,7 +367,7 @@ const TalentsStep = ({ data, onChange }: TalentsStepProps) => {
                   ) : (
                     filteredModeling.map((type) => {
                       const isSelected = selectedModeling.includes(type);
-                      const isDisabled = !isSelected && selectedModeling.length >= maxModeling;
+                      const isDisabled = !isSelected && selectedModeling.length >= maxItems;
                       return (
                         <button
                           key={type}
