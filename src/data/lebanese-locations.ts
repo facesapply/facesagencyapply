@@ -454,7 +454,6 @@ export const modelingTypes = [
   "Editorial Modeling",
   "Catalog Modeling",
   "Swimwear Modeling",
-  "Lingerie Modeling",
   "Fitness Modeling",
   "Plus-Size Modeling",
   "Petite Modeling",
