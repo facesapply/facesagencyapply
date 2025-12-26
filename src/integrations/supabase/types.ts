@@ -14,16 +14,174 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      applications: {
+        Row: {
+          area: string | null
+          bust: string | null
+          car_availability: string | null
+          created_at: string
+          date_of_birth: string | null
+          district: string | null
+          experience: string | null
+          eye_color: string | null
+          first_name: string
+          governorate: string | null
+          hair_color: string | null
+          hair_length: string | null
+          hair_type: string | null
+          has_passport: boolean | null
+          height: string | null
+          hips: string | null
+          id: string
+          instagram: string | null
+          is_brand_ambassador: boolean | null
+          jacket_size: string | null
+          language_levels: Json | null
+          languages: Json | null
+          last_name: string
+          middle_name: string | null
+          mobile: string | null
+          nationality: string | null
+          other_number: string | null
+          pant_size: string | null
+          photo_urls: string[] | null
+          shoe_size: string | null
+          shoulders: string | null
+          skin_tone: string | null
+          sport_levels: Json | null
+          sports: Json | null
+          talent_levels: Json | null
+          talents: Json | null
+          tiktok: string | null
+          waist: string | null
+          website: string | null
+          weight: string | null
+          whatsapp: string | null
+          willing_to_travel: boolean | null
+        }
+        Insert: {
+          area?: string | null
+          bust?: string | null
+          car_availability?: string | null
+          created_at?: string
+          date_of_birth?: string | null
+          district?: string | null
+          experience?: string | null
+          eye_color?: string | null
+          first_name: string
+          governorate?: string | null
+          hair_color?: string | null
+          hair_length?: string | null
+          hair_type?: string | null
+          has_passport?: boolean | null
+          height?: string | null
+          hips?: string | null
+          id?: string
+          instagram?: string | null
+          is_brand_ambassador?: boolean | null
+          jacket_size?: string | null
+          language_levels?: Json | null
+          languages?: Json | null
+          last_name: string
+          middle_name?: string | null
+          mobile?: string | null
+          nationality?: string | null
+          other_number?: string | null
+          pant_size?: string | null
+          photo_urls?: string[] | null
+          shoe_size?: string | null
+          shoulders?: string | null
+          skin_tone?: string | null
+          sport_levels?: Json | null
+          sports?: Json | null
+          talent_levels?: Json | null
+          talents?: Json | null
+          tiktok?: string | null
+          waist?: string | null
+          website?: string | null
+          weight?: string | null
+          whatsapp?: string | null
+          willing_to_travel?: boolean | null
+        }
+        Update: {
+          area?: string | null
+          bust?: string | null
+          car_availability?: string | null
+          created_at?: string
+          date_of_birth?: string | null
+          district?: string | null
+          experience?: string | null
+          eye_color?: string | null
+          first_name?: string
+          governorate?: string | null
+          hair_color?: string | null
+          hair_length?: string | null
+          hair_type?: string | null
+          has_passport?: boolean | null
+          height?: string | null
+          hips?: string | null
+          id?: string
+          instagram?: string | null
+          is_brand_ambassador?: boolean | null
+          jacket_size?: string | null
+          language_levels?: Json | null
+          languages?: Json | null
+          last_name?: string
+          middle_name?: string | null
+          mobile?: string | null
+          nationality?: string | null
+          other_number?: string | null
+          pant_size?: string | null
+          photo_urls?: string[] | null
+          shoe_size?: string | null
+          shoulders?: string | null
+          skin_tone?: string | null
+          sport_levels?: Json | null
+          sports?: Json | null
+          talent_levels?: Json | null
+          talents?: Json | null
+          tiktok?: string | null
+          waist?: string | null
+          website?: string | null
+          weight?: string | null
+          whatsapp?: string | null
+          willing_to_travel?: boolean | null
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +308,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const

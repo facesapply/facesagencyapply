@@ -13,6 +13,7 @@ import TalentsStep from "./steps/TalentsStep";
 import AvailabilityStep from "./steps/AvailabilityStep";
 import ReviewStep from "./steps/ReviewStep";
 import { mainInfoSchema, contactSchema, addressSchema, languagesSchema, appearanceSchema, measurementsSchema } from "@/lib/formValidation";
+import { submitApplication } from "@/lib/submitApplication";
 interface FormData {
   gender: "male" | "female";
   firstName: string;
@@ -255,12 +256,21 @@ const RegistrationForm = () => {
   const handleSubmit = async () => {
     setIsSubmitting(true);
     try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      setIsSubmitted(true);
-      toast({
-        title: "Application Submitted!",
-        description: "Thank you for registering with Faces Agency. We'll be in touch soon!"
-      });
+      const result = await submitApplication(formData);
+      
+      if (result.success) {
+        setIsSubmitted(true);
+        toast({
+          title: "Application Submitted!",
+          description: "Thank you for registering with Faces Agency. We'll be in touch soon!"
+        });
+      } else {
+        toast({
+          title: "Submission Failed",
+          description: result.error || "There was an error submitting your application. Please try again.",
+          variant: "destructive"
+        });
+      }
     } catch (error) {
       toast({
         title: "Submission Failed",
