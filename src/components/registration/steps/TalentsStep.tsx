@@ -19,8 +19,9 @@ interface TalentsStepProps {
     customModeling?: string;
     comfortableWithSwimwear: boolean | null;
     interestedInExtra: string;
+    cameraConfidence: number;
   };
-  onChange: (field: string, value: string | string[] | boolean | Record<string, number>) => void;
+  onChange: (field: string, value: string | string[] | boolean | number | Record<string, number>) => void;
 }
 
 const TalentsStep = ({ data, onChange }: TalentsStepProps) => {
@@ -304,6 +305,33 @@ const TalentsStep = ({ data, onChange }: TalentsStepProps) => {
         <p className="text-xs text-muted-foreground text-center -mt-3">
           No experience? No problem! We welcome fresh faces.
         </p>
+
+        {/* Camera confidence rating */}
+        <div className="space-y-3">
+          <Label>How would you rate your confidence in speaking in front of the camera?</Label>
+          <div className="flex items-center justify-center gap-2">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <button
+                key={star}
+                type="button"
+                onClick={() => onChange("cameraConfidence", star)}
+                className="p-1 transition-transform hover:scale-110"
+              >
+                <Star
+                  className={`w-8 h-8 transition-colors ${
+                    star <= (data.cameraConfidence || 0)
+                      ? "fill-primary text-primary"
+                      : "fill-none text-muted-foreground"
+                  }`}
+                />
+              </button>
+            ))}
+          </div>
+          <div className="flex justify-between text-xs text-muted-foreground px-1">
+            <span>Not confident</span>
+            <span>Very confident</span>
+          </div>
+        </div>
 
         {/* Modeling dropdown */}
         <div className="space-y-2">

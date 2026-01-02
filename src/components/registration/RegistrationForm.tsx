@@ -75,6 +75,8 @@ interface FormData {
   hasMultiplePassports: string;
   passports: string[];
   comfortableWithSwimwear: boolean | null;
+  cameraConfidence: number;
+  hasLookAlikeTwin: string;
 }
 const initialFormData: FormData = {
   gender: "female",
@@ -136,7 +138,9 @@ const initialFormData: FormData = {
   hasPassport: "",
   hasMultiplePassports: "",
   passports: [],
-  comfortableWithSwimwear: null
+  comfortableWithSwimwear: null,
+  cameraConfidence: 0,
+  hasLookAlikeTwin: ""
 };
 const RegistrationForm = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -147,7 +151,7 @@ const RegistrationForm = () => {
     toast
   } = useToast();
   const totalSteps = 9;
-  const updateFormData = (field: string, value: string | string[] | boolean | File | null | Record<string, number>) => {
+  const updateFormData = (field: string, value: string | string[] | boolean | number | File | null | Record<string, number>) => {
     setFormData(prev => ({
       ...prev,
       [field]: value

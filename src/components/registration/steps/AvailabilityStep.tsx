@@ -13,6 +13,7 @@ interface AvailabilityStepProps {
     hasPassport: string;
     hasMultiplePassports: string;
     passports: string[];
+    hasLookAlikeTwin: string;
   };
   onChange: (field: string, value: string | boolean | string[]) => void;
 }
@@ -72,6 +73,12 @@ const AvailabilityStep = ({ data, onChange }: AvailabilityStepProps) => {
       </div>
 
       <div className="space-y-6">
+        <PollQuestion
+          label="Do you have a look-alike twin?"
+          field="hasLookAlikeTwin"
+          value={data.hasLookAlikeTwin}
+        />
+
         <PollQuestion
           label="Do you own a car?"
           field="hasCar"
