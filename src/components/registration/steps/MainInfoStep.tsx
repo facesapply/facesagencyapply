@@ -11,7 +11,6 @@ interface MainInfoStepProps {
     lastName: string;
     dateOfBirth: string;
     nationality: string;
-    email: string;
   };
   onChange: (field: string, value: string) => void;
 }
@@ -140,18 +139,6 @@ const MainInfoStep = ({ data, onChange }: MainInfoStepProps) => {
               ))}
             </SelectContent>
           </Select>
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="email">Email *</Label>
-          <Input
-            id="email"
-            type="email"
-            placeholder="Enter your email address"
-            value={data.email}
-            onChange={(e) => onChange("email", e.target.value)}
-            className="h-12"
-          />
         </div>
 
       </div>

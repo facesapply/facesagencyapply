@@ -94,6 +94,8 @@ const PROPERTIES: PropertyDefinition[] = [
     options: [
       { label: 'Mother', value: 'Mother' },
       { label: 'Father', value: 'Father' },
+      { label: 'Son', value: 'Son' },
+      { label: 'Daughter', value: 'Daughter' },
       { label: 'Brother', value: 'Brother' },
       { label: 'Sister', value: 'Sister' },
       { label: 'Uncle', value: 'Uncle' },

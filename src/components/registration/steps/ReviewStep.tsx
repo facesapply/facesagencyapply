@@ -55,7 +55,6 @@ interface ReviewStepProps {
     hasPassport: string;
     hasMultiplePassports: string;
     passports?: string[];
-    acceptAmbassador?: boolean;
     howDidYouHear: string;
     howDidYouHearOther: string;
   };
@@ -224,50 +223,6 @@ const ReviewStep = ({ formData, onSubmit, onChange, isSubmitting }: ReviewStepPr
             />
           </div>
         )}
-      </div>
-
-      {/* Terms and Conditions */}
-      <div className="space-y-6 border-t border-border pt-6">
-        <h3 className="text-primary font-semibold text-sm uppercase tracking-wider">
-          Terms & Consent
-        </h3>
-        
-        {/* Consent: Brand Ambassador */}
-        <div className="space-y-3">
-          <p className="text-sm text-foreground font-medium">
-            If selected, do you give consent to allow Faces to use you as a brand ambassador?
-          </p>
-          <div className="grid grid-cols-2 gap-4">
-            <div
-              onClick={() => onChange("acceptAmbassador", true)}
-              className={`flex items-center justify-center p-4 rounded-xl border-2 cursor-pointer transition-all ${
-                formData.acceptAmbassador === true
-                  ? "border-primary bg-primary/10 shadow-md"
-                  : "border-border hover:border-primary/50 hover:bg-muted/50"
-              }`}
-            >
-              <span className={`text-lg font-semibold ${
-                formData.acceptAmbassador === true ? "text-primary" : "text-foreground"
-              }`}>
-                Yes
-              </span>
-            </div>
-            <div
-              onClick={() => onChange("acceptAmbassador", false)}
-              className={`flex items-center justify-center p-4 rounded-xl border-2 cursor-pointer transition-all ${
-                formData.acceptAmbassador === false
-                  ? "border-primary bg-primary/10 shadow-md"
-                  : "border-border hover:border-primary/50 hover:bg-muted/50"
-              }`}
-            >
-              <span className={`text-lg font-semibold ${
-                formData.acceptAmbassador === false ? "text-primary" : "text-foreground"
-              }`}>
-                No
-              </span>
-            </div>
-          </div>
-        </div>
       </div>
 
       <Button
