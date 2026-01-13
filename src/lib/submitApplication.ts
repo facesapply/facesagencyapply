@@ -1,4 +1,4 @@
-import { supabase } from "@/integrations/supabase/client";
+import { syncToHubSpot } from "./hubspot";
 
 interface FormData {
   gender: "male" | "female";
@@ -7,6 +7,7 @@ interface FormData {
   lastName: string;
   dateOfBirth: string;
   nationality: string;
+  email: string;
   mobile: string;
   mobileCountryCode: string;
   whatsapp: string;
@@ -61,61 +62,33 @@ interface FormData {
   hasMultiplePassports: string;
   passports: string[];
   comfortableWithSwimwear: boolean | null;
+  hasLookAlikeTwin: string;
+  howDidYouHear: string;
+  howDidYouHearOther: string;
 }
 
 export async function submitApplication(formData: FormData): Promise<{ success: boolean; error?: string }> {
-  try {
-    const { error } = await supabase.from("applications").insert({
-      first_name: formData.firstName,
-      middle_name: formData.middleName,
-      last_name: formData.lastName,
-      date_of_birth: formData.dateOfBirth,
-      nationality: formData.nationality,
-      mobile: `${formData.mobileCountryCode} ${formData.mobile}`,
-      whatsapp: `${formData.whatsappCountryCode} ${formData.whatsapp}`,
-      other_number: formData.otherNumber ? `${formData.otherNumberCountryCode} ${formData.otherNumber}` : null,
-      instagram: formData.instagram || null,
-      tiktok: null,
-      website: null,
-      governorate: formData.governorate,
-      district: formData.district,
-      area: formData.area,
-      languages: formData.languages,
-      language_levels: formData.languageLevels,
-      eye_color: formData.customEyeColor || formData.eyeColor,
-      hair_color: formData.customHairColor || formData.hairColor,
-      hair_type: formData.hairType,
-      hair_length: formData.hairLength,
-      skin_tone: formData.skinTone,
-      height: formData.height,
-      weight: formData.weight,
-      pant_size: formData.pantSize,
-      jacket_size: formData.jacketSize,
-      shoe_size: formData.shoeSize,
-      waist: formData.waist || null,
-      bust: formData.bust || null,
-      hips: formData.hips || null,
-      shoulders: formData.shoulders || null,
-      talents: formData.talents,
-      talent_levels: formData.talentLevels,
-      sports: formData.sports,
-      sport_levels: formData.sportLevels,
-      experience: formData.experience || null,
-      has_passport: formData.hasPassport === "yes",
-      willing_to_travel: formData.canTravel === "yes",
-      car_availability: formData.hasCar,
-      is_brand_ambassador: false,
-      photo_urls: [],
-    });
+  console.log("[submitApplication] ========== Starting ==========");
+  console.log("[submitApplication] Received formData:", JSON.stringify(formData, null, 2));
 
-    if (error) {
-      console.error("Error submitting application:", error);
-      return { success: false, error: error.message };
+  try {
+    // Send directly to HubSpot (single source of truth)
+    console.log("[submitApplication] Calling syncToHubSpot...");
+    const hubspotResult = await syncToHubSpot(formData);
+    console.log("[submitApplication] syncToHubSpot returned:", JSON.stringify(hubspotResult));
+
+    if (!hubspotResult.success) {
+      console.error("[submitApplication] HubSpot sync failed:", hubspotResult.error);
+      return { success: false, error: "Failed to submit application. Please try again." };
     }
 
+    console.log("[submitApplication] Success! Contact ID:", hubspotResult.contactId);
     return { success: true };
   } catch (err) {
-    console.error("Unexpected error:", err);
+    console.error("[submitApplication] ========== UNEXPECTED ERROR ==========");
+    console.error("[submitApplication] Error:", err);
+    console.error("[submitApplication] Error type:", typeof err);
+    console.error("[submitApplication] Error message:", err instanceof Error ? err.message : String(err));
     return { success: false, error: "An unexpected error occurred" };
   }
 }

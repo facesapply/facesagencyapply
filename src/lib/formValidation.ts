@@ -23,6 +23,10 @@ export const mainInfoSchema = z.object({
     .string()
     .min(1, "Date of birth is required"),
   nationality: z.string().min(1, "Nationality is required"),
+  email: z
+    .string()
+    .min(1, "Email is required")
+    .email("Please enter a valid email address"),
 });
 
 export const contactSchema = z.object({

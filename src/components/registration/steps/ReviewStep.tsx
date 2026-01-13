@@ -1,5 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+
+const REFERRAL_SOURCES = [
+  "Instagram",
+  "Facebook",
+  "TikTok",
+  "Friend or Family",
+  "Google Search",
+  "Event or Casting Call",
+  "Other"
+];
 
 interface ReviewStepProps {
   formData: {
@@ -43,9 +56,11 @@ interface ReviewStepProps {
     hasMultiplePassports: string;
     passports?: string[];
     acceptAmbassador?: boolean;
+    howDidYouHear: string;
+    howDidYouHearOther: string;
   };
   onSubmit: () => void;
-  onChange: (field: string, value: boolean) => void;
+  onChange: (field: string, value: string | boolean) => void;
   isSubmitting: boolean;
 }
 
@@ -170,6 +185,45 @@ const ReviewStep = ({ formData, onSubmit, onChange, isSubmitting }: ReviewStepPr
           )}
         </Section>
 
+      </div>
+
+      {/* How Did You Hear About Us */}
+      <div className="space-y-4 border-t border-border pt-6">
+        <div className="space-y-2">
+          <Label htmlFor="howDidYouHear" className="text-sm font-medium">
+            How did you hear about us? *
+          </Label>
+          <Select
+            value={formData.howDidYouHear}
+            onValueChange={(value) => onChange("howDidYouHear", value)}
+          >
+            <SelectTrigger className="h-12 md:h-14">
+              <SelectValue placeholder="Select an option" />
+            </SelectTrigger>
+            <SelectContent>
+              {REFERRAL_SOURCES.map((source) => (
+                <SelectItem key={source} value={source}>
+                  {source}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        {formData.howDidYouHear === "Other" && (
+          <div className="space-y-2">
+            <Label htmlFor="howDidYouHearOther" className="text-sm font-medium">
+              Please specify *
+            </Label>
+            <Input
+              id="howDidYouHearOther"
+              placeholder="Tell us how you heard about us"
+              value={formData.howDidYouHearOther}
+              onChange={(e) => onChange("howDidYouHearOther", e.target.value)}
+              className="h-12 md:h-14"
+            />
+          </div>
+        )}
       </div>
 
       {/* Terms and Conditions */}

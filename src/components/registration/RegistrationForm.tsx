@@ -21,6 +21,7 @@ interface FormData {
   lastName: string;
   dateOfBirth: string;
   nationality: string;
+  email: string;
   mobile: string;
   mobileCountryCode: string;
   whatsapp: string;
@@ -75,6 +76,10 @@ interface FormData {
   hasMultiplePassports: string;
   passports: string[];
   comfortableWithSwimwear: boolean | null;
+  cameraConfidence: number;
+  hasLookAlikeTwin: string;
+  howDidYouHear: string;
+  howDidYouHearOther: string;
 }
 const initialFormData: FormData = {
   gender: "female",
@@ -83,6 +88,7 @@ const initialFormData: FormData = {
   lastName: "",
   dateOfBirth: "",
   nationality: "",
+  email: "",
   mobile: "",
   mobileCountryCode: "+961",
   whatsapp: "",
@@ -136,7 +142,11 @@ const initialFormData: FormData = {
   hasPassport: "",
   hasMultiplePassports: "",
   passports: [],
-  comfortableWithSwimwear: null
+  comfortableWithSwimwear: null,
+  cameraConfidence: 0,
+  hasLookAlikeTwin: "",
+  howDidYouHear: "",
+  howDidYouHearOther: ""
 };
 const RegistrationForm = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -147,7 +157,7 @@ const RegistrationForm = () => {
     toast
   } = useToast();
   const totalSteps = 9;
-  const updateFormData = (field: string, value: string | string[] | boolean | File | null | Record<string, number>) => {
+  const updateFormData = (field: string, value: string | string[] | boolean | number | File | null | Record<string, number>) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
@@ -254,17 +264,23 @@ const RegistrationForm = () => {
     setCurrentStep(prev => Math.min(prev + 1, totalSteps - 1));
   };
   const handleSubmit = async () => {
+    console.log("[RegistrationForm] ========== Submit clicked ==========");
+    console.log("[RegistrationForm] formData:", JSON.stringify(formData, null, 2));
     setIsSubmitting(true);
     try {
+      console.log("[RegistrationForm] Calling submitApplication...");
       const result = await submitApplication(formData);
-      
+      console.log("[RegistrationForm] submitApplication returned:", JSON.stringify(result));
+
       if (result.success) {
+        console.log("[RegistrationForm] Success! Setting isSubmitted to true.");
         setIsSubmitted(true);
         toast({
           title: "Application Submitted!",
           description: "Thank you for registering with Faces Agency. We'll be in touch soon!"
         });
       } else {
+        console.log("[RegistrationForm] Submission failed with error:", result.error);
         toast({
           title: "Submission Failed",
           description: result.error || "There was an error submitting your application. Please try again.",
@@ -272,12 +288,16 @@ const RegistrationForm = () => {
         });
       }
     } catch (error) {
+      console.error("[RegistrationForm] ========== CATCH ERROR ==========");
+      console.error("[RegistrationForm] Error:", error);
+      console.error("[RegistrationForm] Error type:", typeof error);
       toast({
         title: "Submission Failed",
         description: "There was an error submitting your application. Please try again.",
         variant: "destructive"
       });
     } finally {
+      console.log("[RegistrationForm] Finally block - setting isSubmitting to false");
       setIsSubmitting(false);
     }
   };
