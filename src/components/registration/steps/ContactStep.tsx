@@ -6,6 +6,8 @@ import { countryCodes } from "@/data/lebanese-locations";
 const otherNumberRelationships = [
   "Mother",
   "Father",
+  "Son",
+  "Daughter",
   "Brother",
   "Sister",
   "Uncle",
