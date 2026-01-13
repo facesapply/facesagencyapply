@@ -78,6 +78,8 @@ interface FormData {
   comfortableWithSwimwear: boolean | null;
   cameraConfidence: number;
   hasLookAlikeTwin: string;
+  howDidYouHear: string;
+  howDidYouHearOther: string;
 }
 const initialFormData: FormData = {
   gender: "female",
@@ -142,7 +144,9 @@ const initialFormData: FormData = {
   passports: [],
   comfortableWithSwimwear: null,
   cameraConfidence: 0,
-  hasLookAlikeTwin: ""
+  hasLookAlikeTwin: "",
+  howDidYouHear: "",
+  howDidYouHearOther: ""
 };
 const RegistrationForm = () => {
   const [currentStep, setCurrentStep] = useState(0);

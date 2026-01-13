@@ -1,5 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+
+const REFERRAL_SOURCES = [
+  "Instagram",
+  "Facebook",
+  "TikTok",
+  "Friend or Family",
+  "Google Search",
+  "Event or Casting Call",
+  "Other"
+];
 
 interface ReviewStepProps {
   formData: {
@@ -42,10 +55,11 @@ interface ReviewStepProps {
     hasPassport: string;
     hasMultiplePassports: string;
     passports?: string[];
-    acceptAmbassador?: boolean;
+    howDidYouHear: string;
+    howDidYouHearOther: string;
   };
   onSubmit: () => void;
-  onChange: (field: string, value: boolean) => void;
+  onChange: (field: string, value: string) => void;
   isSubmitting: boolean;
 }
 
@@ -172,48 +186,43 @@ const ReviewStep = ({ formData, onSubmit, onChange, isSubmitting }: ReviewStepPr
 
       </div>
 
-      {/* Terms and Conditions */}
-      <div className="space-y-6 border-t border-border pt-6">
-        <h3 className="text-primary font-semibold text-sm uppercase tracking-wider">
-          Terms & Consent
-        </h3>
-        
-        {/* Consent: Brand Ambassador */}
-        <div className="space-y-3">
-          <p className="text-sm text-foreground font-medium">
-            If selected, do you give consent to allow Faces to use you as a brand ambassador?
-          </p>
-          <div className="grid grid-cols-2 gap-4">
-            <div
-              onClick={() => onChange("acceptAmbassador", true)}
-              className={`flex items-center justify-center p-4 rounded-xl border-2 cursor-pointer transition-all ${
-                formData.acceptAmbassador === true
-                  ? "border-primary bg-primary/10 shadow-md"
-                  : "border-border hover:border-primary/50 hover:bg-muted/50"
-              }`}
-            >
-              <span className={`text-lg font-semibold ${
-                formData.acceptAmbassador === true ? "text-primary" : "text-foreground"
-              }`}>
-                Yes
-              </span>
-            </div>
-            <div
-              onClick={() => onChange("acceptAmbassador", false)}
-              className={`flex items-center justify-center p-4 rounded-xl border-2 cursor-pointer transition-all ${
-                formData.acceptAmbassador === false
-                  ? "border-primary bg-primary/10 shadow-md"
-                  : "border-border hover:border-primary/50 hover:bg-muted/50"
-              }`}
-            >
-              <span className={`text-lg font-semibold ${
-                formData.acceptAmbassador === false ? "text-primary" : "text-foreground"
-              }`}>
-                No
-              </span>
-            </div>
-          </div>
+      {/* How Did You Hear About Us */}
+      <div className="space-y-4 border-t border-border pt-6">
+        <div className="space-y-2">
+          <Label htmlFor="howDidYouHear" className="text-sm font-medium">
+            How did you hear about us? *
+          </Label>
+          <Select
+            value={formData.howDidYouHear}
+            onValueChange={(value) => onChange("howDidYouHear", value)}
+          >
+            <SelectTrigger className="h-12 md:h-14">
+              <SelectValue placeholder="Select an option" />
+            </SelectTrigger>
+            <SelectContent>
+              {REFERRAL_SOURCES.map((source) => (
+                <SelectItem key={source} value={source}>
+                  {source}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
+
+        {formData.howDidYouHear === "Other" && (
+          <div className="space-y-2">
+            <Label htmlFor="howDidYouHearOther" className="text-sm font-medium">
+              Please specify *
+            </Label>
+            <Input
+              id="howDidYouHearOther"
+              placeholder="Tell us how you heard about us"
+              value={formData.howDidYouHearOther}
+              onChange={(e) => onChange("howDidYouHearOther", e.target.value)}
+              className="h-12 md:h-14"
+            />
+          </div>
+        )}
       </div>
 
       <Button
