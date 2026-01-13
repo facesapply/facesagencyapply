@@ -21,6 +21,7 @@ const otherNumberRelationships = [
 
 interface ContactStepProps {
   data: {
+    email: string;
     mobile: string;
     mobileCountryCode: string;
     whatsapp: string;
@@ -51,6 +52,18 @@ const ContactStep = ({
       </div>
 
       <div className="space-y-4 md:space-y-5">
+        <div className="space-y-2">
+          <Label htmlFor="email">Email Address *</Label>
+          <Input 
+            id="email" 
+            placeholder="your@email.com" 
+            value={data.email} 
+            onChange={e => onChange("email", e.target.value)} 
+            className="h-12 md:h-14" 
+            type="email" 
+          />
+        </div>
+
         <div className="space-y-2">
           <Label htmlFor="mobile">Mobile Number *</Label>
           <div className="flex gap-2 md:gap-3">

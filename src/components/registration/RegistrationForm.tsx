@@ -21,6 +21,7 @@ interface FormData {
   lastName: string;
   dateOfBirth: string;
   nationality: string;
+  email: string;
   mobile: string;
   mobileCountryCode: string;
   whatsapp: string;
@@ -85,6 +86,7 @@ const initialFormData: FormData = {
   lastName: "",
   dateOfBirth: "",
   nationality: "",
+  email: "",
   mobile: "",
   mobileCountryCode: "+961",
   whatsapp: "",
