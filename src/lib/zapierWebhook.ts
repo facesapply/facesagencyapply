@@ -1,5 +1,5 @@
 // Zapier webhook URL - set this to your webhook URL
-const ZAPIER_WEBHOOK_URL = "";
+const ZAPIER_WEBHOOK_URL = "https://hooks.zapier.com/hooks/catch/26039777/ugftzir/";
 
 interface ZapierFormData {
   gender: string;
