@@ -27,9 +27,7 @@ interface FormData {
   languageLevels: Record<string, number>;
   customLanguage: string;
   height: string;
-  heightUnit?: string;
   weight: string;
-  weightUnit?: string;
   pantSize: string;
   jacketSize: string;
   shoeSize: string;
@@ -72,7 +70,7 @@ export async function submitApplication(formData: FormData): Promise<{ success: 
   try {
     // 1. Insert into Supabase
     // @ts-ignore - email column was added manually
-    const { error: dbError } = await supabase.from("applications").insert({
+    const { data: dbData, error: dbError } = await supabase.from("applications").insert({
       first_name: formData.firstName,
       middle_name: formData.middleName,
       last_name: formData.lastName,
@@ -112,40 +110,80 @@ export async function submitApplication(formData: FormData): Promise<{ success: 
       car_availability: formData.hasCar,
       is_brand_ambassador: false,
       photo_urls: [],
-    });
+    }).select('id').single();
 
     if (dbError) {
       console.error("Supabase Database Error:", dbError);
       return { success: false, error: dbError.message };
     }
 
-    console.log("Supabase Database Insert Successful");
+    const supabaseId = dbData?.id;
+    console.log("Supabase Database Insert Successful, ID:", supabaseId);
 
-    // 2. Call HubSpot Edge Function via Direct Fetch for maximum reliability
+    // 2. Call HubSpot Edge Function via Direct Fetch
     try {
       const functionUrl = `https://boohvdvpdgnvabfhiaxi.supabase.co/functions/v1/hubspot-upsert-contact`;
       
       console.log("Calling HubSpot Function directly:", functionUrl);
       
+      // Prepare comprehensive payload matching HubSpot custom properties
+      const hubspotPayload = {
+        email: formData.email,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        middleName: formData.middleName,
+        mobile: `${formData.mobileCountryCode} ${formData.mobile}`.trim(),
+        whatsapp: `${formData.whatsappCountryCode} ${formData.whatsapp}`.trim(),
+        instagram: formData.instagram || null,
+        gender: formData.gender,
+        nationality: formData.nationality,
+        dateOfBirth: formData.dateOfBirth,
+        governorate: formData.governorate,
+        district: formData.district,
+        area: formData.area,
+        height: formData.height,
+        weight: formData.weight,
+        eyeColor: formData.customEyeColor || formData.eyeColor,
+        hairColor: formData.customHairColor || formData.hairColor,
+        hairType: formData.hairType,
+        hairLength: formData.hairLength,
+        skinTone: formData.skinTone,
+        pantSize: formData.pantSize,
+        jacketSize: formData.jacketSize,
+        shoeSize: formData.shoeSize,
+        bust: formData.bust,
+        waist: formData.waist,
+        hips: formData.hips,
+        shoulders: formData.shoulders,
+        hasPassport: formData.hasPassport,
+        canTravel: formData.canTravel,
+        hasCar: formData.hasCar,
+        hasLicense: formData.hasLicense,
+        isEmployed: formData.isEmployed,
+        hasWhishAccount: formData.hasWhishAccount,
+        whishNumber: formData.whishNumber ? `${formData.whishCountryCode} ${formData.whishNumber}`.trim() : null,
+        otherNumber: formData.otherNumber ? `${formData.otherNumberCountryCode} ${formData.otherNumber}`.trim() : null,
+        otherNumberName: formData.otherNumberPersonName,
+        otherNumberRelationship: formData.otherNumberRelationship,
+        comfortableWithSwimwear: formData.comfortableWithSwimwear,
+        languages: formData.languages,
+        languageLevels: formData.languageLevels,
+        talents: formData.talents,
+        talentLevels: formData.talentLevels,
+        sports: formData.sports,
+        sportLevels: formData.sportLevels,
+        modeling: formData.modeling,
+        experience: formData.experience,
+        supabaseId: supabaseId
+      };
+
       const response = await fetch(functionUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          // We use the anon key from the environment if available, otherwise call without it 
-          // since we added CORS headers to the function
           'Authorization': `Bearer ${(supabase as any).supabaseKey || ''}`
         },
-        body: JSON.stringify({
-          email: formData.email,
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          mobile: formData.mobile ? `${formData.mobileCountryCode ?? ""} ${formData.mobile}`.trim() : null,
-          whatsapp: formData.whatsapp ? `${formData.whatsappCountryCode ?? ""} ${formData.whatsapp}`.trim() : null,
-          instagram: formData.instagram ?? null,
-          governorate: formData.governorate ?? null,
-          district: formData.district ?? null,
-          area: formData.area ?? null,
-        }),
+        body: JSON.stringify(hubspotPayload),
       });
 
       if (!response.ok) {
