@@ -48,6 +48,7 @@ CREATE TABLE public.applications (
     nationality TEXT,
     
     -- Contact
+    email TEXT,
     mobile TEXT,
     whatsapp TEXT,
     other_number TEXT,
