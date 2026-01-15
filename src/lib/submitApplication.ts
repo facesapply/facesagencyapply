@@ -62,9 +62,7 @@ interface FormData {
   comfortableWithSwimwear: boolean | null;
 }
 
-export async function submitApplication(
-  formData: FormData
-): Promise<{ success: boolean; error?: string }> {
+export async function submitApplication(formData: FormData): Promise<{ success: boolean; error?: string }> {
   try {
     // DEBUG: minimal insert to force a real error or a success
     const { data, error } = await supabase
@@ -87,19 +85,6 @@ export async function submitApplication(
     return { success: true };
   } catch (err: any) {
     alert("UNEXPECTED ERROR: " + (err?.message || String(err)));
-    console.error("Unexpected error:", err);
-    return { success: false, error: "An unexpected error occurred" };
-  }
-}
-
-
-    if (error) {
-      console.error("Error submitting application:", error);
-      return { success: false, error: error.message };
-    }
-
-    return { success: true };
-  } catch (err) {
     console.error("Unexpected error:", err);
     return { success: false, error: "An unexpected error occurred" };
   }
