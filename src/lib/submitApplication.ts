@@ -66,13 +66,14 @@ interface FormData {
 
 export async function submitApplication(formData: FormData): Promise<{ success: boolean; error?: string }> {
   try {
+    // @ts-ignore - email column was added manually
     const { error } = await supabase.from("applications").insert({
       first_name: formData.firstName,
       middle_name: formData.middleName,
       last_name: formData.lastName,
       date_of_birth: formData.dateOfBirth,
       nationality: formData.nationality,
-      email: formData.email,
+      email: formData.email, // Now included
       mobile: `${formData.mobileCountryCode} ${formData.mobile}`,
       whatsapp: `${formData.whatsappCountryCode} ${formData.whatsapp}`,
       other_number: formData.otherNumber ? `${formData.otherNumberCountryCode} ${formData.otherNumber}` : null,
