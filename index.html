@@ -25,5 +25,22 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // Remove Lovable badge injected by Vercel integration
+      (function() {
+        function removeBadge() {
+          var badge = document.getElementById('lovable-badge');
+          if (badge) badge.remove();
+          var styles = document.querySelectorAll('style');
+          styles.forEach(function(s) {
+            if (s.textContent && s.textContent.includes('lovable-badge')) s.remove();
+          });
+        }
+        removeBadge();
+        document.addEventListener('DOMContentLoaded', removeBadge);
+        setTimeout(removeBadge, 100);
+        setTimeout(removeBadge, 500);
+      })();
+    </script>
   </body>
 </html>
