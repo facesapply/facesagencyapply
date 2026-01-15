@@ -121,15 +121,14 @@ export async function submitApplication(formData: FormData): Promise<{ success: 
     return { success: false, error: "An unexpected error occurred" };
   }
 }
-async function sendToZapierDirect(body: any) {
-  const res = await fetch("https://hooks.zapier.com/hooks/catch/26039777/ugfxgv8/", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
-
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`Zapier webhook failed: ${res.status} ${text}`);
-  }
-}
+await sendToZapierDirect({
+  email: formData.email,
+  firstName: formData.firstName,
+  lastName: formData.lastName,
+  mobile: formData.mobile ? `${formData.mobileCountryCode ?? ""} ${formData.mobile}`.trim() : null,
+  whatsapp: formData.whatsapp ? `${formData.whatsappCountryCode ?? ""} ${formData.whatsapp}`.trim() : null,
+  governorate: formData.governorate ?? null,
+  district: formData.district ?? null,
+  area: formData.area ?? null,
+  submittedAt: new Date().toISOString(),
+});
