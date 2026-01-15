@@ -1,43 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
 
-async function sendToZapier(formData: FormData): Promise<void> {
-  try {
-    const { error } = await supabase.functions.invoke('zapier-webhook', {
-      body: {
-        firstName: formData.firstName,
-        middleName: formData.middleName,
-        lastName: formData.lastName,
-        email: formData.email,
-        dateOfBirth: formData.dateOfBirth,
-        nationality: formData.nationality,
-        mobile: `${formData.mobileCountryCode} ${formData.mobile}`,
-        whatsapp: `${formData.whatsappCountryCode} ${formData.whatsapp}`,
-        instagram: formData.instagram,
-        governorate: formData.governorate,
-        district: formData.district,
-        area: formData.area,
-        languages: formData.languages,
-        height: formData.height,
-        weight: formData.weight,
-        eyeColor: formData.customEyeColor || formData.eyeColor,
-        hairColor: formData.customHairColor || formData.hairColor,
-        talents: formData.talents,
-        sports: formData.sports,
-        experience: formData.experience,
-        hasPassport: formData.hasPassport === "yes",
-        canTravel: formData.canTravel === "yes",
-        hasCar: formData.hasCar,
-      },
-    });
-
-    if (error) {
-      console.error('Zapier webhook error:', error);
-    }
-  } catch (err) {
-    console.error('Failed to send to Zapier:', err);
-  }
-}
-
 interface FormData {
   gender: "male" | "female";
   firstName: string;
@@ -45,7 +7,6 @@ interface FormData {
   lastName: string;
   dateOfBirth: string;
   nationality: string;
-  email: string;
   mobile: string;
   mobileCountryCode: string;
   whatsapp: string;
@@ -151,9 +112,6 @@ export async function submitApplication(formData: FormData): Promise<{ success: 
       console.error("Error submitting application:", error);
       return { success: false, error: error.message };
     }
-
-    // Send to Zapier webhook after successful database insert
-    await sendToZapier(formData);
 
     return { success: true };
   } catch (err) {
