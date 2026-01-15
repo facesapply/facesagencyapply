@@ -32,10 +32,10 @@ export default async function handler(request: Request): Promise<Response> {
     });
   }
 
-  // Get access token from environment
-  const accessToken = process.env.HUBSPOT_ACCESS_TOKEN;
+  // Get access token from environment (support both variable names)
+  const accessToken = process.env.HUBSPOT_ACCESS_TOKEN || process.env.HUBSPOT_PRIVATE_APP_TOKEN;
   if (!accessToken) {
-    return new Response(JSON.stringify({ error: 'HubSpot not configured' }), {
+    return new Response(JSON.stringify({ error: 'HubSpot not configured - missing HUBSPOT_ACCESS_TOKEN or HUBSPOT_PRIVATE_APP_TOKEN' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
     });
