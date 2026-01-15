@@ -106,8 +106,7 @@ export async function submitApplication(formData: FormData): Promise<{ success: 
       car_availability: formData.hasCar,
       is_brand_ambassador: false,
       photo_urls: [],
-    });
-        if (error) {
+    });    if (error) {
       console.error("Error submitting application:", error);
       return { success: false, error: error.message };
     }
