@@ -75,7 +75,7 @@ const sizeGuides = {
     ],
   },
   jacket: {
-    title: "Adult Jacket/Blouse Size Guide",
+    title: "Adult Jacket Size Guide",
     headers: ["US", "UK", "EU"],
     rows: [
       ["XS", "6", "34"],
