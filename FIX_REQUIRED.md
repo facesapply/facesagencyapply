@@ -107,4 +107,25 @@ Once fixed, you'll know it's working when:
 
 **Time to Fix:** ~2 minutes
 
-Let me know once you've added the variable and I'll help verify it works!
+---
+
+## ⚠️ CRITICAL UPDATE: Wrong Vercel Account!
+
+**The production site is at:** `https://facesagencyapply.vercel.app`
+
+**Deployed under:** "faces agency" Vercel account (NOT welkhazen)
+
+### BIGGER ISSUE: API Not Deployed
+
+The API endpoint returns **404 Not Found**. The `/api` folder is not deployed to production.
+
+**📋 See [DEPLOYMENT_ISSUE.md](DEPLOYMENT_ISSUE.md) for complete deployment fix instructions.**
+
+### Quick Summary
+
+1. Log into "faces agency" Vercel account
+2. Redeploy the `facesagencyapply` project from GitHub
+3. Add `HUBSPOT_ACCESS_TOKEN` environment variable
+4. Test: `node test-hubspot-api.js https://facesagencyapply.vercel.app`
+
+The code is perfect and pushed to GitHub - it just needs to be deployed correctly!

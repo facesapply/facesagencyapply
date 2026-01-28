@@ -3,8 +3,10 @@
 ## Quick Test (2 minutes)
 
 ### Step 1: Access the Debug Page
-1. Go to your deployed site: `https://your-site.vercel.app/debug-hubspot`
+1. Go to your deployed site: `https://facesagencyapply.vercel.app/debug-hubspot`
 2. You'll see the HubSpot Debug Panel with environment info and test buttons
+
+**NOTE:** If you get a 404, the API functions are not deployed. See [DEPLOYMENT_ISSUE.md](DEPLOYMENT_ISSUE.md).
 
 ### Step 2: Run the Serverless API Test
 1. Click the **"Test Serverless API (Production)"** button
