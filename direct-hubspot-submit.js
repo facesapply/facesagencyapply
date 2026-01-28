@@ -5,7 +5,9 @@
  * Bypasses Vercel API and submits directly to HubSpot
  */
 
-const HUBSPOT_ACCESS_TOKEN = 'pat-eu1-741e9cfb-a2a4-4efd-9fac-b2971fad7a6a';
+// Get token from environment variable
+// Set via: HUBSPOT_TOKEN=your_token node direct-hubspot-submit.js
+const HUBSPOT_ACCESS_TOKEN = process.env.HUBSPOT_TOKEN || 'YOUR_TOKEN_HERE';
 const HUBSPOT_API_URL = 'https://api.hubapi.com';
 
 // Generate unique test data
@@ -17,7 +19,7 @@ const testContact = {
     // Built-in HubSpot properties
     firstname: 'Claude',
     lastname: 'TestSubmission',
-    email: `claude-test-${timestamp}@facesagency.test`,
+    email: `claude-test-${timestamp}@example.com`,
 
     // Custom Faces Agency properties
     faces_mobile: `+961 ${randomPhone}`,
@@ -79,11 +81,11 @@ const testContact = {
     faces_has_look_alike_twin: 'no',
 
     // Referral
-    faces_how_did_you_hear: 'Social Media',
+    faces_how_did_you_hear: 'Instagram',
 
     // System fields
     faces_application_date: new Date().toISOString(),
-    faces_application_source: 'direct_test_script',
+    faces_application_source: 'website',
     faces_supabase_id: `test-${timestamp}`
   }
 };
