@@ -59,7 +59,7 @@ interface ReviewStepProps {
     howDidYouHearOther: string;
   };
   onSubmit: () => void;
-  onChange: (field: string, value: string) => void;
+  onChange: (field: string, value: string | boolean) => void;
   isSubmitting: boolean;
 }
 

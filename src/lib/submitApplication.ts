@@ -1,98 +1,94 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import { syncToHubSpot } from "./hubspot";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  // CORS (safe)
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST,OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+interface FormData {
+  gender: "male" | "female";
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  dateOfBirth: string;
+  nationality: string;
+  email: string;
+  mobile: string;
+  mobileCountryCode: string;
+  whatsapp: string;
+  whatsappCountryCode: string;
+  otherNumber: string;
+  otherNumberCountryCode: string;
+  otherNumberRelationship: string;
+  otherNumberPersonName: string;
+  instagram: string;
+  hasWhishAccount: string;
+  whishNumber: string;
+  whishCountryCode: string;
+  governorate: string;
+  district: string;
+  area: string;
+  languages: string[];
+  languageLevels: Record<string, number>;
+  customLanguage: string;
+  height: string;
+  weight: string;
+  pantSize: string;
+  jacketSize: string;
+  shoeSize: string;
+  bust: string;
+  waist: string;
+  hips: string;
+  eyeColor: string;
+  hairColor: string;
+  hairType: string;
+  hairLength: string;
+  skinTone: string;
+  hasTattoos: boolean;
+  hasPiercings: boolean;
+  customEyeColor: string;
+  customHairColor: string;
+  shoulders: string;
+  talents: string[];
+  talentLevels: Record<string, number>;
+  sports: string[];
+  sportLevels: Record<string, number>;
+  modeling: string[];
+  customTalent: string;
+  customSport: string;
+  customModeling: string;
+  experience: string;
+  interestedInExtra: string;
+  hasCar: string;
+  hasLicense: string;
+  isEmployed: string;
+  canTravel: string;
+  hasPassport: string;
+  hasMultiplePassports: string;
+  passports: string[];
+  comfortableWithSwimwear: boolean | null;
+  hasLookAlikeTwin: string;
+  howDidYouHear: string;
+  howDidYouHearOther: string;
+}
 
-  if (req.method === "OPTIONS") return res.status(200).end();
-  if (req.method !== "POST") return res.status(405).json({ success: false, error: "Method not allowed" });
+export async function submitApplication(formData: FormData): Promise<{ success: boolean; error?: string }> {
+  console.log("[submitApplication] ========== Starting ==========");
+  console.log("[submitApplication] Received formData:", JSON.stringify(formData, null, 2));
 
   try {
-    const token = process.env.HUBSPOT_PRIVATE_APP_TOKEN;
-    if (!token) return res.status(500).json({ success: false, error: "Missing HUBSPOT_PRIVATE_APP_TOKEN" });
+    // Send directly to HubSpot (single source of truth)
+    console.log("[submitApplication] Calling syncToHubSpot...");
+    const hubspotResult = await syncToHubSpot(formData);
+    console.log("[submitApplication] syncToHubSpot returned:", JSON.stringify(hubspotResult));
 
-    const body = req.body || {};
-
-    const email = (body.email || "").trim();
-    if (!email) return res.status(400).json({ success: false, error: "Missing email" });
-
-    // ✅ Map incoming payload to HubSpot INTERNAL property names
-    // HubSpot defaults are: email, firstname, lastname, phone
-    const properties: Record<string, any> = {
-      email,
-      firstname: (body.firstName || "").trim(),
-      lastname: (body.lastName || "").trim(),
-      phone: (body.mobile || body.phone || "").trim(),
-    };
-
-    // Optional custom fields — ONLY keep if these internal names exist in your HubSpot
-    // Otherwise remove them to avoid confusion.
-    if (body.instagram) properties.instagram = String(body.instagram);
-    if (body.whatsapp) properties.whatsapp = String(body.whatsapp);
-    if (body.nationality) properties.nationality = String(body.nationality);
-    if (body.governorate) properties.governorate = String(body.governorate);
-    if (body.district) properties.district = String(body.district);
-    if (body.area) properties.area = String(body.area);
-    if (body.dateOfBirth) properties.date_of_birth = String(body.dateOfBirth);
-
-    // 1) Search contact by email (so we update instead of creating blanks repeatedly)
-    const searchResp = await fetch("https://api.hubapi.com/crm/v3/objects/contacts/search", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        filterGroups: [{ filters: [{ propertyName: "email", operator: "EQ", value: email }] }],
-        limit: 1,
-      }),
-    });
-
-    const searchJson = await searchResp.json();
-    const existingId = searchJson?.results?.[0]?.id;
-
-    let hsResp: Response;
-
-    if (existingId) {
-      // ✅ Update existing
-      hsResp = await fetch(`https://api.hubapi.com/crm/v3/objects/contacts/${existingId}`, {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ properties }),
-      });
-    } else {
-      // ✅ Create new
-      hsResp = await fetch("https://api.hubapi.com/crm/v3/objects/contacts", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ properties }),
-      });
+    if (!hubspotResult.success) {
+      console.error("[submitApplication] HubSpot sync failed:", hubspotResult.error);
+      return { success: false, error: "Failed to submit application. Please try again." };
     }
 
-    const hsText = await hsResp.text();
-    if (!hsResp.ok) {
-      return res.status(502).json({ success: false, error: "HubSpot API failed", details: hsText, properties });
-    }
-
-    const data = JSON.parse(hsText);
-
-    // ✅ Return what we sent so we can verify instantly
-    return res.status(200).json({
-      success: true,
-      action: existingId ? "updated" : "created",
-      contactId: data?.id || existingId,
-      propertiesSent: properties,
-      data,
-    });
-  } catch (e: any) {
-    return res.status(500).json({ success: false, error: e?.message || String(e) });
+    console.log("[submitApplication] Success! Contact ID:", hubspotResult.contactId);
+    return { success: true };
+  } catch (err) {
+    console.error("[submitApplication] ========== UNEXPECTED ERROR ==========");
+    console.error("[submitApplication] Error:", err);
+    console.error("[submitApplication] Error type:", typeof err);
+    console.error("[submitApplication] Error message:", err instanceof Error ? err.message : String(err));
+    return { success: false, error: "An unexpected error occurred" };
   }
 }

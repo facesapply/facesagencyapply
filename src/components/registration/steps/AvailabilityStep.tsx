@@ -74,7 +74,7 @@ const AvailabilityStep = ({ data, onChange }: AvailabilityStepProps) => {
 
       <div className="space-y-6">
         <PollQuestion
-          label="Do you have a look-alike twin?"
+          label="Do you have any look-alike twins?"
           field="hasLookAlikeTwin"
           value={data.hasLookAlikeTwin}
         />

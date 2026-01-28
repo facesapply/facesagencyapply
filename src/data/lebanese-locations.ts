@@ -426,7 +426,6 @@ export const hairTypes = [
   "Wavy",
   "Curly",
   "Coily",
-  "Kinky",
 ];
 
 export const hairLengths = [
