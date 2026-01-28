@@ -71,7 +71,11 @@ const testFormData = {
   hasPassport: "",
   hasMultiplePassports: "",
   passports: [],
-  comfortableWithSwimwear: null
+  comfortableWithSwimwear: null,
+  cameraConfidence: 3,
+  hasLookAlikeTwin: "no",
+  howDidYouHear: "Social Media",
+  howDidYouHearOther: ""
 };
 
 export default function HubSpotDebug() {
@@ -131,6 +135,50 @@ export default function HubSpotDebug() {
     }
   };
 
+  const handleServerlessTest = async () => {
+    setLoading(true);
+    setResult('Testing serverless API endpoint /api/hubspot-submit...\n');
+
+    try {
+      const testProperties = {
+        firstname: 'ServerlessTest',
+        lastname: 'Debug',
+        email: `test${Date.now()}@example.com`,
+        faces_mobile: `+961 ${getUniquePhone()}`,
+        faces_gender: 'male',
+        faces_application_date: new Date().toISOString(),
+        faces_application_source: 'website_debug'
+      };
+
+      setResult(prev => prev + `Sending properties: ${JSON.stringify(testProperties, null, 2)}\n\n`);
+
+      const response = await fetch('/api/hubspot-submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'create',
+          properties: testProperties
+        }),
+      });
+
+      const data = await response.json();
+      setResult(prev => prev + `Status: ${response.status}\n`);
+      setResult(prev => prev + `Response: ${JSON.stringify(data, null, 2)}\n`);
+
+      if (data.success) {
+        setResult(prev => prev + `\n✅ SUCCESS! Contact ID: ${data.contactId}\n`);
+      } else {
+        setResult(prev => prev + `\n❌ FAILED: ${data.error}\n`);
+      }
+    } catch (error) {
+      setResult(prev => prev + `\n❌ EXCEPTION: ${error instanceof Error ? error.message : String(error)}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="p-4 max-w-2xl mx-auto">
       <h2 className="text-xl font-bold mb-4">HubSpot Debug Panel</h2>
@@ -142,13 +190,20 @@ export default function HubSpotDebug() {
         </pre>
       </div>
 
-      <div className="flex gap-2 mb-4">
-        <Button onClick={handleTest} disabled={loading}>
-          {loading ? 'Testing...' : 'Test syncToHubSpot'}
-        </Button>
-        <Button onClick={handleDirectFetch} disabled={loading} variant="outline">
-          {loading ? 'Testing...' : 'Test Direct Fetch'}
-        </Button>
+      <div className="flex flex-col gap-2 mb-4">
+        <div className="flex gap-2">
+          <Button onClick={handleServerlessTest} disabled={loading} className="flex-1">
+            {loading ? 'Testing...' : 'Test Serverless API (Production)'}
+          </Button>
+        </div>
+        <div className="flex gap-2">
+          <Button onClick={handleTest} disabled={loading} variant="outline" className="flex-1">
+            {loading ? 'Testing...' : 'Test syncToHubSpot (Full Flow)'}
+          </Button>
+          <Button onClick={handleDirectFetch} disabled={loading} variant="outline" className="flex-1">
+            {loading ? 'Testing...' : 'Test Vite Proxy (Dev Only)'}
+          </Button>
+        </div>
       </div>
 
       {result && (
